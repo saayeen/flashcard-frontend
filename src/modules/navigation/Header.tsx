@@ -64,7 +64,7 @@ export default function Header() {
                             <SearchIcon />
                         </button>
                         <div className="header-profile-wrapper" ref={menuRef}>
-                            <button className="header-avatar-btn" onClick={() => user ? setMenuOpen(!menuOpen) : navigate("/")} aria-label="Perfil">
+                           <button className="header-avatar-btn" onClick={() => navigate("/profile")} aria-label="Perfil">
                                 {user?.photoURL ? (
                                     <img src={user.photoURL} alt="Perfil" className="header-avatar-img" />
                                 ) : (
