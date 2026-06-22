@@ -1,0 +1,114 @@
+.home-page {
+  min-height: 100dvh;
+  background: #FBF8F2;
+  padding: 0 1.25rem 6rem;
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 960px;
+  margin: 0 auto 2rem;
+}
+
+.home-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #2B2620;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.home-create-btn {
+  padding: 9px 16px;
+  background: #2B2620;
+  color: #FBF8F2;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.home-create-btn:active {
+  transform: scale(0.97);
+}
+
+.home-status {
+  text-align: center;
+  color: #7A7263;
+  font-size: 14px;
+  margin: 3rem 0;
+}
+
+.home-error {
+  color: #C0392B;
+}
+
+.package-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.package-card {
+  background: #FFFFFF;
+  border: 1px solid #E8E1D3;
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.package-category {
+  font-size: 11px;
+  font-weight: 500;
+  color: #D85A30;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.package-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2B2620;
+  margin: 0;
+}
+
+.package-description {
+  font-size: 13px;
+  color: #7A7263;
+  margin: 0;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.package-count {
+  font-size: 12px;
+  color: #A89F8C;
+  margin-top: 4px;
+}
+
+.home-greeting {
+  padding: 1rem 0 0.5rem;
+}
+
+.home-hello {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2B2620;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-jati {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
