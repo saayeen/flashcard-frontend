@@ -4,7 +4,7 @@ import { getPackages } from "./packageService";
 import Header from "../navigation/Header";
 import BottomNav from "../navigation/BottomNav";
 import { useAuth } from "../auth/AuthContext";
-import jatiImg from "../../assets/Jati.png";
+import jatiImg from "../../assets/jati.png";
 import "./Home.css";
 
 export default function Home() {
