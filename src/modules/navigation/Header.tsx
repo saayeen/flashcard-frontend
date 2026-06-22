@@ -1,30 +1,17 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import "./Header.css";
 
 export default function Header() {
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
     const navigate = useNavigate();
     const [searchOpen, setSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [menuOpen, setMenuOpen] = useState(false);
-    const menuRef = useRef<HTMLDivElement>(null);
 
     const initials = user?.displayName
         ? user.displayName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
         : "?";
-
-    // Cierra el menú si el usuario hace clic fuera
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-                setMenuOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -33,12 +20,6 @@ export default function Header() {
             setSearchOpen(false);
             setSearchQuery("");
         }
-    };
-
-    const handleLogout = async () => {
-        await logout();
-        setMenuOpen(false);
-        navigate("/");
     };
 
     return (
@@ -63,23 +44,13 @@ export default function Header() {
                         <button className="header-icon-btn" onClick={() => setSearchOpen(true)} aria-label="Buscar">
                             <SearchIcon />
                         </button>
-                        <div className="header-profile-wrapper" ref={menuRef}>
-                           <button className="header-avatar-btn" onClick={() => navigate("/profile")} aria-label="Perfil">
-                                {user?.photoURL ? (
-                                    <img src={user.photoURL} alt="Perfil" className="header-avatar-img" />
-                                ) : (
-                                    <span className="header-avatar-initials">{initials}</span>
-                                )}
-                            </button>
-                            {menuOpen && user && (
-                                <div className="header-profile-menu">
-                                    <p className="header-profile-name">{user.displayName}</p>
-                                    <button className="header-logout-btn" onClick={handleLogout}>
-                                        Cerrar sesión
-                                    </button>
-                                </div>
+                        <button className="header-avatar-btn" onClick={() => user ? navigate("/profile") : navigate("/")} aria-label="Perfil">
+                            {user?.photoURL ? (
+                                <img src={user.photoURL} alt="Perfil" className="header-avatar-img" />
+                            ) : (
+                                <span className="header-avatar-initials">{initials}</span>
                             )}
-                        </div>
+                        </button>
                     </div>
                 )}
             </div>
