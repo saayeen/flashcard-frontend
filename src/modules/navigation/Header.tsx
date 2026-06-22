@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import jatiImg from "../../assets/jati.png";
 import "./Header.css";
 
 export default function Header() {
@@ -10,7 +9,6 @@ export default function Header() {
     const [searchOpen, setSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
-    const firstName = user?.displayName?.split(" ")[0] ?? "Invitado";
     const initials = user?.displayName
         ? user.displayName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
         : "?";

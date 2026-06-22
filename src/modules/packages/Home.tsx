@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import type { FlashcardPackage } from "../../types/index";
 import { getPackages } from "./packageService";
-import { useAuthGate } from "../auth/AuthGateContext";
 import Header from "../navigation/Header";
 import BottomNav from "../navigation/BottomNav";
 import { useAuth } from "../auth/AuthContext";
@@ -12,7 +11,6 @@ export default function Home() {
     const [packages, setPackages] = useState<FlashcardPackage[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const { requireAuth } = useAuthGate();
     const { user } = useAuth();
     const firstName = user?.displayName?.split(" ")[0];
 
@@ -22,12 +20,6 @@ export default function Home() {
         .catch(() => setError("No se pudieron cargar los paquetes"))
         .finally(() => setLoading(false));
     }, []);
-
-    const handleCreateClick = () => {
-        requireAuth(() => {
-        console.log("Crear paquete");
-        });
-    };
 
     return (
         <div className="home-page">
