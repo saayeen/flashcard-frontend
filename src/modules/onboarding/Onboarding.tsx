@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import jatiImg from "../../assets/Jati.png";
+import jatiImg from "../../assets/jati.png";
 import "./Onboarding.css";
 
 const ONBOARDING_KEY = "flashcard_onboarding_seen";
