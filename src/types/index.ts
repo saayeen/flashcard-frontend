@@ -22,6 +22,6 @@ export interface Flashcard {
 }
 
 export interface CreateCardRequest {
-    front: string;
-    back: string;
+    question: string;
+    answer: string;
 }
