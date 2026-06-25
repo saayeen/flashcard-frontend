@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { FlashcardPackage } from "../../types/index";
 import { getPackages } from "./packageService";
 import Header from "../navigation/Header";
@@ -13,6 +14,7 @@ export default function Home() {
     const [error, setError] = useState<string | null>(null);
     const { user } = useAuth();
     const firstName = user?.displayName?.split(" ")[0];
+    const navigate = useNavigate();
 
     useEffect(() => {
         getPackages()
@@ -26,11 +28,11 @@ export default function Home() {
         <Header />
 
         <div className="home-greeting">
-    <h1 className="home-hello">
-        {firstName ? `Hola, ${firstName}` : "Explora Jati"} 
-        <img src={jatiImg} alt="Jati" className="home-jati" />
-    </h1>
-    </div>
+            <h1 className="home-hello">
+                {firstName ? `Hola, ${firstName}` : "Explora Jati"} 
+                <img src={jatiImg} alt="Jati" className="home-jati" />
+            </h1>
+        </div>
 
         {loading && <p className="home-status">Cargando paquetes...</p>}
         {error && <p className="home-status home-error">{error}</p>}
@@ -41,14 +43,12 @@ export default function Home() {
 
         <div className="package-grid">
             {packages.map((pkg) => (
-            <div className="package-card" key={pkg.id}>
-                <span className="package-category">{pkg.category}</span>
-                <h2 className="package-name">{pkg.name}</h2>
-                <p className="package-description">{pkg.description}</p>
-                <span className="package-count">{pkg.cardCount} tarjetas</span>
-            </div>
-
-            
+                <div className="package-card" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
+                    <span className="package-category">{pkg.category}</span>
+                    <h2 className="package-name">{pkg.name}</h2>
+                    <p className="package-description">{pkg.description}</p>
+                    <span className="package-count">{pkg.cardCount} tarjetas</span>
+                </div>
             ))}
         </div>
 

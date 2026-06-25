@@ -13,3 +13,15 @@ export interface CreatePackageRequest {
     category: string;
     isPublic: boolean;
 }
+
+export interface Flashcard {
+    id: number;
+    front: string;
+    back: string;
+    packageId: number;
+}
+
+export interface CreateCardRequest {
+    front: string;
+    back: string;
+}
