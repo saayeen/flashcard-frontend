@@ -6,3 +6,10 @@ export interface FlashcardPackage {
   cardCount: number;
   isPublic: boolean;
 }
+
+export interface CreatePackageRequest {
+    name: string;
+    description: string;
+    category: string;
+    isPublic: boolean;
+}
