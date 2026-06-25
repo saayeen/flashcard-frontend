@@ -16,7 +16,7 @@ export default function PackageDetail() {
     const [cards, setCards] = useState<Flashcard[]>([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
-    const [newCard, setNewCard] = useState<CreateCardRequest>({ front: "", back: "" });
+    const [newCard, setNewCard] = useState<CreateCardRequest>({ question: "", answer: "" });
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +31,7 @@ export default function PackageDetail() {
     }, [id]);
 
     const handleAddCard = async () => {
-        if (!newCard.front.trim() || !newCard.back.trim()) {
+        if (!newCard.question.trim() || !newCard.answer.trim()) {
             setError("Ambos campos son obligatorios");
             return;
         }
@@ -50,7 +50,7 @@ export default function PackageDetail() {
             if (!response.ok) throw new Error();
             const created: Flashcard = await response.json();
             setCards(prev => [...prev, created]);
-            setNewCard({ front: "", back: "" });
+            setNewCard({ question: "", answer: "" });
             setShowForm(false);
         } catch {
             setError("No se pudo crear la tarjeta");
@@ -92,15 +92,15 @@ export default function PackageDetail() {
                     <textarea
                         className="detail-card-input"
                         placeholder="Frente de la tarjeta"
-                        value={newCard.front}
-                        onChange={e => setNewCard(prev => ({ ...prev, front: e.target.value }))}
+                        value={newCard.question}
+                        onChange={e => setNewCard(prev => ({ ...prev, question: e.target.value }))}
                         rows={2}
                     />
                     <textarea
                         className="detail-card-input"
                         placeholder="Reverso de la tarjeta"
-                        value={newCard.back}
-                        onChange={e => setNewCard(prev => ({ ...prev, back: e.target.value }))}
+                        value={newCard.answer}
+                        onChange={e => setNewCard(prev => ({ ...prev, answer: e.target.value }))}
                         rows={2}
                     />
                     {error && <p className="detail-error">{error}</p>}
