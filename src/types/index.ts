@@ -25,3 +25,15 @@ export interface CreateCardRequest {
     question: string;
     answer: string;
 }
+
+export interface Folder {
+    id: number;
+    name: string;
+    color: string;
+    userId: string;
+}
+
+export interface CreateFolderRequest {
+    name: string;
+    color: string;
+}
