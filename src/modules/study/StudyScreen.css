@@ -65,7 +65,7 @@
 .study-card {
     width: 100%;
     max-width: 400px;
-    min-height: 280px;
+    min-height: 420px;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.5s ease;
