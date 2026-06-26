@@ -6,6 +6,7 @@ import CreatePackage from "./modules/packages/CreatePackage";
 import PackageDetail from "./modules/packages/PackageDetail";
 import StudyScreen from "./modules/study/StudyScreen";
 import Folders from "./modules/folders/Folders";
+import Search from "./modules/search/Search";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/packages/:id/study" element={<StudyScreen />} />
         <Route path="/folders" element={<Folders />} />
         <Route path="/folders/:id" element={<Folders />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
     </BrowserRouter>
   );

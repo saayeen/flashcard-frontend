@@ -41,7 +41,7 @@ export default function Header() {
                     </form>
                 ) : (
                     <div className="header-actions">
-                        <button className="header-icon-btn" onClick={() => setSearchOpen(true)} aria-label="Buscar">
+                        <button className="header-icon-btn" onClick={() => navigate("/search")} aria-label="Buscar">
                             <SearchIcon />
                         </button>
                         <button className="header-avatar-btn" onClick={() => user ? navigate("/profile") : navigate("/")} aria-label="Perfil">

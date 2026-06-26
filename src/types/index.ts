@@ -37,3 +37,12 @@ export interface CreateFolderRequest {
     name: string;
     color: string;
 }
+
+export interface SearchResult {
+    id: number;
+    name: string;
+    description: string;
+    category: string;
+    cardCount: number;
+    authorName: string;
+}
