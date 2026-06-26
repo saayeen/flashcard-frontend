@@ -1,0 +1,240 @@
+.study-page {
+    min-height: 100vh;
+    background: #FBF8F2;
+    display: flex;
+    flex-direction: column;
+}
+
+.study-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 16px;
+    color: #8a7f76;
+}
+
+.study-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+}
+
+.study-back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #2B2620;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.study-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: #e8e0d5;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.study-progress-fill {
+    height: 100%;
+    background: #68A9F4;
+    border-radius: 6px;
+    transition: width 0.3s ease;
+}
+
+.study-counter {
+    font-size: 0.82rem;
+    color: #8a7f76;
+    flex-shrink: 0;
+}
+
+.study-card-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    perspective: 1000px;
+}
+
+.study-card {
+    width: 100%;
+    max-width: 400px;
+    min-height: 280px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+    cursor: pointer;
+}
+
+.study-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.study-card-front,
+.study-card-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    background: #fff;
+    border-radius: 24px;
+    border: 1.5px solid #e8e0d5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(43, 38, 32, 0.08);
+}
+
+.study-card-back {
+    transform: rotateY(180deg);
+    background: #1B3A5C;
+    border-color: #1B3A5C;
+}
+
+.study-card-hint {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #68A9F4;
+    margin-bottom: 16px;
+}
+
+.study-card-back .study-card-hint {
+    color: rgba(104, 169, 244, 0.8);
+}
+
+.study-card-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2B2620;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.study-card-back .study-card-text {
+    color: #fff;
+}
+
+.study-tap-hint {
+    font-size: 0.78rem;
+    color: #8a7f76;
+    margin-top: 24px;
+}
+
+.study-actions {
+    padding: 16px;
+    background: #fff;
+    border-top: 1px solid #e8e0d5;
+}
+
+.study-actions-label {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #8a7f76;
+    margin: 0 0 12px;
+}
+
+.study-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.quality-btn {
+    padding: 12px 8px;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.quality-1 { background: #FFE5E5; color: #C0392B; }
+.quality-2 { background: #FFF3CD; color: #856404; }
+.quality-3 { background: #D4EDDA; color: #155724; }
+.quality-4 { background: #CCE5FF; color: #004085; }
+
+.quality-btn:active { opacity: 0.8; }
+
+/* Summary */
+.summary-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 32px 16px;
+    text-align: center;
+}
+
+.summary-emoji {
+    font-size: 4rem;
+    margin-bottom: 16px;
+}
+
+.summary-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #2B2620;
+    margin: 0 0 8px;
+}
+
+.summary-sub {
+    color: #8a7f76;
+    margin: 0 0 32px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    max-width: 320px;
+    margin-bottom: 32px;
+}
+
+.summary-stat {
+    border-radius: 16px;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.summary-difficult { background: #FFE5E5; }
+.summary-almost { background: #FFF3CD; }
+.summary-good { background: #D4EDDA; }
+.summary-easy { background: #CCE5FF; }
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2B2620;
+}
+
+.stat-label {
+    font-size: 0.82rem;
+    color: #8a7f76;
+}
+
+.summary-btn {
+    background: #2B2620;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}

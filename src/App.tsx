@@ -4,6 +4,7 @@ import Onboarding from "./modules/onboarding/Onboarding";
 import Profile from "./modules/profile/Profile";
 import CreatePackage from "./modules/packages/CreatePackage";
 import PackageDetail from "./modules/packages/PackageDetail";
+import StudyScreen from "./modules/study/StudyScreen";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/packages/new" element={<CreatePackage />} />
         <Route path="/packages/:id" element={<PackageDetail />} />
+        <Route path="/packages/:id/study" element={<StudyScreen />} />
       </Routes>
     </BrowserRouter>
   );
