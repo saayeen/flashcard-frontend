@@ -48,3 +48,20 @@ export interface SearchResult {
     cardCount: number;
     authorName: string;
 }
+
+export interface GlobalStats {
+    totalCardsReviewed: number;
+    totalSessions: number;
+    currentStreak: number;
+    distribution: {
+        difficult: number;
+        almost: number;
+        good: number;
+        easy: number;
+    };
+}
+
+export interface WeeklyActivity {
+    day: string;
+    cardsReviewed: number;
+}
