@@ -18,8 +18,7 @@ export default function Profile() {
     const [packages, setPackages] = useState<FlashcardPackage[]>([]);
     const [tab, setTab] = useState<"desc" | "stats">("desc");
     const [loading, setLoading] = useState(true);
-    const [followers, setFollowers] = useState(0);
-    const [following, setFollowing] = useState(0);
+
 
     useEffect(() => {
         if (!user) return;
@@ -72,7 +71,7 @@ export default function Profile() {
                         ? <img src={user.photoURL} className="profile-avatar" alt="avatar" />
                         : <div className="profile-avatar-placeholder">
                             {user?.displayName?.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()}
-                          </div>
+                        </div>
                     }
                 </div>
                 <h2 className="profile-name">{user?.displayName}</h2>
@@ -80,17 +79,12 @@ export default function Profile() {
 
                 <div className="profile-stats-row">
                     <div className="profile-stat">
-                        <span className="profile-stat-number">{packages.length}</span>
-                        <span className="profile-stat-label">Paquetes</span>
-                    </div>
-                    <div className="profile-stat-divider" />
-                    <div className="profile-stat">
-                        <span className="profile-stat-number">{following}</span>
+                        <span className="profile-stat-number">0</span>
                         <span className="profile-stat-label">Siguiendo</span>
                     </div>
                     <div className="profile-stat-divider" />
                     <div className="profile-stat">
-                        <span className="profile-stat-number">{followers}</span>
+                        <span className="profile-stat-number">0</span>
                         <span className="profile-stat-label">Seguidores</span>
                     </div>
                 </div>
