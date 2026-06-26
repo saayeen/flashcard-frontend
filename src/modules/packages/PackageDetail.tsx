@@ -4,6 +4,7 @@ import { useAuth } from "../auth/AuthContext";
 import type { FlashcardPackage, Flashcard, CreateCardRequest } from "../../types/index";
 import Header from "../navigation/Header";
 import "./PackageDetail.css";
+import { getThemeGradient } from "./themes";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -66,7 +67,7 @@ export default function PackageDetail() {
         <div className="detail-page">
             <Header />
 
-            <div className="detail-hero">
+            <div className="detail-hero" style={{ background: pkg ? getThemeGradient(pkg.theme) : "#1B3A5C" }}>
                 <button className="detail-back-btn" onClick={() => navigate(-1)}>
                     <BackIcon />
                 </button>

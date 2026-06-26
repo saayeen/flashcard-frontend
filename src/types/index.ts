@@ -5,6 +5,7 @@ export interface FlashcardPackage {
   category: string;
   cardCount: number;
   isPublic: boolean;
+  theme: string;
 }
 
 export interface CreatePackageRequest {
@@ -12,6 +13,7 @@ export interface CreatePackageRequest {
     description: string;
     category: string;
     isPublic: boolean;
+    theme: string;
 }
 
 export interface Flashcard {

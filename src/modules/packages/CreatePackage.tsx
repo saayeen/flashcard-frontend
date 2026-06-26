@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import type { CreatePackageRequest } from "../../types/index";
+import { THEMES } from "./themes";
 import "./CreatePackage.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
@@ -15,11 +16,12 @@ export default function CreatePackage() {
         description: "",
         category: "",
         isPublic: true,
+        theme: "blue",
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
         setForm(prev => ({
             ...prev,
@@ -32,10 +34,8 @@ export default function CreatePackage() {
             setError("El nombre es obligatorio");
             return;
         }
-
         setLoading(true);
         setError(null);
-
         try {
             const token = await getToken();
             const response = await fetch(`${API_URL}/packages`, {
@@ -46,9 +46,7 @@ export default function CreatePackage() {
                 },
                 body: JSON.stringify(form),
             });
-
-            if (!response.ok) throw new Error("No se pudo crear el paquete");
-
+            if (!response.ok) throw new Error();
             const created = await response.json();
             navigate(`/packages/${created.id}`);
         } catch {
@@ -58,9 +56,11 @@ export default function CreatePackage() {
         }
     };
 
+    const selectedTheme = THEMES.find(t => t.id === form.theme)!;
+
     return (
         <div className="create-page">
-            <div className="create-header">
+            <div className="create-header" style={{ background: selectedTheme.gradient }}>
                 <button className="create-back-btn" onClick={() => navigate(-1)}>
                     <BackIcon />
                 </button>
@@ -105,6 +105,23 @@ export default function CreatePackage() {
                     />
                 </div>
 
+                <div className="create-field">
+                    <label className="create-label">Tema visual</label>
+                    <div className="theme-grid">
+                        {THEMES.map(theme => (
+                            <button
+                                key={theme.id}
+                                className={`theme-option ${form.theme === theme.id ? "selected" : ""}`}
+                                style={{ background: theme.gradient }}
+                                onClick={() => setForm(prev => ({ ...prev, theme: theme.id }))}
+                            >
+                                {form.theme === theme.id && <span className="theme-check">✓</span>}
+                                <span className="theme-name">{theme.name}</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
                 <div className="create-toggle-row">
                     <div>
                         <p className="create-toggle-label">Paquete público</p>
@@ -127,6 +144,7 @@ export default function CreatePackage() {
                     className="create-submit-btn"
                     onClick={handleSubmit}
                     disabled={loading}
+                    style={{ background: selectedTheme.gradient }}
                 >
                     {loading ? "Creando..." : "Crear paquete"}
                 </button>

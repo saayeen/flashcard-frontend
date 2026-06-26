@@ -6,31 +6,13 @@ import BottomNav from "../navigation/BottomNav";
 import { useAuth } from "../auth/AuthContext";
 import jatiImg from "../../assets/jati.png";
 import "./Home.css";
+import { getThemeGradient } from "./themes";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 interface LastSession {
     id: number;
     packageId: number;
-}
-
-const CATEGORY_GRADIENTS: Record<string, string> = {
-    idioma: "linear-gradient(135deg, #FF9A5C, #FF6B9D)",
-    idiomas: "linear-gradient(135deg, #FF9A5C, #FF6B9D)",
-    ciencias: "linear-gradient(135deg, #43E97B, #38B2F8)",
-    ciencia: "linear-gradient(135deg, #43E97B, #38B2F8)",
-    matematicas: "linear-gradient(135deg, #F953C6, #B91D73)",
-    matemáticas: "linear-gradient(135deg, #F953C6, #B91D73)",
-    historia: "linear-gradient(135deg, #F7971E, #FFD200)",
-    geografia: "linear-gradient(135deg, #56CCF2, #2F80ED)",
-    geografía: "linear-gradient(135deg, #56CCF2, #2F80ED)",
-    tecnologia: "linear-gradient(135deg, #4776E6, #8E54E9)",
-    tecnología: "linear-gradient(135deg, #4776E6, #8E54E9)",
-};
-
-function getGradient(category: string): string {
-    const key = category.toLowerCase().trim();
-    return CATEGORY_GRADIENTS[key] || "linear-gradient(135deg, #2784EF, #A9CEF9)";
 }
 
 export default function Home() {
@@ -75,7 +57,7 @@ export default function Home() {
                             ? <img src={user.photoURL} className="home-avatar-img" alt="perfil" />
                             : <span className="home-avatar-initials">
                                 {user?.displayName?.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase() ?? "?"}
-                              </span>
+                        </span>
                         }
                     </button>
                 </div>
@@ -93,7 +75,7 @@ export default function Home() {
                     <h2 className="home-section-title">Continuar estudiando</h2>
                     <div
                         className="home-continue-card"
-                        style={{ background: getGradient(lastPackage.category) }}
+                        style={{ background: getThemeGradient(lastPackage.theme) }}
                         onClick={() => navigate(`/packages/${lastPackage.id}/study`)}
                     >
                         <div>
@@ -116,7 +98,7 @@ export default function Home() {
                         <div
                             className="package-card"
                             key={pkg.id}
-                            style={{ background: getGradient(pkg.category) }}
+                            style={{ background: getThemeGradient(pkg.theme) }}
                             onClick={() => navigate(`/packages/${pkg.id}`)}
                         >
                             <div className="package-card-top">
