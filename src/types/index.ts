@@ -16,8 +16,8 @@ export interface CreatePackageRequest {
 
 export interface Flashcard {
     id: number;
-    front: string;
-    back: string;
+    question: string;
+    answer: string;
     packageId: number;
 }
 

@@ -119,9 +119,9 @@ export default function PackageDetail() {
                 )}
                 {cards.map(card => (
                     <div className="detail-card-item" key={card.id}>
-                        <div className="detail-card-front">{card.front}</div>
+                        <div className="detail-card-front">{card.question}</div>
                         <div className="detail-card-divider" />
-                        <div className="detail-card-back">{card.back}</div>
+                        <div className="detail-card-back">{card.answer}</div>
                     </div>
                 ))}
             </div>
