@@ -1,114 +1,160 @@
 .home-page {
-  min-height: 100dvh;
-  background: #FBF8F2;
-  padding: 0 1.25rem 6rem;
-}
-
-.home-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 960px;
-  margin: 0 auto 2rem;
-}
-
-.home-title {
-  font-size: 22px;
-  font-weight: 600;
-  color: #2B2620;
-  margin: 0;
-  letter-spacing: -0.01em;
-}
-
-.home-create-btn {
-  padding: 9px 16px;
-  background: #2B2620;
-  color: #FBF8F2;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-
-.home-create-btn:active {
-  transform: scale(0.97);
-}
-
-.home-status {
-  text-align: center;
-  color: #7A7263;
-  font-size: 14px;
-  margin: 3rem 0;
-}
-
-.home-error {
-  color: #C0392B;
-}
-
-.package-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 14px;
-  max-width: 960px;
-  margin: 0 auto;
-}
-
-.package-card {
-  background: #FFFFFF;
-  border: 1px solid #E8E1D3;
-  border-radius: 12px;
-  padding: 1.1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.package-category {
-  font-size: 11px;
-  font-weight: 500;
-  color: #D85A30;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.package-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: #2B2620;
-  margin: 0;
-}
-
-.package-description {
-  font-size: 13px;
-  color: #7A7263;
-  margin: 0;
-  line-height: 1.5;
-  flex: 1;
-}
-
-.package-count {
-  font-size: 12px;
-  color: #A89F8C;
-  margin-top: 4px;
+    min-height: 100vh;
+    background: #E9F3FD;
+    padding-bottom: 100px;
 }
 
 .home-greeting {
-  padding: 1rem 0 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 16px 24px;
+    background: linear-gradient(135deg, #2784EF, #1B5CA7);
+    border-radius: 0 0 28px 28px;
+    margin-bottom: 8px;
+}
+
+.home-greeting-text {
+    flex: 1;
 }
 
 .home-hello {
-  font-size: 24px;
-  font-weight: 700;
-  color: #2B2620;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 4px;
+}
+
+.home-sub {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.75);
+    margin: 0;
 }
 
 .home-jati {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+}
+
+.home-section {
+    padding: 16px 16px 0;
+}
+
+.home-section-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1B5CA7;
+    margin: 0 0 12px;
+}
+
+.home-continue-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border: 1.5px solid #A9CEF9;
+    margin-bottom: 8px;
+}
+
+.continue-card-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.continue-card-icon {
+    font-size: 1.8rem;
+    width: 48px;
+    height: 48px;
+    background: #E9F3FD;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.continue-card-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1B5CA7;
+    margin: 0 0 2px;
+}
+
+.continue-card-sub {
+    font-size: 0.78rem;
+    color: #8a7f76;
+    margin: 0;
+}
+
+.continue-card-btn {
+    background: #2784EF;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.home-status {
+    text-align: center;
+    color: #8a7f76;
+    padding: 20px 0;
+    font-size: 0.9rem;
+}
+
+.home-error {
+    color: #D85A30;
+}
+
+.package-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.package-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1.5px solid #A9CEF9;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.package-card:hover {
+    border-color: #2784EF;
+}
+
+.package-category {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2784EF;
+}
+
+.package-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1B5CA7;
+    margin: 4px 0 4px;
+}
+
+.package-description {
+    font-size: 0.85rem;
+    color: #8a7f76;
+    margin: 0 0 8px;
+}
+
+.package-count {
+    font-size: 0.78rem;
+    color: #2784EF;
+    font-weight: 600;
 }
