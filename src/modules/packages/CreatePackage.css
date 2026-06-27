@@ -1,93 +1,540 @@
+/* ── Create Package ────────────────────────────────────────── */
+.create-page {
+    min-height: 100dvh;
+    background: #0f0f13;
+    color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
 .create-header {
+    padding: 20px 20px 28px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    gap: 14px;
+    position: relative;
 }
 
 .create-back-btn {
-    background: rgba(255,255,255,0.25);
+    background: rgba(0,0,0,0.2);
     border: none;
-    border-radius: 50%;
+    color: #fff;
     width: 36px;
     height: 36px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #fff;
+    flex-shrink: 0;
+    backdrop-filter: blur(4px);
 }
 
-.create-title {
-    font-size: 1.2rem;
+.create-header-title {
+    font-size: 18px;
     font-weight: 700;
     color: #fff;
     margin: 0;
 }
 
+/* STEPS */
+.create-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 20px 8px;
+    gap: 0;
+    overflow: hidden;
+}
+
+.create-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.step-circle {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    background: #1a1a24;
+    color: #50506a;
+    border: 1.5px solid #30303a;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+.create-step.active .step-circle {
+    background: #6366f1;
+    color: #fff;
+    border-color: #6366f1;
+}
+
+.create-step.done .step-circle {
+    background: #22c55e;
+    color: #fff;
+    border-color: #22c55e;
+}
+
+.step-label {
+    font-size: 11px;
+    color: #50506a;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+.create-step.active .step-label {
+    color: #a5b4fc;
+}
+
+.create-step.done .step-label {
+    color: #86efac;
+}
+
+.step-line {
+    width: 24px;
+    height: 1.5px;
+    background: #30303a;
+    margin: 0 4px;
+}
+
+/* FORM */
+.create-form {
+    flex: 1;
+    padding: 16px 20px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.create-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.create-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a0a0b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.create-input {
+    background: #1a1a24;
+    border: 1.5px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: #f0f0f0;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.create-input:focus {
+    border-color: rgba(99,102,241,0.5);
+}
+
+.create-input::placeholder {
+    color: #40405a;
+}
+
+.create-textarea {
+    background: #1a1a24;
+    border: 1.5px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: #f0f0f0;
+    font-size: 15px;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    line-height: 1.5;
+    transition: border-color 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.create-textarea:focus {
+    border-color: rgba(99,102,241,0.5);
+}
+
+.create-textarea::placeholder {
+    color: #40405a;
+}
+
+/* CATEGORÍAS */
+.create-category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.create-category-btn {
+    padding: 10px 12px;
+    background: #1a1a24;
+    border: 1.5px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    color: #a0a0b8;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+}
+
+.create-category-btn:hover {
+    background: #22222e;
+    color: #d0d0e8;
+}
+
+.create-category-btn.selected {
+    background: rgba(99,102,241,0.2);
+    border-color: rgba(99,102,241,0.5);
+    color: #a5b4fc;
+    font-weight: 600;
+}
+
+/* TAGS PLACEHOLDER */
+.create-tags-placeholder {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #1a1a24;
+    border: 1.5px dashed rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: #40405a;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* TEMAS */
 .theme-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 }
 
 .theme-option {
     border: none;
-    border-radius: 12px;
-    height: 64px;
+    border-radius: 10px;
+    height: 52px;
     cursor: pointer;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 6px;
-    transition: transform 0.15s;
-}
-
-.theme-option.selected {
-    outline: 3px solid #2B2620;
-    transform: scale(1.05);
-}
-
-.theme-check {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    background: #fff;
-    color: #2B2620;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    font-size: 0.7rem;
-    font-weight: 800;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    transition: transform 0.15s;
+    overflow: hidden;
+}
+
+.theme-option:active {
+    transform: scale(0.96);
+}
+
+.theme-option.selected {
+    outline: 2.5px solid #fff;
+    outline-offset: 2px;
+}
+
+.theme-check {
+    font-size: 18px;
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
 .theme-name {
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: #fff;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    font-size: 11px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 
+/* TOGGLE */
+.create-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #1a1a24;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+    gap: 12px;
+}
+
+.create-toggle-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #d0d0e8;
+    margin: 0 0 2px;
+}
+
+.create-toggle-sub {
+    font-size: 12px;
+    color: #50506a;
+    margin: 0;
+}
+
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: #30303a;
+    border-radius: 13px;
+    transition: background 0.2s;
+}
+
+.toggle-slider::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.toggle input:checked + .toggle-slider {
+    background: #6366f1;
+}
+
+.toggle input:checked + .toggle-slider::before {
+    transform: translateX(20px);
+}
+
+/* BOTONES */
 .create-submit-btn {
+    width: 100%;
+    padding: 15px;
     border: none;
     border-radius: 14px;
-    padding: 14px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
     color: #fff;
-    margin-top: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    letter-spacing: 0.2px;
+}
+
+.create-submit-btn:hover {
+    opacity: 0.9;
+}
+
+.create-submit-btn:active {
+    transform: scale(0.98);
 }
 
 .create-submit-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+.create-secondary-btn {
+    width: 100%;
+    padding: 14px;
+    background: none;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    color: #a0a0b8;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.create-secondary-btn:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+/* ERROR */
+.create-error {
+    font-size: 13px;
+    color: #f87171;
+    margin: 0;
+    padding: 10px 14px;
+    background: rgba(248,113,113,0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(248,113,113,0.2);
+}
+
+/* PASO 2 — TARJETAS */
+.create-card-form {
+    background: #1a1a24;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.create-add-card-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.create-add-card-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.create-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.create-card-item {
+    background: #1a1a24;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.create-card-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.create-card-q,
+.create-card-a {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 14px;
+    color: #c0c0d8;
+    line-height: 1.4;
+}
+
+.create-card-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6366f1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    padding-top: 1px;
+}
+
+.create-card-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.create-card-edit-btn {
+    background: none;
+    border: none;
+    color: #6366f1;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 0;
+}
+
+.create-card-del-btn {
+    background: none;
+    border: none;
+    color: #70708a;
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+}
+
+.create-step2-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+/* PASO 3 — FINAL */
+.create-final {
+    flex: 1;
+    padding: 24px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.create-final-card {
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.final-icon {
+    font-size: 48px;
+}
+
+.final-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+}
+
+.final-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.create-final-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }

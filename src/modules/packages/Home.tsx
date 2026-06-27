@@ -23,6 +23,7 @@ export default function Home() {
     const { user, getToken } = useAuth();
     const navigate = useNavigate();
 
+    const firstName = user?.displayName?.split(" ")[0] ?? null;
     const initials = user?.displayName
         ? user.displayName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
         : "?";
@@ -48,18 +49,25 @@ export default function Home() {
         } catch {}
     };
 
+    const avgRating = 4.8; // placeholder hasta tener ratings reales
+
     return (
         <div className="home-page">
+            {/* HEADER */}
             <div className="home-header">
                 <div className="home-header-left">
                     <img src={jatiImg} alt="Jati" className="home-header-logo" />
                     <span className="home-header-title">Jati</span>
                 </div>
                 <div className="home-header-right">
-                    <button className="home-header-btn" onClick={() => navigate("/search")}>
+                    <button className="home-header-btn" onClick={() => navigate("/search")} aria-label="Buscar">
                         <SearchIcon />
                     </button>
-                    <button className="home-header-avatar" onClick={() => user ? navigate("/profile") : navigate("/")}>
+                    <button
+                        className="home-header-avatar"
+                        onClick={() => user ? navigate("/profile") : navigate("/")}
+                        aria-label="Perfil"
+                    >
                         {user?.photoURL
                             ? <img src={user.photoURL} alt="perfil" className="home-avatar-img" />
                             : <span className="home-avatar-initials">{initials}</span>
@@ -69,48 +77,104 @@ export default function Home() {
             </div>
 
             <div className="home-body">
-                {lastSession && lastPackage && (
-                    <div className="home-section">
-                        <h2 className="home-section-title">Continuar estudiando</h2>
-                        <div
-                            className="home-continue-card"
-                            style={{ background: getThemeGradient(lastPackage.theme) }}
-                            onClick={() => navigate(`/packages/${lastPackage.id}/study`)}
-                        >
-                            <div>
-                                <p className="continue-name">{lastPackage.name}</p>
-                                <p className="continue-sub">{lastPackage.cardCount} tarjetas · {lastPackage.category}</p>
-                            </div>
-                            <div className="continue-arrow">▶</div>
+                {/* SALUDO */}
+                {user && (
+                    <div className="home-greeting">
+                        <span className="home-greeting-wave">👋</span>
+                        <div>
+                            <p className="home-greeting-hi">Hola, {firstName}</p>
+                            <p className="home-greeting-sub">Continúa estudiando</p>
                         </div>
                     </div>
                 )}
 
+                {/* CONTINUAR ESTUDIANDO */}
+                {lastSession && lastPackage && (
+                    <div
+                        className="home-continue-card"
+                        style={{ background: getThemeGradient(lastPackage.theme) }}
+                        onClick={() => navigate(`/packages/${lastPackage.id}/study`)}
+                    >
+                        <div className="home-continue-info">
+                            <p className="continue-label">Continuar estudiando</p>
+                            <p className="continue-name">{lastPackage.name}</p>
+                            <p className="continue-sub">{lastPackage.cardCount} tarjetas · {lastPackage.category}</p>
+                        </div>
+                        <div className="continue-arrow">
+                            <PlayIcon />
+                        </div>
+                    </div>
+                )}
+
+                {/* TENDENCIAS */}
                 <div className="home-section">
-                    <h2 className="home-section-title">Paquetes públicos</h2>
-                    {loading && <p className="home-status">Cargando...</p>}
-                    {!loading && packages.length === 0 && (
-                        <p className="home-status">Todavía no hay paquetes públicos.</p>
+                    <div className="home-section-header">
+                        <h2 className="home-section-title">Tendencias</h2>
+                    </div>
+
+                    {loading && (
+                        <div className="home-skeleton-list">
+                            {[1, 2, 3].map(i => <div key={i} className="home-skeleton-card" />)}
+                        </div>
                     )}
-                    <div className="package-grid">
-                        {packages.map((pkg) => (
+
+                    {!loading && packages.length === 0 && (
+                        <div className="home-empty">
+                            <p>Todavía no hay paquetes públicos.</p>
+                        </div>
+                    )}
+
+                    <div className="home-trending-list">
+                        {packages.slice(0, 5).map((pkg) => (
                             <div
-                                className="package-card"
+                                className="home-trending-card"
                                 key={pkg.id}
-                                style={{ background: getThemeGradient(pkg.theme) }}
                                 onClick={() => navigate(`/packages/${pkg.id}`)}
                             >
-                                <div className="package-card-top">
-                                    <span className="package-category-badge">{pkg.category}</span>
+                                <div
+                                    className="home-trending-thumb"
+                                    style={{ background: getThemeGradient(pkg.theme) }}
+                                />
+                                <div className="home-trending-info">
+                                    <p className="home-trending-name">{pkg.name}</p>
+                                    <p className="home-trending-meta">
+                                        {pkg.cardCount} tarjetas · {pkg.category}
+                                    </p>
+                                    <div className="home-trending-rating">
+                                        <StarIcon />
+                                        <span>{avgRating}</span>
+                                    </div>
                                 </div>
-                                <h2 className="package-name">{pkg.name}</h2>
-                                <div className="package-card-bottom">
-                                    <span className="package-count">🗂 {pkg.cardCount}</span>
-                                </div>
+                                <ChevronIcon />
                             </div>
                         ))}
                     </div>
                 </div>
+
+                {/* RECIENTES */}
+                {packages.length > 5 && (
+                    <div className="home-section">
+                        <div className="home-section-header">
+                            <h2 className="home-section-title">Recientes</h2>
+                        </div>
+                        <div className="home-package-grid">
+                            {packages.slice(5).map((pkg) => (
+                                <div
+                                    className="home-package-card"
+                                    key={pkg.id}
+                                    style={{ background: getThemeGradient(pkg.theme) }}
+                                    onClick={() => navigate(`/packages/${pkg.id}`)}
+                                >
+                                    <span className="home-package-category">{pkg.category}</span>
+                                    <h3 className="home-package-name">{pkg.name}</h3>
+                                    <div className="home-package-footer">
+                                        <span className="home-package-count">🗂 {pkg.cardCount}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
 
             <BottomNav />
@@ -123,6 +187,31 @@ function SearchIcon() {
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
             <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+    );
+}
+
+function PlayIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.25)" />
+            <path d="M10 8l6 4-6 4V8z" fill="white" />
+        </svg>
+    );
+}
+
+function StarIcon() {
+    return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+    );
+}
+
+function ChevronIcon() {
+    return (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
     );
 }
