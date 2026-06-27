@@ -88,6 +88,21 @@ export default function PackageDetail() {
         }
     };
 
+    const handleFork = async () => {
+        try {
+            const token = await getToken();
+            const response = await fetch(`${API_URL}/packages/${id}/fork`, {
+                method: "POST",
+                headers: { "Authorization": `Bearer ${token}` },
+            });
+            if (!response.ok) throw new Error();
+            const forked = await response.json();
+            navigate(`/packages/${forked.id}`);
+        } catch {
+            setError("No se pudo guardar la copia");
+        }
+    };
+
     const handleSubmitReview = async () => {
         if (newRating === 0) {
             setReviewError("Selecciona una calificación");
@@ -126,12 +141,14 @@ export default function PackageDetail() {
     if (loading) return <div className="detail-loading">Cargando...</div>;
     if (!pkg) return <div className="detail-loading">Paquete no encontrado</div>;
 
+    const isOwner = user?.uid === pkg.userId;
+
     return (
         <div className="detail-page">
             <Header />
 
             {/* HERO */}
-            <div className="detail-hero" style={{ background: pkg ? getThemeGradient(pkg.theme) : "#1B3A5C" }}>
+            <div className="detail-hero" style={{ background: getThemeGradient(pkg.theme) }}>
                 <button className="detail-back-btn" onClick={() => navigate(-1)}>
                     <BackIcon />
                 </button>
@@ -141,9 +158,7 @@ export default function PackageDetail() {
                     <div className="detail-hero-meta">
                         <span>{cards.length} tarjetas</span>
                         {reviews.length > 0 && (
-                            <span className="detail-rating">
-                                ★ {avgRating.toFixed(1)}
-                            </span>
+                            <span className="detail-rating">★ {avgRating.toFixed(1)}</span>
                         )}
                     </div>
                 </div>
@@ -168,15 +183,27 @@ export default function PackageDetail() {
             {activeTab === "detalles" && (
                 <div className="detail-tab-content">
                     <div className="detail-actions">
-                        <button className="detail-study-btn" onClick={() => navigate(`/packages/${id}/study`)}>
+                        <button
+                            className="detail-study-btn"
+                            onClick={() => navigate(`/packages/${id}/study`)}
+                        >
                             Estudiar paquete
                         </button>
-                        <button className="detail-add-btn" onClick={() => setShowForm(!showForm)}>
-                            <PlusIcon /> Agregar tarjeta
-                        </button>
+
+                        {isOwner ? (
+                            <button className="detail-add-btn" onClick={() => setShowForm(!showForm)}>
+                                <PlusIcon /> Agregar tarjeta
+                            </button>
+                        ) : (
+                            <button className="detail-fork-btn" onClick={handleFork}>
+                                <ForkIcon /> Guardar copia
+                            </button>
+                        )}
                     </div>
 
-                    {showForm && (
+                    {error && <p className="detail-error">{error}</p>}
+
+                    {showForm && isOwner && (
                         <div className="detail-card-form">
                             <textarea
                                 className="detail-card-input"
@@ -192,9 +219,10 @@ export default function PackageDetail() {
                                 onChange={e => setNewCard(prev => ({ ...prev, answer: e.target.value }))}
                                 rows={2}
                             />
-                            {error && <p className="detail-error">{error}</p>}
                             <div className="detail-form-actions">
-                                <button className="detail-cancel-btn" onClick={() => setShowForm(false)}>Cancelar</button>
+                                <button className="detail-cancel-btn" onClick={() => setShowForm(false)}>
+                                    Cancelar
+                                </button>
                                 <button className="detail-save-btn" onClick={handleAddCard} disabled={saving}>
                                     {saving ? "Guardando..." : "Guardar"}
                                 </button>
@@ -221,11 +249,18 @@ export default function PackageDetail() {
             {activeTab === "descripcion" && (
                 <div className="detail-tab-content">
                     <p className="detail-desc-text">{pkg.description}</p>
-
                     <div className="detail-actions">
-                        <button className="detail-study-btn" onClick={() => navigate(`/packages/${id}/study`)}>
+                        <button
+                            className="detail-study-btn"
+                            onClick={() => navigate(`/packages/${id}/study`)}
+                        >
                             Empezar a estudiar
                         </button>
+                        {!isOwner && (
+                            <button className="detail-fork-btn" onClick={handleFork}>
+                                <ForkIcon /> Guardar copia
+                            </button>
+                        )}
                     </div>
                 </div>
             )}
@@ -251,7 +286,7 @@ export default function PackageDetail() {
                             onClick={() => user && setShowReviewModal(true)}
                             disabled={!user}
                         >
-                            {user ? "Evaluar paquete" : "Estudia este paquete para evaluarlo"}
+                            {user ? "Evaluar paquete" : "Inicia sesión para evaluar"}
                         </button>
                     </div>
 
@@ -346,6 +381,17 @@ function PlusIcon() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+        </svg>
+    );
+}
+
+function ForkIcon() {
+    return (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="6" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/>
+            <circle cx="18" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/>
+            <circle cx="6" cy="18" r="2" stroke="currentColor" strokeWidth="1.8"/>
+            <path d="M6 8v2a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V8M6 8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
         </svg>
     );
 }
