@@ -10,7 +10,6 @@ export default function BottomNav() {
     const isActive = (path: string) => location.pathname === path;
 
     const handleHome = () => navigate("/");
-    const handleSearch = () => navigate("/search");
     const handleCreate = () => requireAuth(() => navigate("/packages/new"));
     const handleFolders = () => requireAuth(() => navigate("/folders"));
 
@@ -23,15 +22,6 @@ export default function BottomNav() {
             >
                 <HomeIcon />
                 <span className="nav-label">Inicio</span>
-            </button>
-
-            <button
-                className={`nav-item ${isActive("/search") ? "nav-item-active" : ""}`}
-                onClick={handleSearch}
-                aria-label="Buscar"
-            >
-                <SearchIcon />
-                <span className="nav-label">Buscar</span>
             </button>
 
             <button
@@ -64,15 +54,6 @@ function HomeIcon() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
-        </svg>
-    );
-}
-
-function SearchIcon() {
-    return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
-            <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
     );
 }
