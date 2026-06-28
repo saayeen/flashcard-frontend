@@ -6,11 +6,10 @@ import { getThemeGradient } from "../packages/themes";
 import "./Profile.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
-
 const DAYS = ["L", "M", "M", "J", "V", "S", "D"];
 
 export default function Profile() {
-    const { user, logout, getToken } = useAuth();
+    const { user, getToken } = useAuth();
     const navigate = useNavigate();
 
     const [stats, setStats] = useState<GlobalStats | null>(null);
@@ -18,7 +17,6 @@ export default function Profile() {
     const [packages, setPackages] = useState<FlashcardPackage[]>([]);
     const [tab, setTab] = useState<"desc" | "stats">("desc");
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         if (!user) return;
@@ -29,49 +27,41 @@ export default function Profile() {
         try {
             const token = await getToken();
             const headers = { "Authorization": `Bearer ${token}` };
-
             const [statsRes, activityRes, pkgsRes] = await Promise.all([
                 fetch(`${API_URL}/stats`, { headers }),
                 fetch(`${API_URL}/stats/activity`, { headers }),
                 fetch(`${API_URL}/packages`, { headers }),
             ]);
-
             if (statsRes.ok) setStats(await statsRes.json());
             if (activityRes.ok) setActivity(await activityRes.json());
-            if (pkgsRes.ok) {
-                const all: FlashcardPackage[] = await pkgsRes.json();
-                setPackages(all);
-            }
+            if (pkgsRes.ok) setPackages(await pkgsRes.json());
         } catch {}
         finally { setLoading(false); }
-    };
-
-    const handleLogout = async () => {
-        await logout();
-        navigate("/");
     };
 
     const maxActivity = Math.max(...activity.map(a => a.cardsReviewed), 1);
 
     return (
         <div className="profile-page">
+            {/* HEADER */}
             <div className="profile-header">
                 <button className="profile-back-btn" onClick={() => navigate(-1)}>
                     <BackIcon />
                 </button>
                 <h1 className="profile-header-title">Mi perfil</h1>
-                <button className="profile-settings-btn" onClick={handleLogout}>
-                    <LogoutIcon />
+                <button className="profile-settings-btn" onClick={() => navigate("/settings")}>
+                    <SettingsIcon />
                 </button>
             </div>
 
+            {/* HERO */}
             <div className="profile-hero">
                 <div className="profile-avatar-wrapper">
                     {user?.photoURL
                         ? <img src={user.photoURL} className="profile-avatar" alt="avatar" />
                         : <div className="profile-avatar-placeholder">
                             {user?.displayName?.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()}
-                        </div>
+                          </div>
                     }
                 </div>
                 <h2 className="profile-name">{user?.displayName}</h2>
@@ -90,21 +80,17 @@ export default function Profile() {
                 </div>
             </div>
 
+            {/* TABS */}
             <div className="profile-tabs">
-                <button
-                    className={`profile-tab ${tab === "desc" ? "active" : ""}`}
-                    onClick={() => setTab("desc")}
-                >
+                <button className={`profile-tab ${tab === "desc" ? "active" : ""}`} onClick={() => setTab("desc")}>
                     Descripción
                 </button>
-                <button
-                    className={`profile-tab ${tab === "stats" ? "active" : ""}`}
-                    onClick={() => setTab("stats")}
-                >
+                <button className={`profile-tab ${tab === "stats" ? "active" : ""}`} onClick={() => setTab("stats")}>
                     Mis estadísticas
                 </button>
             </div>
 
+            {/* TAB: DESCRIPCIÓN */}
             {tab === "desc" && (
                 <div className="profile-body">
                     <div className="profile-section">
@@ -133,6 +119,7 @@ export default function Profile() {
                 </div>
             )}
 
+            {/* TAB: ESTADÍSTICAS */}
             {tab === "stats" && stats && (
                 <div className="profile-body">
                     <div className="profile-streak-card">
@@ -148,7 +135,7 @@ export default function Profile() {
                         </div>
                         <div className="profile-stats-card">
                             <span className="profile-stats-number">{stats.totalSessions}</span>
-                            <span className="profile-stats-label">paquetes estudiados</span>
+                            <span className="profile-stats-label">sesiones completadas</span>
                         </div>
                     </div>
 
@@ -208,10 +195,11 @@ function BackIcon() {
     );
 }
 
-function LogoutIcon() {
+function SettingsIcon() {
     return (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" strokeWidth="1.8" />
         </svg>
     );
 }

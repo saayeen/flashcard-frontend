@@ -7,6 +7,7 @@ import PackageDetail from "./modules/packages/PackageDetail";
 import StudyScreen from "./modules/study/StudyScreen";
 import Folders from "./modules/folders/Folders";
 import Search from "./modules/search/Search";
+import Settings from "./modules/settings/Settings";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/folders" element={<Folders />} />
         <Route path="/folders/:id" element={<Folders />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter>
   );
