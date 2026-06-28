@@ -302,7 +302,7 @@ export default function Folders() {
             <div className="folders-tabs">
                 <button
                     className={`folders-tab ${mainTab === "paquetes" ? "active" : ""}`}
-                    onClick={() => { setMainTab("paquetes"); navigate("/"); }}
+                    onClick={() => setMainTab("paquetes")}
                 >
                     <PackageIcon />
                     Paquetes
@@ -351,40 +351,82 @@ export default function Folders() {
 
             {/* CONTENIDO */}
             <div className="folders-body">
-                {loading && (
-                    <div className="folders-skeleton-list">
-                        {[1, 2, 3].map(i => <div key={i} className="folders-skeleton" />)}
-                    </div>
-                )}
-
-                {!loading && folders.length === 0 && !showForm && (
-                    <div className="folders-empty">
-                        <span className="folders-empty-icon">📁</span>
-                        <p className="folders-empty-title">Sin carpetas aún</p>
-                        <p className="folders-empty-sub">Organiza tus paquetes en carpetas</p>
-                        <button className="folder-save-btn" onClick={() => setShowForm(true)}>
-                            Crear primera carpeta
-                        </button>
-                    </div>
-                )}
-
-                <div className="folders-grid">
-                    {folders.map(folder => (
-                        <div
-                            className="folder-card"
-                            key={folder.id}
-                            onClick={() => openFolderDetail(folder)}
-                        >
-                            <div className="folder-card-icon" style={{ background: folder.color }}>
-                                <FolderIcon />
+                {/* TAB: PAQUETES */}
+                {mainTab === "paquetes" && (
+                    <>
+                        {loading && (
+                            <div className="folders-skeleton-list">
+                                {[1, 2, 3].map(i => <div key={i} className="folders-skeleton" />)}
                             </div>
-                            <div className="folder-card-info">
-                                <h2 className="folder-card-name">{folder.name}</h2>
+                        )}
+                        {!loading && myPackages.length === 0 && (
+                            <div className="folders-empty">
+                                <span className="folders-empty-icon">📦</span>
+                                <p className="folders-empty-title">Sin paquetes aún</p>
+                                <p className="folders-empty-sub">Crea tu primer paquete de flashcards</p>
+                                <button className="folder-save-btn" onClick={() => navigate("/packages/new")}>
+                                    Crear paquete
+                                </button>
                             </div>
-                            <ChevronIcon />
+                        )}
+                        <div className="folders-grid">
+                            {myPackages.map(pkg => (
+                                <div
+                                    className="folder-card"
+                                    key={pkg.id}
+                                    onClick={() => navigate(`/packages/${pkg.id}`)}
+                                >
+                                    <div className="folder-card-icon" style={{ background: "#6366f1" }}>
+                                        <PackageIcon />
+                                    </div>
+                                    <div className="folder-card-info">
+                                        <h2 className="folder-card-name">{pkg.name}</h2>
+                                        <p className="folder-card-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
+                                    </div>
+                                    <ChevronIcon />
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    </>
+                )}
+
+                {/* TAB: CARPETAS */}
+                {mainTab === "carpetas" && (
+                    <>
+                        {loading && (
+                            <div className="folders-skeleton-list">
+                                {[1, 2, 3].map(i => <div key={i} className="folders-skeleton" />)}
+                            </div>
+                        )}
+                        {!loading && folders.length === 0 && !showForm && (
+                            <div className="folders-empty">
+                                <span className="folders-empty-icon">📁</span>
+                                <p className="folders-empty-title">Sin carpetas aún</p>
+                                <p className="folders-empty-sub">Organiza tus paquetes en carpetas</p>
+                                <button className="folder-save-btn" onClick={() => setShowForm(true)}>
+                                    Crear primera carpeta
+                                </button>
+                            </div>
+                        )}
+                        <div className="folders-grid">
+                            {folders.map(folder => (
+                                <div
+                                    className="folder-card"
+                                    key={folder.id}
+                                    onClick={() => openFolderDetail(folder)}
+                                >
+                                    <div className="folder-card-icon" style={{ background: folder.color }}>
+                                        <FolderIcon />
+                                    </div>
+                                    <div className="folder-card-info">
+                                        <h2 className="folder-card-name">{folder.name}</h2>
+                                    </div>
+                                    <ChevronIcon />
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
 
             {/* FAB nueva carpeta */}
