@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import type { FlashcardPackage, Flashcard, CreateCardRequest } from "../../types/index";
-import Header from "../navigation/Header";
 import "./PackageDetail.css";
 import { getThemeGradient } from "./themes";
 
@@ -145,8 +144,7 @@ export default function PackageDetail() {
 
     return (
         <div className="detail-page">
-            <Header />
-
+        
             {/* HERO */}
             <div className="detail-hero" style={{ background: getThemeGradient(pkg.theme) }}>
                 <button className="detail-back-btn" onClick={() => navigate(-1)}>
