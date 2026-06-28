@@ -5,14 +5,14 @@
     left: 0;
     right: 0;
     height: 72px;
-    background: #d8d8d8dc;
-    border-top: 1px solid rgba(255,255,255,0.06);
+    background: #ffffff;
+    border-top: 1px solid rgba(0,0,0,0.08);
     display: flex;
     align-items: center;
     justify-content: space-around;
     padding: 0 8px env(safe-area-inset-bottom);
     z-index: 100;
-    backdrop-filter: blur(12px);
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
 }
 
 .nav-item {
@@ -24,7 +24,7 @@
     align-items: center;
     justify-content: center;
     gap: 3px;
-    color: #50506a;
+    color: #9090a8;
     padding: 8px 16px;
     border-radius: 12px;
     transition: color 0.15s, background 0.15s;
@@ -32,21 +32,14 @@
 }
 
 .nav-item:hover {
-    background: rgba(255,255,255,0.05);
-    color: #a0a0c0;
+    background: rgba(0,0,0,0.04);
+    color: #3a3a50;
 }
 
-.nav-item:active {
-    background: rgba(255,255,255,0.08);
-}
+.nav-item:active { background: rgba(0,0,0,0.06); }
 
-.nav-item-active {
-    color: #6366f1;
-}
-
-.nav-item-active:hover {
-    color: #818cf8;
-}
+.nav-item-active { color: #6366f1; }
+.nav-item-active:hover { color: #4f46e5; }
 
 .nav-label {
     font-size: 10px;
@@ -62,7 +55,7 @@
     border-radius: 16px;
     padding: 0;
     color: #fff;
-    box-shadow: 0 4px 16px rgba(99,102,241,0.35);
+    box-shadow: 0 4px 14px rgba(99,102,241,0.35);
     transition: transform 0.15s, box-shadow 0.15s;
     min-width: unset;
     gap: 0;
@@ -72,10 +65,10 @@
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: #fff;
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(99,102,241,0.45);
+    box-shadow: 0 6px 18px rgba(99,102,241,0.4);
 }
 
 .nav-item-create:active {
     transform: scale(0.95);
-    box-shadow: 0 2px 8px rgba(99,102,241,0.3);
+    box-shadow: 0 2px 8px rgba(99,102,241,0.25);
 }

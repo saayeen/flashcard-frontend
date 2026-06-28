@@ -1,8 +1,8 @@
 /* ── Home page ─────────────────────────────────────────────── */
 .home-page {
     min-height: 100dvh;
-    background: #ffffff;
-    color: #f0f0f0;
+    background: #FBF8F2;
+    color: #1a1a2e;
     display: flex;
     flex-direction: column;
     padding-bottom: 80px;
@@ -14,10 +14,11 @@
     align-items: center;
     justify-content: space-between;
     padding: 16px 20px 12px;
-    background: #0f0f13;
+    background: #FBF8F2;
     position: sticky;
     top: 0;
     z-index: 10;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
 .home-header-left {
@@ -35,7 +36,7 @@
 .home-header-title {
     font-size: 20px;
     font-weight: 700;
-    color: #f0f0f0;
+    color: #1a1a2e;
     letter-spacing: -0.3px;
 }
 
@@ -48,7 +49,7 @@
 .home-header-btn {
     background: none;
     border: none;
-    color: #a0a0b0;
+    color: #6b6b80;
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
@@ -59,7 +60,7 @@
 }
 
 .home-header-btn:hover {
-    background: rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.05);
 }
 
 .home-header-avatar {
@@ -92,7 +93,7 @@
 /* BODY */
 .home-body {
     flex: 1;
-    padding: 8px 20px 16px;
+    padding: 16px 20px 16px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -113,14 +114,14 @@
 .home-greeting-hi {
     font-size: 22px;
     font-weight: 700;
-    color: #f0f0f0;
+    color: #1a1a2e;
     margin: 0;
     line-height: 1.2;
 }
 
 .home-greeting-sub {
     font-size: 14px;
-    color: #70708a;
+    color: #6b6b80;
     margin: 2px 0 0;
 }
 
@@ -134,6 +135,7 @@
     cursor: pointer;
     transition: transform 0.15s, opacity 0.15s;
     gap: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
 
 .home-continue-card:active {
@@ -141,17 +143,14 @@
     opacity: 0.9;
 }
 
-.home-continue-info {
-    flex: 1;
-    min-width: 0;
-}
+.home-continue-info { flex: 1; min-width: 0; }
 
 .continue-label {
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    color: rgba(255,255,255,0.65);
+    color: rgba(255,255,255,0.7);
     margin: 0 0 4px;
 }
 
@@ -167,13 +166,11 @@
 
 .continue-sub {
     font-size: 13px;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.75);
     margin: 0;
 }
 
-.continue-arrow {
-    flex-shrink: 0;
-}
+.continue-arrow { flex-shrink: 0; }
 
 /* SECCIÓN */
 .home-section {
@@ -191,7 +188,7 @@
 .home-section-title {
     font-size: 18px;
     font-weight: 700;
-    color: #f0f0f0;
+    color: #1a1a2e;
     margin: 0;
 }
 
@@ -199,7 +196,7 @@
 .home-trending-list {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 6px;
 }
 
 .home-trending-card {
@@ -207,19 +204,21 @@
     align-items: center;
     gap: 14px;
     padding: 12px 14px;
-    background: #1a1a24;
+    background: #ffffff;
     border-radius: 14px;
     cursor: pointer;
-    transition: background 0.15s;
-    border: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.15s, box-shadow 0.15s;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
 .home-trending-card:hover {
-    background: #22222e;
+    background: #f8f5ef;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .home-trending-card:active {
-    background: #1f1f2a;
+    background: #f3f0ea;
 }
 
 .home-trending-thumb {
@@ -229,15 +228,12 @@
     flex-shrink: 0;
 }
 
-.home-trending-info {
-    flex: 1;
-    min-width: 0;
-}
+.home-trending-info { flex: 1; min-width: 0; }
 
 .home-trending-name {
     font-size: 15px;
     font-weight: 600;
-    color: #f0f0f0;
+    color: #1a1a2e;
     margin: 0 0 3px;
     white-space: nowrap;
     overflow: hidden;
@@ -246,7 +242,7 @@
 
 .home-trending-meta {
     font-size: 12px;
-    color: #70708a;
+    color: #6b6b80;
     margin: 0 0 4px;
 }
 
@@ -255,13 +251,11 @@
     align-items: center;
     gap: 4px;
     font-size: 12px;
-    color: #f4c842;
+    color: #d97706;
     font-weight: 600;
 }
 
-.home-trending-rating svg {
-    color: #f4c842;
-}
+.home-trending-rating svg { color: #d97706; }
 
 /* GRID DE PAQUETES (recientes) */
 .home-package-grid {
@@ -279,6 +273,7 @@
     gap: 8px;
     min-height: 110px;
     transition: transform 0.15s, opacity 0.15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .home-package-card:active {
@@ -291,7 +286,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    color: rgba(255,255,255,0.65);
+    color: rgba(255,255,255,0.7);
 }
 
 .home-package-name {
@@ -303,14 +298,11 @@
     flex: 1;
 }
 
-.home-package-footer {
-    display: flex;
-    align-items: center;
-}
+.home-package-footer { display: flex; align-items: center; }
 
 .home-package-count {
     font-size: 12px;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.75);
 }
 
 /* SKELETONS */
@@ -322,7 +314,7 @@
 
 .home-skeleton-card {
     height: 68px;
-    background: linear-gradient(90deg, #1a1a24 25%, #22222e 50%, #1a1a24 75%);
+    background: linear-gradient(90deg, #ede9e0 25%, #f3f0ea 50%, #ede9e0 75%);
     background-size: 200% 100%;
     border-radius: 14px;
     animation: skeleton-shimmer 1.4s infinite;
@@ -337,6 +329,6 @@
 .home-empty {
     text-align: center;
     padding: 32px 0;
-    color: #70708a;
+    color: #6b6b80;
     font-size: 14px;
 }
