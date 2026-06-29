@@ -677,3 +677,330 @@
     transition: border-color 0.15s;
 }
 .detail-edit-textarea:focus { border-color: #6366f1; }
+
+/* ── visibility badge ── */
+.detail-visibility {
+    background: rgba(255,255,255,0.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ── menú / dots ── */
+.detail-menu-btn {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.18);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background 0.15s;
+    z-index: 2;
+}
+.detail-menu-btn:hover { background: rgba(0,0,0,0.28); }
+
+/* ── acciones tarjeta ── */
+.detail-card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 8px 16px 12px;
+}
+.detail-card-edit-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: 1px solid #E0D8C7;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2B2620;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.detail-card-edit-btn:hover { background: #f3f0ea; }
+.detail-card-del-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid rgba(220,38,38,0.2);
+    border-radius: 8px;
+    padding: 5px 8px;
+    color: #dc2626;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.detail-card-del-btn:hover { background: rgba(220,38,38,0.06); }
+
+/* ── bottom sheet ── */
+.detail-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+    animation: fade-in 0.15s ease-out;
+}
+.detail-bottom-sheet {
+    width: 100%;
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 20px 20px 0 0;
+    padding: 12px 20px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: slide-up 0.2s ease-out;
+    max-height: 88vh;
+    overflow-y: auto;
+}
+.detail-sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: #d8d4cc;
+    border-radius: 2px;
+    align-self: center;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+}
+.detail-sheet-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 8px;
+    flex-shrink: 0;
+}
+.detail-sheet-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 4px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 10px;
+    transition: background 0.15s;
+    width: 100%;
+}
+.detail-sheet-row:hover { background: #f3f0ea; }
+.detail-sheet-danger { color: #dc2626; }
+.detail-sheet-divider { height: 1px; background: rgba(0,0,0,0.06); margin: 4px 0; flex-shrink: 0; }
+.detail-sheet-cancel {
+    margin-top: 8px;
+    padding: 13px;
+    background: none;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    border-radius: 12px;
+    color: #6b6b80;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    flex-shrink: 0;
+}
+.detail-sheet-cancel:hover { background: rgba(0,0,0,0.04); }
+
+/* ── confirmar ── */
+.detail-confirm-modal {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 28px 24px;
+    margin: 24px;
+    width: calc(100% - 48px);
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+.detail-confirm-icon { font-size: 36px; }
+.detail-confirm-title { font-size: 17px; font-weight: 700; color: #1a1a2e; margin: 4px 0 0; text-align: center; }
+.detail-confirm-sub { font-size: 14px; color: #6b6b80; text-align: center; margin: 0 0 8px; }
+.detail-danger-btn {
+    flex: 1;
+    padding: 11px 18px;
+    background: #dc2626;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.detail-danger-btn:hover { opacity: 0.9; }
+
+/* ── edición ── */
+.detail-edit-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; flex-shrink: 0; }
+.detail-edit-label { font-size: 12px; font-weight: 600; color: #6b6b80; text-transform: uppercase; letter-spacing: 0.4px; }
+.detail-edit-input {
+    background: #FBF8F2;
+    border: 1.5px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 15px;
+    color: #1a1a2e;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+    font-family: inherit;
+}
+.detail-edit-input:focus { border-color: #6366f1; }
+.detail-edit-textarea {
+    background: #FBF8F2;
+    border: 1.5px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 15px;
+    color: #1a1a2e;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    line-height: 1.5;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+}
+.detail-edit-textarea:focus { border-color: #6366f1; }
+
+/* ── categorías en edición ── */
+.detail-edit-categories {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+}
+.detail-edit-cat-btn {
+    padding: 8px 10px;
+    background: #FBF8F2;
+    border: 1.5px solid rgba(0,0,0,0.08);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b6b80;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+}
+.detail-edit-cat-btn.selected {
+    background: rgba(99,102,241,0.08);
+    border-color: #6366f1;
+    color: #6366f1;
+    font-weight: 600;
+}
+
+/* ── temas en edición ── */
+.detail-edit-themes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+.detail-edit-theme-btn {
+    height: 44px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s;
+}
+.detail-edit-theme-btn.selected {
+    outline: 2.5px solid #1a1a2e;
+    outline-offset: 2px;
+}
+.detail-edit-theme-btn:active { transform: scale(0.96); }
+
+/* ── toggle visibilidad ── */
+.detail-edit-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: #FBF8F2;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.07);
+    gap: 12px;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+}
+.detail-edit-toggle-label { font-size: 14px; font-weight: 600; color: #1a1a2e; margin: 0 0 2px; }
+.detail-edit-toggle-sub { font-size: 12px; color: #6b6b80; margin: 0; }
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 26px;
+    flex-shrink: 0;
+}
+.toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: #d8d4cc;
+    border-radius: 13px;
+    transition: background 0.2s;
+}
+.toggle-slider::before {
+    content: "";
+    position: absolute;
+    left: 3px; top: 3px;
+    width: 20px; height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.toggle input:checked + .toggle-slider { background: #6366f1; }
+.toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+/* ── carpetas modal ── */
+.detail-folder-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.detail-folder-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #FBF8F2;
+    border: 1.5px solid rgba(0,0,0,0.07);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    width: 100%;
+    text-align: left;
+}
+.detail-folder-row:hover { background: #f3f0ea; }
+.detail-folder-row.in-folder {
+    background: rgba(99,102,241,0.06);
+    border-color: rgba(99,102,241,0.3);
+}
+.detail-folder-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.detail-folder-name { flex: 1; font-size: 14px; font-weight: 600; color: #1a1a2e; }
+.detail-folder-check {
+    font-size: 16px;
+    font-weight: 700;
+    color: #6366f1;
+    width: 20px;
+    text-align: center;
+}

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import type { FlashcardPackage, Flashcard, CreateCardRequest } from "../../types/index";
+import type { FlashcardPackage, Flashcard, CreateCardRequest, Folder } from "../../types/index";
 import "./PackageDetail.css";
-import { getThemeGradient } from "./themes";
+import { getThemeGradient, THEMES } from "./themes";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -16,6 +16,8 @@ interface Review {
     rating: number;
     comment: string;
 }
+
+const CATEGORIES = ["Universidad", "PAES", "Carrera", "Idiomas", "Licencias", "Otros"];
 
 export default function PackageDetail() {
     const { id } = useParams();
@@ -35,8 +37,15 @@ export default function PackageDetail() {
     const [editName, setEditName] = useState("");
     const [editDesc, setEditDesc] = useState("");
     const [editCategory, setEditCategory] = useState("");
+    const [editIsPublic, setEditIsPublic] = useState(true);
     const [savingPkg, setSavingPkg] = useState(false);
     const [showDeletePkg, setShowDeletePkg] = useState(false);
+
+    // carpetas
+    const [showFolderModal, setShowFolderModal] = useState(false);
+    const [folders, setFolders] = useState<Folder[]>([]);
+    const [pkgFolderIds, setPkgFolderIds] = useState<number[]>([]);
+    const [loadingFolders, setLoadingFolders] = useState(false);
 
     // agregar tarjeta
     const [showForm, setShowForm] = useState(false);
@@ -48,8 +57,6 @@ export default function PackageDetail() {
     const [editQuestion, setEditQuestion] = useState("");
     const [editAnswer, setEditAnswer] = useState("");
     const [savingCard, setSavingCard] = useState(false);
-
-    // eliminar tarjeta
     const [deletingCardId, setDeletingCardId] = useState<number | null>(null);
 
     // reseña
@@ -66,17 +73,18 @@ export default function PackageDetail() {
             fetch(`${API_URL}/packages/${id}/reviews`).then(r => r.json()),
         ]).then(([pkgData, cardsData, reviewsData]) => {
             setPkg(pkgData);
-            setCards(cardsData);
+            setCards(Array.isArray(cardsData) ? cardsData : []);
             setReviews(Array.isArray(reviewsData) ? reviewsData : []);
         }).finally(() => setLoading(false));
     }, [id]);
 
-    // ── PAQUETE ──
+    // ── EDITAR PAQUETE ──
     const openEditPkg = () => {
         if (!pkg) return;
         setEditName(pkg.name);
         setEditDesc(pkg.description);
         setEditCategory(pkg.category);
+        setEditIsPublic(pkg.isPublic);
         setShowPkgMenu(false);
         setShowEditPkg(true);
     };
@@ -89,11 +97,15 @@ export default function PackageDetail() {
             const res = await fetch(`${API_URL}/packages/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-                body: JSON.stringify({ name: editName, description: editDesc, category: editCategory }),
+                body: JSON.stringify({
+                    name: editName,
+                    description: editDesc,
+                    category: editCategory,
+                    isPublic: editIsPublic
+                }),
             });
             if (res.ok) {
-                const updated = await res.json();
-                setPkg(updated);
+                setPkg(await res.json());
                 setShowEditPkg(false);
             }
         } catch {}
@@ -111,14 +123,53 @@ export default function PackageDetail() {
         } catch {}
     };
 
+    // ── CARPETAS ──
+    const openFolderModal = async () => {
+        setShowPkgMenu(false);
+        setLoadingFolders(true);
+        setShowFolderModal(true);
+        try {
+            const token = await getToken();
+            const res = await fetch(`${API_URL}/folders`, {
+                headers: { "Authorization": `Bearer ${token}` },
+            });
+            if (res.ok) {
+                const allFolders: Folder[] = await res.json();
+                setFolders(allFolders);
+                // ver en cuáles está este paquete
+                const inFolders = await Promise.all(
+                    allFolders.map(async f => {
+                        const r = await fetch(`${API_URL}/folders/${f.id}/packages`);
+                        if (!r.ok) return null;
+                        const pkgs: FlashcardPackage[] = await r.json();
+                        return pkgs.find(p => p.id === Number(id)) ? f.id : null;
+                    })
+                );
+                setPkgFolderIds(inFolders.filter((x): x is number => x !== null));
+            }
+        } catch {}
+        finally { setLoadingFolders(false); }
+    };
+
+    const toggleFolder = async (folderId: number) => {
+        const token = await getToken();
+        const inFolder = pkgFolderIds.includes(folderId);
+        const method = inFolder ? "DELETE" : "POST";
+        await fetch(`${API_URL}/folders/${folderId}/packages/${id}`, {
+            method,
+            headers: { "Authorization": `Bearer ${token}` },
+        });
+        setPkgFolderIds(prev =>
+            inFolder ? prev.filter(x => x !== folderId) : [...prev, folderId]
+        );
+    };
+
     // ── TARJETAS ──
     const handleAddCard = async () => {
         if (!newCard.question.trim() || !newCard.answer.trim()) {
-            setError("Ambos campos son obligatorios");
-            return;
+            setError("Ambos campos son obligatorios"); return;
         }
-        setSaving(true);
-        setError(null);
+        setSaving(true); setError(null);
         try {
             const token = await getToken();
             const res = await fetch(`${API_URL}/packages/${id}/cards`, {
@@ -127,13 +178,11 @@ export default function PackageDetail() {
                 body: JSON.stringify(newCard),
             });
             if (!res.ok) throw new Error();
-            const created: Flashcard = await res.json();
-            setCards(prev => [...prev, created]);
+           
             setNewCard({ question: "", answer: "" });
             setShowForm(false);
-        } catch {
-            setError("No se pudo crear la tarjeta");
-        } finally { setSaving(false); }
+        } catch { setError("No se pudo crear la tarjeta"); }
+        finally { setSaving(false); }
     };
 
     const openEditCard = (card: Flashcard) => {
@@ -181,17 +230,13 @@ export default function PackageDetail() {
                 headers: { "Authorization": `Bearer ${token}` },
             });
             if (!res.ok) throw new Error();
-            const forked = await res.json();
-            navigate(`/packages/${forked.id}`);
-        } catch {
-            setError("No se pudo guardar la copia");
-        }
+            navigate(`/packages/${(await res.json()).id}`);
+        } catch { setError("No se pudo guardar la copia"); }
     };
 
     const handleSubmitReview = async () => {
         if (newRating === 0) { setReviewError("Selecciona una calificación"); return; }
-        setSavingReview(true);
-        setReviewError(null);
+        setSavingReview(true); setReviewError(null);
         try {
             const token = await getToken();
             const res = await fetch(`${API_URL}/packages/${id}/reviews`, {
@@ -200,19 +245,15 @@ export default function PackageDetail() {
                 body: JSON.stringify({ rating: newRating, comment: newComment }),
             });
             if (!res.ok) throw new Error();
-            const created: Review = await res.json();
-            setReviews(prev => [created, ...prev]);
+         
             setShowReviewModal(false);
-            setNewRating(0);
-            setNewComment("");
-        } catch {
-            setReviewError("No se pudo enviar la reseña");
-        } finally { setSavingReview(false); }
+            setNewRating(0); setNewComment("");
+        } catch { setReviewError("No se pudo enviar la reseña"); }
+        finally { setSavingReview(false); }
     };
 
     const avgRating = reviews.length > 0
-        ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
-        : 0;
+        ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length : 0;
 
     if (loading) return <div className="detail-loading">Cargando...</div>;
     if (!pkg) return <div className="detail-loading">Paquete no encontrado</div>;
@@ -227,21 +268,18 @@ export default function PackageDetail() {
                 <button className="detail-back-btn" onClick={() => navigate(-1)}>
                     <BackIcon />
                 </button>
-
                 {isOwner && (
                     <button className="detail-menu-btn" onClick={() => setShowPkgMenu(true)}>
                         <DotsIcon />
                     </button>
                 )}
-
                 <div className="detail-hero-content">
                     <span className="detail-category">{pkg.category}</span>
                     <h1 className="detail-name">{pkg.name}</h1>
                     <div className="detail-hero-meta">
                         <span>{cards.length} tarjetas</span>
-                        {reviews.length > 0 && (
-                            <span className="detail-rating">★ {avgRating.toFixed(1)}</span>
-                        )}
+                        {reviews.length > 0 && <span className="detail-rating">★ {avgRating.toFixed(1)}</span>}
+                        <span className="detail-visibility">{pkg.isPublic ? "Público" : "Privado"}</span>
                     </div>
                 </div>
             </div>
@@ -249,11 +287,7 @@ export default function PackageDetail() {
             {/* TABS */}
             <div className="detail-tabs">
                 {(["detalles", "descripcion", "resenas"] as Tab[]).map(tab => (
-                    <button
-                        key={tab}
-                        className={`detail-tab ${activeTab === tab ? "detail-tab-active" : ""}`}
-                        onClick={() => setActiveTab(tab)}
-                    >
+                    <button key={tab} className={`detail-tab ${activeTab === tab ? "detail-tab-active" : ""}`} onClick={() => setActiveTab(tab)}>
                         {tab === "detalles" ? "Detalles" : tab === "descripcion" ? "Descripción" : "Reseñas"}
                     </button>
                 ))}
@@ -281,20 +315,10 @@ export default function PackageDetail() {
 
                     {showForm && isOwner && (
                         <div className="detail-card-form">
-                            <textarea
-                                className="detail-card-input"
-                                placeholder="Frente de la tarjeta"
-                                value={newCard.question}
-                                onChange={e => setNewCard(prev => ({ ...prev, question: e.target.value }))}
-                                rows={2}
-                            />
-                            <textarea
-                                className="detail-card-input"
-                                placeholder="Reverso de la tarjeta"
-                                value={newCard.answer}
-                                onChange={e => setNewCard(prev => ({ ...prev, answer: e.target.value }))}
-                                rows={2}
-                            />
+                            <textarea className="detail-card-input" placeholder="Pregunta" value={newCard.question}
+                                onChange={e => setNewCard(p => ({ ...p, question: e.target.value }))} rows={2} />
+                            <textarea className="detail-card-input" placeholder="Respuesta" value={newCard.answer}
+                                onChange={e => setNewCard(p => ({ ...p, answer: e.target.value }))} rows={2} />
                             <div className="detail-form-actions">
                                 <button className="detail-cancel-btn" onClick={() => setShowForm(false)}>Cancelar</button>
                                 <button className="detail-save-btn" onClick={handleAddCard} disabled={saving}>
@@ -305,9 +329,7 @@ export default function PackageDetail() {
                     )}
 
                     <div className="detail-cards">
-                        {cards.length === 0 && !showForm && (
-                            <p className="detail-empty">Este paquete no tiene tarjetas aún.</p>
-                        )}
+                        {cards.length === 0 && !showForm && <p className="detail-empty">Sin tarjetas aún.</p>}
                         {cards.map(card => (
                             <div className="detail-card-item" key={card.id}>
                                 <div className="detail-card-front">{card.question}</div>
@@ -315,16 +337,10 @@ export default function PackageDetail() {
                                 <div className="detail-card-back">{card.answer}</div>
                                 {isOwner && (
                                     <div className="detail-card-actions">
-                                        <button
-                                            className="detail-card-edit-btn"
-                                            onClick={() => openEditCard(card)}
-                                        >
+                                        <button className="detail-card-edit-btn" onClick={() => openEditCard(card)}>
                                             <EditIcon /> Editar
                                         </button>
-                                        <button
-                                            className="detail-card-del-btn"
-                                            onClick={() => setDeletingCardId(card.id)}
-                                        >
+                                        <button className="detail-card-del-btn" onClick={() => setDeletingCardId(card.id)}>
                                             <TrashIcon />
                                         </button>
                                     </div>
@@ -359,22 +375,17 @@ export default function PackageDetail() {
                         <div className="detail-reviews-avg">
                             <span className="detail-reviews-score">{avgRating > 0 ? avgRating.toFixed(1) : "—"}</span>
                             <div className="detail-reviews-stars">
-                                {[1,2,3,4,5].map(i => (
-                                    <span key={i} className={i <= Math.round(avgRating) ? "star-filled" : "star-empty"}>★</span>
-                                ))}
+                                {[1,2,3,4,5].map(i => <span key={i} className={i <= Math.round(avgRating) ? "star-filled" : "star-empty"}>★</span>)}
                             </div>
                             <span className="detail-reviews-count">{reviews.length} reseñas</span>
                         </div>
-                        <button
-                            className={`detail-review-btn ${!user ? "detail-review-btn-disabled" : ""}`}
-                            onClick={() => user && setShowReviewModal(true)}
-                            disabled={!user}
-                        >
+                        <button className={`detail-review-btn ${!user ? "detail-review-btn-disabled" : ""}`}
+                            onClick={() => user && setShowReviewModal(true)} disabled={!user}>
                             {user ? "Evaluar paquete" : "Inicia sesión para evaluar"}
                         </button>
                     </div>
                     <div className="detail-reviews-list">
-                        {reviews.length === 0 && <p className="detail-empty">Aún no hay reseñas. ¡Sé el primero!</p>}
+                        {reviews.length === 0 && <p className="detail-empty">¡Sé el primero en reseñar!</p>}
                         {reviews.map(review => (
                             <div className="detail-review-item" key={review.id}>
                                 <div className="detail-review-top">
@@ -382,9 +393,7 @@ export default function PackageDetail() {
                                     <div>
                                         <p className="detail-review-user">{review.userId.slice(0,8)}...</p>
                                         <div className="detail-review-stars">
-                                            {[1,2,3,4,5].map(i => (
-                                                <span key={i} className={i <= review.rating ? "star-filled" : "star-empty"}>★</span>
-                                            ))}
+                                            {[1,2,3,4,5].map(i => <span key={i} className={i <= review.rating ? "star-filled" : "star-empty"}>★</span>)}
                                         </div>
                                     </div>
                                 </div>
@@ -395,7 +404,7 @@ export default function PackageDetail() {
                 </div>
             )}
 
-            {/* ── MODAL MENÚ PAQUETE ── */}
+            {/* ── MENÚ PAQUETE ── */}
             {showPkgMenu && (
                 <div className="detail-modal-overlay" onClick={() => setShowPkgMenu(false)}>
                     <div className="detail-bottom-sheet" onClick={e => e.stopPropagation()}>
@@ -404,51 +413,73 @@ export default function PackageDetail() {
                         <button className="detail-sheet-row" onClick={openEditPkg}>
                             <EditIcon /> Editar paquete
                         </button>
+                        <button className="detail-sheet-row" onClick={openFolderModal}>
+                            <FolderIcon /> Agregar a carpeta
+                        </button>
                         <div className="detail-sheet-divider" />
                         <button className="detail-sheet-row detail-sheet-danger" onClick={() => { setShowPkgMenu(false); setShowDeletePkg(true); }}>
                             <TrashIcon /> Eliminar paquete
                         </button>
-                        <button className="detail-sheet-cancel" onClick={() => setShowPkgMenu(false)}>
-                            Cancelar
-                        </button>
+                        <button className="detail-sheet-cancel" onClick={() => setShowPkgMenu(false)}>Cancelar</button>
                     </div>
                 </div>
             )}
 
-            {/* ── MODAL EDITAR PAQUETE ── */}
+            {/* ── EDITAR PAQUETE ── */}
             {showEditPkg && (
                 <div className="detail-modal-overlay" onClick={() => setShowEditPkg(false)}>
                     <div className="detail-bottom-sheet" onClick={e => e.stopPropagation()}>
                         <div className="detail-sheet-handle" />
                         <h3 className="detail-sheet-title">Editar paquete</h3>
+
                         <div className="detail-edit-field">
                             <label className="detail-edit-label">Nombre</label>
-                            <input
-                                className="detail-edit-input"
-                                value={editName}
-                                onChange={e => setEditName(e.target.value)}
-                                maxLength={80}
-                            />
+                            <input className="detail-edit-input" value={editName} onChange={e => setEditName(e.target.value)} maxLength={80} />
                         </div>
-                        <div className="detail-edit-field">
-                            <label className="detail-edit-label">Categoría</label>
-                            <input
-                                className="detail-edit-input"
-                                value={editCategory}
-                                onChange={e => setEditCategory(e.target.value)}
-                                maxLength={50}
-                            />
-                        </div>
+
                         <div className="detail-edit-field">
                             <label className="detail-edit-label">Descripción</label>
-                            <textarea
-                                className="detail-edit-textarea"
-                                value={editDesc}
-                                onChange={e => setEditDesc(e.target.value)}
-                                rows={3}
-                                maxLength={300}
-                            />
+                            <textarea className="detail-edit-textarea" value={editDesc} onChange={e => setEditDesc(e.target.value)} rows={3} maxLength={300} />
                         </div>
+
+                        <div className="detail-edit-field">
+                            <label className="detail-edit-label">Categoría</label>
+                            <div className="detail-edit-categories">
+                                {CATEGORIES.map(cat => (
+                                    <button key={cat}
+                                        className={`detail-edit-cat-btn ${editCategory === cat ? "selected" : ""}`}
+                                        onClick={() => setEditCategory(cat)}
+                                    >{cat}</button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="detail-edit-field">
+                            <label className="detail-edit-label">Tema visual</label>
+                            <div className="detail-edit-themes">
+                                {THEMES.map(t => (
+                                    <button key={t.id}
+                                        className={`detail-edit-theme-btn ${pkg.theme === t.id ? "selected" : ""}`}
+                                        style={{ background: t.gradient }}
+                                        onClick={() => {}}
+                                    >
+                                        <span className="theme-name">{t.name}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="detail-edit-toggle-row">
+                            <div>
+                                <p className="detail-edit-toggle-label">Paquete público</p>
+                                <p className="detail-edit-toggle-sub">Visible para otros usuarios</p>
+                            </div>
+                            <label className="toggle">
+                                <input type="checkbox" checked={editIsPublic} onChange={e => setEditIsPublic(e.target.checked)} />
+                                <span className="toggle-slider" />
+                            </label>
+                        </div>
+
                         <div className="detail-form-actions">
                             <button className="detail-cancel-btn" onClick={() => setShowEditPkg(false)}>Cancelar</button>
                             <button className="detail-save-btn" onClick={handleSavePkg} disabled={savingPkg}>
@@ -459,7 +490,35 @@ export default function PackageDetail() {
                 </div>
             )}
 
-            {/* ── MODAL ELIMINAR PAQUETE ── */}
+            {/* ── CARPETAS ── */}
+            {showFolderModal && (
+                <div className="detail-modal-overlay" onClick={() => setShowFolderModal(false)}>
+                    <div className="detail-bottom-sheet" onClick={e => e.stopPropagation()}>
+                        <div className="detail-sheet-handle" />
+                        <h3 className="detail-sheet-title">Agregar a carpeta</h3>
+                        {loadingFolders && <p className="detail-empty">Cargando carpetas...</p>}
+                        {!loadingFolders && folders.length === 0 && (
+                            <p className="detail-empty">No tienes carpetas. Crea una primero.</p>
+                        )}
+                        <div className="detail-folder-list">
+                            {folders.map(folder => {
+                                const inFolder = pkgFolderIds.includes(folder.id);
+                                return (
+                                    <button key={folder.id} className={`detail-folder-row ${inFolder ? "in-folder" : ""}`}
+                                        onClick={() => toggleFolder(folder.id)}>
+                                        <div className="detail-folder-dot" style={{ background: folder.color }} />
+                                        <span className="detail-folder-name">{folder.name}</span>
+                                        <span className="detail-folder-check">{inFolder ? "✓" : "+"}</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        <button className="detail-sheet-cancel" onClick={() => setShowFolderModal(false)}>Listo</button>
+                    </div>
+                </div>
+            )}
+
+            {/* ── ELIMINAR PAQUETE ── */}
             {showDeletePkg && (
                 <div className="detail-modal-overlay" onClick={() => setShowDeletePkg(false)}>
                     <div className="detail-confirm-modal" onClick={e => e.stopPropagation()}>
@@ -474,29 +533,19 @@ export default function PackageDetail() {
                 </div>
             )}
 
-            {/* ── MODAL EDITAR TARJETA ── */}
+            {/* ── EDITAR TARJETA ── */}
             {editingCard && (
                 <div className="detail-modal-overlay" onClick={() => setEditingCard(null)}>
                     <div className="detail-bottom-sheet" onClick={e => e.stopPropagation()}>
                         <div className="detail-sheet-handle" />
-                        <h3 className="detail-sheet-title">Editar tarjeta #{editingCard.id}</h3>
+                        <h3 className="detail-sheet-title">Editar tarjeta</h3>
                         <div className="detail-edit-field">
                             <label className="detail-edit-label">Pregunta</label>
-                            <textarea
-                                className="detail-edit-textarea"
-                                value={editQuestion}
-                                onChange={e => setEditQuestion(e.target.value)}
-                                rows={2}
-                            />
+                            <textarea className="detail-edit-textarea" value={editQuestion} onChange={e => setEditQuestion(e.target.value)} rows={2} />
                         </div>
                         <div className="detail-edit-field">
                             <label className="detail-edit-label">Respuesta</label>
-                            <textarea
-                                className="detail-edit-textarea"
-                                value={editAnswer}
-                                onChange={e => setEditAnswer(e.target.value)}
-                                rows={2}
-                            />
+                            <textarea className="detail-edit-textarea" value={editAnswer} onChange={e => setEditAnswer(e.target.value)} rows={2} />
                         </div>
                         <div className="detail-form-actions">
                             <button className="detail-cancel-btn" onClick={() => setEditingCard(null)}>Cancelar</button>
@@ -508,12 +557,12 @@ export default function PackageDetail() {
                 </div>
             )}
 
-            {/* ── MODAL ELIMINAR TARJETA ── */}
+            {/* ── ELIMINAR TARJETA ── */}
             {deletingCardId !== null && (
                 <div className="detail-modal-overlay" onClick={() => setDeletingCardId(null)}>
                     <div className="detail-confirm-modal" onClick={e => e.stopPropagation()}>
                         <span className="detail-confirm-icon">⚠️</span>
-                        <h3 className="detail-confirm-title">¿Eliminar esta tarjeta?</h3>
+                        <h3 className="detail-confirm-title">¿Eliminar tarjeta?</h3>
                         <p className="detail-confirm-sub">Esta acción no se puede deshacer.</p>
                         <div className="detail-form-actions">
                             <button className="detail-cancel-btn" onClick={() => setDeletingCardId(null)}>Cancelar</button>
@@ -523,7 +572,7 @@ export default function PackageDetail() {
                 </div>
             )}
 
-            {/* ── MODAL RESEÑA ── */}
+            {/* ── RESEÑA ── */}
             {showReviewModal && (
                 <div className="review-modal-overlay" onClick={() => setShowReviewModal(false)}>
                     <div className="review-modal-card" onClick={e => e.stopPropagation()}>
@@ -534,13 +583,7 @@ export default function PackageDetail() {
                                 <button key={i} className={`review-star-btn ${i <= newRating ? "star-filled" : "star-empty"}`} onClick={() => setNewRating(i)}>★</button>
                             ))}
                         </div>
-                        <textarea
-                            className="review-modal-input"
-                            placeholder="Comentario (opcional)"
-                            value={newComment}
-                            onChange={e => setNewComment(e.target.value)}
-                            rows={3}
-                        />
+                        <textarea className="review-modal-input" placeholder="Comentario (opcional)" value={newComment} onChange={e => setNewComment(e.target.value)} rows={3} />
                         {reviewError && <p className="detail-error">{reviewError}</p>}
                         <div className="review-modal-actions">
                             <button className="detail-study-btn" onClick={handleSubmitReview} disabled={savingReview}>
@@ -555,21 +598,10 @@ export default function PackageDetail() {
     );
 }
 
-function BackIcon() {
-    return <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l7 7M5 12l7-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-}
-function DotsIcon() {
-    return <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>;
-}
-function PlusIcon() {
-    return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>;
-}
-function ForkIcon() {
-    return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/><circle cx="18" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/><circle cx="6" cy="18" r="2" stroke="currentColor" strokeWidth="1.8"/><path d="M6 8v2a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V8M6 8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>;
-}
-function EditIcon() {
-    return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>;
-}
-function TrashIcon() {
-    return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-}
+function BackIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l7 7M5 12l7-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function DotsIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>; }
+function PlusIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/></svg>; }
+function ForkIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/><circle cx="18" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/><circle cx="6" cy="18" r="2" stroke="currentColor" strokeWidth="1.8"/><path d="M6 8v2a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V8M6 8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
+function EditIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
+function TrashIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function FolderIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
