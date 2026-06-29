@@ -461,3 +461,219 @@
   flex-direction: column;
   gap: 8px;
 }
+
+/* ── menú / dots ── */
+.detail-menu-btn {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.18);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background 0.15s;
+    z-index: 2;
+}
+.detail-menu-btn:hover { background: rgba(0,0,0,0.28); }
+
+/* ── acciones en tarjeta ── */
+.detail-card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 8px 16px 12px;
+}
+.detail-card-edit-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: 1px solid #E0D8C7;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2B2620;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.detail-card-edit-btn:hover { background: #f3f0ea; }
+
+.detail-card-del-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid rgba(220,38,38,0.2);
+    border-radius: 8px;
+    padding: 5px 8px;
+    color: #dc2626;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.detail-card-del-btn:hover { background: rgba(220,38,38,0.06); }
+
+/* ── bottom sheet ── */
+.detail-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+    animation: fade-in 0.15s ease-out;
+}
+.detail-bottom-sheet {
+    width: 100%;
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 20px 20px 0 0;
+    padding: 12px 20px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: slide-up 0.2s ease-out;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+.detail-sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: #d8d4cc;
+    border-radius: 2px;
+    align-self: center;
+    margin-bottom: 12px;
+}
+.detail-sheet-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 12px;
+}
+.detail-sheet-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 4px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 10px;
+    transition: background 0.15s;
+}
+.detail-sheet-row:hover { background: #f3f0ea; }
+.detail-sheet-danger { color: #dc2626; }
+.detail-sheet-divider { height: 1px; background: rgba(0,0,0,0.06); margin: 4px 0; }
+.detail-sheet-cancel {
+    margin-top: 8px;
+    padding: 13px;
+    background: none;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    border-radius: 12px;
+    color: #6b6b80;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.detail-sheet-cancel:hover { background: rgba(0,0,0,0.04); }
+
+/* ── modal confirmar ── */
+.detail-confirm-modal {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 28px 24px;
+    margin: 24px;
+    width: calc(100% - 48px);
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: fade-in 0.15s ease-out;
+}
+.detail-confirm-icon { font-size: 36px; }
+.detail-confirm-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 4px 0 0;
+    text-align: center;
+}
+.detail-confirm-sub {
+    font-size: 14px;
+    color: #6b6b80;
+    text-align: center;
+    margin: 0 0 8px;
+}
+.detail-danger-btn {
+    flex: 1;
+    padding: 11px 18px;
+    background: #dc2626;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.detail-danger-btn:hover { opacity: 0.9; }
+
+/* ── campos edición ── */
+.detail-edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+.detail-edit-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b6b80;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+.detail-edit-input {
+    background: #FBF8F2;
+    border: 1.5px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 15px;
+    color: #1a1a2e;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+}
+.detail-edit-input:focus { border-color: #6366f1; }
+.detail-edit-textarea {
+    background: #FBF8F2;
+    border: 1.5px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 15px;
+    color: #1a1a2e;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    line-height: 1.5;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+}
+.detail-edit-textarea:focus { border-color: #6366f1; }
