@@ -21,8 +21,10 @@ export default function Folders() {
     const { id } = useParams();
 
     const [mainTab, setMainTab] = useState<MainTab>("carpetas");
+    const [pkgTab, setPkgTab] = useState<"propios" | "copiados">("propios");
     const [folders, setFolders] = useState<Folder[]>([]);
     const [myPackages, setMyPackages] = useState<FlashcardPackage[]>([]);
+    const [forkedPackages, setForkedPackages] = useState<FlashcardPackage[]>([]);
     const [loading, setLoading] = useState(true);
 
     // formulario nueva carpeta
@@ -65,8 +67,14 @@ export default function Folders() {
 
     const loadMyPackages = async () => {
         try {
-            const res = await fetch(`${API_URL}/packages`);
-            if (res.ok) setMyPackages(await res.json());
+            const token = await getToken();
+            const headers = { "Authorization": `Bearer ${token}` };
+            const [ownedRes, forkedRes] = await Promise.all([
+                fetch(`${API_URL}/users/me/packages`, { headers }),
+                fetch(`${API_URL}/users/me/packages/forked`, { headers }),
+            ]);
+            if (ownedRes.ok) setMyPackages(await ownedRes.json());
+            if (forkedRes.ok) setForkedPackages(await forkedRes.json());
         } catch {}
     };
 
@@ -354,39 +362,91 @@ export default function Folders() {
                 {/* TAB: PAQUETES */}
                 {mainTab === "paquetes" && (
                     <>
+                        {/* sub-tabs */}
+                        <div className="folders-pkg-subtabs">
+                            <button
+                                className={`folders-pkg-subtab ${pkgTab === "propios" ? "active" : ""}`}
+                                onClick={() => setPkgTab("propios")}
+                            >
+                                Mis paquetes ({myPackages.length})
+                            </button>
+                            <button
+                                className={`folders-pkg-subtab ${pkgTab === "copiados" ? "active" : ""}`}
+                                onClick={() => setPkgTab("copiados")}
+                            >
+                                Copiados ({forkedPackages.length})
+                            </button>
+                        </div>
+
                         {loading && (
                             <div className="folders-skeleton-list">
                                 {[1, 2, 3].map(i => <div key={i} className="folders-skeleton" />)}
                             </div>
                         )}
-                        {!loading && myPackages.length === 0 && (
-                            <div className="folders-empty">
-                                <span className="folders-empty-icon">📦</span>
-                                <p className="folders-empty-title">Sin paquetes aún</p>
-                                <p className="folders-empty-sub">Crea tu primer paquete de flashcards</p>
-                                <button className="folder-save-btn" onClick={() => navigate("/packages/new")}>
-                                    Crear paquete
-                                </button>
-                            </div>
-                        )}
-                        <div className="folders-grid">
-                            {myPackages.map(pkg => (
-                                <div
-                                    className="folder-card"
-                                    key={pkg.id}
-                                    onClick={() => navigate(`/packages/${pkg.id}`)}
-                                >
-                                    <div className="folder-card-icon" style={{ background: "#6366f1" }}>
-                                        <PackageIcon />
+
+                        {/* propios */}
+                        {!loading && pkgTab === "propios" && (
+                            <>
+                                {myPackages.length === 0 && (
+                                    <div className="folders-empty">
+                                        <span className="folders-empty-icon">📦</span>
+                                        <p className="folders-empty-title">Sin paquetes aún</p>
+                                        <p className="folders-empty-sub">Crea tu primer paquete de flashcards</p>
+                                        <button className="folder-save-btn" onClick={() => navigate("/packages/new")}>
+                                            Crear paquete
+                                        </button>
                                     </div>
-                                    <div className="folder-card-info">
-                                        <h2 className="folder-card-name">{pkg.name}</h2>
-                                        <p className="folder-card-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
-                                    </div>
-                                    <ChevronIcon />
+                                )}
+                                <div className="folders-grid">
+                                    {myPackages.map(pkg => (
+                                        <div className="folder-card" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
+                                            <div className="folder-card-icon" style={{ background: "#6366f1" }}>
+                                                <PackageIcon />
+                                            </div>
+                                            <div className="folder-card-info">
+                                                <h2 className="folder-card-name">{pkg.name}</h2>
+                                                <p className="folder-card-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
+                                            </div>
+                                            <div className="folder-pkg-badges">
+                                                {pkg.isPublic
+                                                    ? <span className="folder-pkg-badge badge-public">Público</span>
+                                                    : <span className="folder-pkg-badge badge-private">Privado</span>
+                                                }
+                                                <ChevronIcon />
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
+                            </>
+                        )}
+
+                        {/* copiados */}
+                        {!loading && pkgTab === "copiados" && (
+                            <>
+                                {forkedPackages.length === 0 && (
+                                    <div className="folders-empty">
+                                        <span className="folders-empty-icon">🔖</span>
+                                        <p className="folders-empty-title">Sin paquetes copiados</p>
+                                        <p className="folders-empty-sub">Guarda copias de paquetes que te gusten</p>
+                                    </div>
+                                )}
+                                <div className="folders-grid">
+                                    {forkedPackages.map(pkg => (
+                                        <div className="folder-card" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
+                                            <div className="folder-card-icon folder-card-icon-fork">
+                                                <ForkIcon />
+                                            </div>
+                                            <div className="folder-card-info">
+                                                <h2 className="folder-card-name">{pkg.name}</h2>
+                                                <p className="folder-card-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
+                                                <p className="folder-card-fork-label">Copia de otro usuario</p>
+                                            </div>
+                                            <ChevronIcon />
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </>
                 )}
 
@@ -501,6 +561,17 @@ function ChevronIcon() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
+}
+
+function ForkIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="6" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/>
+            <circle cx="18" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/>
+            <circle cx="6" cy="18" r="2" stroke="currentColor" strokeWidth="1.8"/>
+            <path d="M6 8v2a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V8M6 8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
         </svg>
     );
 }

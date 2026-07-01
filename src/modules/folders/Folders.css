@@ -564,3 +564,70 @@
     color: #6b6b80;
     margin: 2px 0 0;
 }
+
+/* ── sub-tabs paquetes ── */
+.folders-pkg-subtabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.folders-pkg-subtab {
+    flex: 1;
+    padding: 9px 12px;
+    background: #ffffff;
+    border: 1.5px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b6b80;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+}
+
+.folders-pkg-subtab:hover { background: #f3f0ea; }
+
+.folders-pkg-subtab.active {
+    background: rgba(99,102,241,0.08);
+    border-color: rgba(99,102,241,0.3);
+    color: #6366f1;
+}
+
+/* ── badges paquete ── */
+.folder-pkg-badges {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.folder-pkg-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 8px;
+}
+
+.badge-public {
+    background: rgba(22,163,74,0.1);
+    color: #16a34a;
+}
+
+.badge-private {
+    background: rgba(107,107,128,0.1);
+    color: #6b6b80;
+}
+
+/* ── card fork ── */
+.folder-card-icon-fork {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    color: rgba(255,255,255,0.9);
+}
+
+.folder-card-fork-label {
+    font-size: 11px;
+    color: #d97706;
+    font-weight: 500;
+    margin: 2px 0 0;
+}
