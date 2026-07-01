@@ -4,6 +4,7 @@ import { useAuth } from "../auth/AuthContext";
 import type { FlashcardPackage, Flashcard, CreateCardRequest, Folder } from "../../types/index";
 import "./PackageDetail.css";
 import { getThemeGradient, THEMES } from "./themes";
+import TagInput from "../shared/Taginput";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -38,6 +39,7 @@ export default function PackageDetail() {
     const [editDesc, setEditDesc] = useState("");
     const [editCategory, setEditCategory] = useState("");
     const [editIsPublic, setEditIsPublic] = useState(true);
+    const [editTags, setEditTags] = useState<string[]>([]);
     const [savingPkg, setSavingPkg] = useState(false);
     const [showDeletePkg, setShowDeletePkg] = useState(false);
 
@@ -85,6 +87,7 @@ export default function PackageDetail() {
         setEditDesc(pkg.description);
         setEditCategory(pkg.category);
         setEditIsPublic(pkg.isPublic);
+        setEditTags(pkg.tags ?? []);
         setShowPkgMenu(false);
         setShowEditPkg(true);
     };
@@ -101,7 +104,8 @@ export default function PackageDetail() {
                     name: editName,
                     description: editDesc,
                     category: editCategory,
-                    isPublic: editIsPublic
+                    isPublic: editIsPublic,
+                    tags: editTags,
                 }),
             });
             if (res.ok) {
@@ -178,7 +182,7 @@ export default function PackageDetail() {
                 body: JSON.stringify(newCard),
             });
             if (!res.ok) throw new Error();
-           
+    
             setNewCard({ question: "", answer: "" });
             setShowForm(false);
         } catch { setError("No se pudo crear la tarjeta"); }
@@ -245,7 +249,7 @@ export default function PackageDetail() {
                 body: JSON.stringify({ rating: newRating, comment: newComment }),
             });
             if (!res.ok) throw new Error();
-         
+
             setShowReviewModal(false);
             setNewRating(0); setNewComment("");
         } catch { setReviewError("No se pudo enviar la reseña"); }
@@ -281,6 +285,13 @@ export default function PackageDetail() {
                         {reviews.length > 0 && <span className="detail-rating">★ {avgRating.toFixed(1)}</span>}
                         <span className="detail-visibility">{pkg.isPublic ? "Público" : "Privado"}</span>
                     </div>
+                    {pkg.tags && pkg.tags.length > 0 && (
+                        <div className="detail-hero-tags">
+                            {pkg.tags.map(tag => (
+                                <span key={tag} className="detail-hero-tag">#{tag}</span>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -467,6 +478,15 @@ export default function PackageDetail() {
                                     </button>
                                 ))}
                             </div>
+                        </div>
+
+                        <div className="detail-edit-field">
+                            <label className="detail-edit-label">Etiquetas</label>
+                            <TagInput
+                                tags={editTags}
+                                onChange={setEditTags}
+                                placeholder="Agrega etiquetas..."
+                            />
                         </div>
 
                         <div className="detail-edit-toggle-row">

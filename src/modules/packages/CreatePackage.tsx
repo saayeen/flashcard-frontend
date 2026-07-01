@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import type { CreatePackageRequest, CreateCardRequest, Flashcard } from "../../types/index";
 import { THEMES, getThemeGradient } from "./themes";
+import TagInput from "../shared/Taginput";
 import "./CreatePackage.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
@@ -22,6 +23,7 @@ export default function CreatePackage() {
         category: "",
         isPublic: true,
         theme: "blue",
+        tags: [],
     });
     const [step, setStep] = useState<Step>(1);
     const [loading, setLoading] = useState(false);
@@ -171,10 +173,12 @@ export default function CreatePackage() {
 
                     <div className="create-field">
                         <label className="create-label">Etiquetas (opcional)</label>
-                        <div className="create-tags-placeholder">
-                            <TagIcon />
-                            <span>Agrega etiqueta</span>
-                        </div>
+                        <TagInput
+                            tags={form.tags}
+                            onChange={tags => setForm(p => ({ ...p, tags }))}
+                            placeholder="Escribe y presiona Enter o coma..."
+                        />
+                        <p className="create-tags-hint">Ej: historia, chile, paes — máx. 10 etiquetas</p>
                     </div>
 
                     <div className="create-field">
@@ -361,14 +365,6 @@ function BackIcon() {
     );
 }
 
-function TagIcon() {
-    return (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            <line x1="7" y1="7" x2="7.01" y2="7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-        </svg>
-    );
-}
 
 function TrashIcon() {
     return (

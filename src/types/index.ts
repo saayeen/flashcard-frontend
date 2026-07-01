@@ -7,6 +7,7 @@ export interface FlashcardPackage {
     isPublic: boolean;
     theme: string;
     userId: string;
+    tags: string[];
     forkedFromId?: number | null;
     originalAuthorId?: string | null;
 }
@@ -17,6 +18,7 @@ export interface CreatePackageRequest {
     category: string;
     isPublic: boolean;
     theme: string;
+    tags: string[];
 }
 
 export interface UpdatePackageRequest {
@@ -24,6 +26,7 @@ export interface UpdatePackageRequest {
     description?: string;
     category?: string;
     isPublic?: boolean;
+    tags?: string[];
 }
 
 export interface Flashcard {
