@@ -7,12 +7,12 @@ import "./Search.css";
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 const CATEGORIES = [
-    { label: "Universidad", emoji: "🎓" },
-    { label: "PAES", emoji: "📝" },
-    { label: "Carrera", emoji: "💼" },
-    { label: "Idiomas", emoji: "🌐" },
-    { label: "Licencias", emoji: "📋" },
-    { label: "Otros", emoji: "✨" },
+    { label: "Universidad", icon: <UniIcon /> },
+    { label: "PAES",        icon: <PaesIcon /> },
+    { label: "Idiomas",     icon: <LangIcon /> },
+    { label: "Licencias",   icon: <LicIcon /> },
+    { label: "Ciencias",    icon: <SciIcon /> },
+    { label: "Otros",       icon: <OtrosIcon /> },
 ];
 
 const POPULAR_TAGS = ["inglés", "biología", "historia", "física", "matemáticas", "programación"];
@@ -34,20 +34,21 @@ export default function Search() {
     }, []);
 
     useEffect(() => {
-        const q = searchParams.get("q");
-        if (q) {
-            setQuery(q);
-            doSearch(q);
-        } else {
-            setResults([]);
-        }
+        const q = searchParams.get("q") ?? "";
+        const category = searchParams.get("category") ?? "";
+        if (q) setQuery(q);
+        if (q || category) doSearch(q, category || undefined);
+        else setResults([]);
     }, [searchParams]);
 
-    const doSearch = async (q: string) => {
-        if (!q.trim()) return;
+    const doSearch = async (q: string, category?: string) => {
+        if (!q.trim() && !category) return;
         setLoading(true);
         try {
-            const res = await fetch(`${API_URL}/search?q=${encodeURIComponent(q)}`);
+            const params = new URLSearchParams();
+            if (q.trim()) params.set("q", q.trim());
+            if (category) params.set("category", category);
+            const res = await fetch(`${API_URL}/search?${params.toString()}`);
             setResults(await res.json());
         } catch {
             setResults([]);
@@ -58,12 +59,14 @@ export default function Search() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (query.trim()) setSearchParams({ q: query.trim() });
+        if (query.trim()) {
+            setSearchParams({ q: query.trim() });
+        }
     };
 
     const handleCategory = (label: string) => {
-        setQuery(label);
-        setSearchParams({ q: label });
+        setQuery("");
+        setSearchParams({ category: label });
     };
 
     const handleTag = (tag: string) => {
@@ -71,13 +74,17 @@ export default function Search() {
         setSearchParams({ q: tag });
     };
 
+    const hasSearched = searchParams.get("q") !== null || searchParams.get("category") !== null;
+    const activeCategory = searchParams.get("category");
+    const searchLabel = activeCategory
+        ? `Categoría: ${activeCategory}`
+        : `"${searchParams.get("q")}"`;
+
     const clearSearch = () => {
         setQuery("");
         setSearchParams({});
         setResults([]);
     };
-
-    const hasSearched = searchParams.get("q") !== null;
 
     return (
         <div className="search-page">
@@ -123,7 +130,7 @@ export default function Search() {
                                         className="search-category-chip"
                                         onClick={() => handleCategory(cat.label)}
                                     >
-                                        <span className="chip-emoji">{cat.emoji}</span>
+                                        <span className="chip-icon">{cat.icon}</span>
                                         <span className="chip-label">{cat.label}</span>
                                     </button>
                                 ))}
@@ -173,7 +180,7 @@ export default function Search() {
                         <h2 className="search-section-title">
                             {loading
                                 ? "Buscando..."
-                                : `${results.length} resultado${results.length !== 1 ? "s" : ""} para "${searchParams.get("q")}"`
+                                : `${results.length} resultado${results.length !== 1 ? "s" : ""} para ${searchLabel}`
                             }
                         </h2>
 
@@ -235,7 +242,7 @@ function SearchIcon() {
 function ClearIcon() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="9" fill="rgba(255,255,255,0.15)" />
+            <circle cx="12" cy="12" r="9" fill="rgba(0,0,0,0.08)" />
             <path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
     );
@@ -254,6 +261,64 @@ function ChevronIcon() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
+}
+
+function UniIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L2 8l10 5 10-5-10-5z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+            <path d="M6 10.5v5c0 2 2.686 3.5 6 3.5s6-1.5 6-3.5v-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+            <path d="M22 8v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+        </svg>
+    );
+}
+
+function PaesIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/>
+            <path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+        </svg>
+    );
+}
+
+function LangIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/>
+            <path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9M3 12h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+        </svg>
+    );
+}
+
+function LicIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.8"/>
+            <path d="M8 10h8M8 14h5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+            <circle cx="16" cy="14" r="2" stroke="currentColor" strokeWidth="1.6"/>
+        </svg>
+    );
+}
+
+function SciIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M9 3v8L4 19a1 1 0 0 0 .9 1.4h14.2A1 1 0 0 0 20 19l-5-8V3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M9 3h6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+            <circle cx="10" cy="15" r="1" fill="currentColor"/>
+            <circle cx="14" cy="17" r="1" fill="currentColor"/>
+        </svg>
+    );
+}
+
+function OtrosIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/>
+            <path d="M12 8v4M12 16h.01" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
         </svg>
     );
 }

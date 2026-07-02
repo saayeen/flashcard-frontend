@@ -30,7 +30,7 @@ export default function Profile() {
             const [statsRes, activityRes, pkgsRes] = await Promise.all([
                 fetch(`${API_URL}/stats`, { headers }),
                 fetch(`${API_URL}/stats/activity`, { headers }),
-                fetch(`${API_URL}/packages`, { headers }),
+                fetch(`${API_URL}/users/me/packages`, { headers }),
             ]);
             if (statsRes.ok) setStats(await statsRes.json());
             if (activityRes.ok) setActivity(await activityRes.json());

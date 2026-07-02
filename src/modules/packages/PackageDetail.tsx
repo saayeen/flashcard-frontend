@@ -182,7 +182,12 @@ export default function PackageDetail() {
                 body: JSON.stringify(newCard),
             });
             if (!res.ok) throw new Error();
-    
+            const created: Flashcard = await res.json();
+            setCards(prev => {
+                const updated = [...prev, created];
+                setPkg(p => p ? { ...p, cardCount: updated.length } : p);
+                return updated;
+            });
             setNewCard({ question: "", answer: "" });
             setShowForm(false);
         } catch { setError("No se pudo crear la tarjeta"); }
@@ -221,7 +226,11 @@ export default function PackageDetail() {
                 method: "DELETE",
                 headers: { "Authorization": `Bearer ${token}` },
             });
-            setCards(prev => prev.filter(c => c.id !== cardId));
+            setCards(prev => {
+                const updated = prev.filter(c => c.id !== cardId);
+                setPkg(p => p ? { ...p, cardCount: updated.length } : p);
+                return updated;
+            });
             setDeletingCardId(null);
         } catch {}
     };
@@ -249,7 +258,8 @@ export default function PackageDetail() {
                 body: JSON.stringify({ rating: newRating, comment: newComment }),
             });
             if (!res.ok) throw new Error();
-
+            const created: Review = await res.json();
+            setReviews(prev => [created, ...prev]);
             setShowReviewModal(false);
             setNewRating(0); setNewComment("");
         } catch { setReviewError("No se pudo enviar la reseña"); }

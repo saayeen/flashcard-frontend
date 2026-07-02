@@ -109,7 +109,7 @@
 .search-category-chip:hover { background: #f3f0ea; }
 .search-category-chip:active { transform: scale(0.97); }
 
-.chip-emoji { font-size: 20px; flex-shrink: 0; }
+.chip-icon { font-size: 20px; flex-shrink: 0; }
 
 .chip-label {
     font-size: 14px;
@@ -265,4 +265,11 @@
 @keyframes skeleton-shimmer {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
+}
+.chip-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6366f1;
+    flex-shrink: 0;
 }
