@@ -60,6 +60,20 @@ export interface SearchResult {
     category: string;
     cardCount: number;
     authorName: string;
+    tags?: string[];
+}
+
+export interface UserResult {
+    id: string;
+    name: string;
+    photoUrl?: string | null;
+    description: string;
+    packageCount: number;
+}
+
+export interface TagResult {
+    tag: string;
+    packageCount: number;
 }
 
 export interface GlobalStats {
