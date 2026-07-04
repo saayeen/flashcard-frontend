@@ -273,3 +273,99 @@
     color: #6366f1;
     flex-shrink: 0;
 }
+
+/* PERFILES — estilo Wattpad */
+.search-user-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.07);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.search-user-card:hover { background: #f8f5ef; }
+
+.search-user-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #D85A30;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.search-user-avatar-img {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.search-user-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.search-user-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-user-handle {
+    font-size: 12px;
+    color: #9090a8;
+    margin: 0;
+}
+
+.search-user-stats {
+    font-size: 12px;
+    color: #6b6b80;
+    margin: 2px 0 0;
+}
+
+.search-follow-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 14px;
+    background: transparent;
+    border: 1.5px solid #1a1a2e;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a2e;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.search-follow-btn:hover {
+    background: #1a1a2e;
+    color: #fff;
+}
+
+.search-follow-btn.following {
+    background: #f3f0ea;
+    border-color: #c0c0d0;
+    color: #6b6b80;
+}

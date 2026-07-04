@@ -254,19 +254,30 @@ export default function Search() {
                                 {userResults.length === 0 && <EmptyState text="No encontramos perfiles" />}
                                 <div className="search-results-list">
                                     {userResults.map(u => (
-                                        <div key={u.id} className="search-user-card">
+                                        <div key={u.id} className="search-user-card" onClick={() => navigate(`/profile/${u.id}`)}>
                                             <div className="search-user-avatar">
                                                 {u.photoUrl
                                                     ? <img src={u.photoUrl} alt={u.name} className="search-user-avatar-img" />
-                                                    : <span>{u.name.slice(0,2).toUpperCase()}</span>
+                                                    : <span>{u.name.slice(0, 2).toUpperCase()}</span>
                                                 }
                                             </div>
                                             <div className="search-user-info">
                                                 <p className="search-user-name">{u.name}</p>
-                                                {u.description && <p className="search-user-desc">{u.description}</p>}
-                                                <p className="search-user-meta">{u.packageCount} paquetes públicos</p>
+                                                <p className="search-user-handle">@{u.name.toLowerCase().replace(/\s+/g, "")}</p>
+                                                <p className="search-user-stats">
+                                                    <span>{u.packageCount} paquetes públicos</span>
+                                                </p>
                                             </div>
-                                            <ChevronIcon />
+                                            <button
+                                                className="search-follow-btn"
+                                                onClick={e => {
+                                                    e.stopPropagation();
+                                                    // TODO: implementar follow
+                                                }}
+                                            >
+                                                <FollowIcon />
+                                                Seguir
+                                            </button>
                                         </div>
                                     ))}
                                 </div>
@@ -321,6 +332,9 @@ function EmptyState({ text }: { text: string }) {
             <p className="search-empty-sub">Prueba con otro término</p>
         </div>
     );
+}
+function FollowIcon() {
+    return <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3M20 20c0-2.21-1.79-4-4-4M3 20a5 5 0 0 1 10 0M8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M20 8h4M22 6v4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>;
 }
 
 function SearchIcon() {
