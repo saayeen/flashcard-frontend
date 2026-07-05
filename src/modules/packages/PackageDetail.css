@@ -29,6 +29,7 @@
   background-position: center;
 }
 
+
 .detail-hero::after {
   content: "";
   position: absolute;
@@ -47,6 +48,7 @@
   position: relative;
   z-index: 2;
 }
+
 .detail-back-btn {
   width: 36px;
   height: 36px;
@@ -436,12 +438,23 @@
   padding: 2rem 0;
 }
 
+.detail-card-item:hover {
+  border-color: rgba(0,0,0,0.12);
+} 
+
 .detail-card-item {
   background: #ffffff;
   border: 1px solid rgba(0,0,0,0.07);
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.detail-card-item.expanded {
+  border-color: rgba(216,90,48,0.3);
+  box-shadow: 0 2px 10px rgba(216,90,48,0.08);
 }
 
 .detail-card-front {
@@ -449,7 +462,20 @@
   font-size: 15px;
   font-weight: 500;
   color: #1a1a2e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
+.detail-card-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9090a8;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.detail-card-chevron.up { transform: rotate(180deg); color: #D85A30; }
 
 .detail-card-divider { height: 1px; background: rgba(0,0,0,0.06); }
 
@@ -457,6 +483,7 @@
   padding: 12px 16px;
   font-size: 14px;
   color: #D85A30;
+  animation: fade-in 0.15s ease-out;
 }
 
 .detail-card-actions {
@@ -896,3 +923,42 @@
 .review-modal-input:focus { border-color: #6366f1; }
 
 .review-modal-actions { display: flex; flex-direction: column; gap: 8px; }
+
+/* ══════════════════
+   CONTENIDO ÚNICO (sin tabs)
+   ══════════════════ */
+.detail-body {
+  background: #ffffff;
+  padding: 4px 0 0;
+}
+
+.detail-section {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 8px solid #f8f5ef;
+}
+
+.detail-section:last-child {
+  border-bottom: none;
+}
+
+.detail-section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.detail-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.detail-section-count {
+  font-size: 13px;
+  color: #9090a8;
+  font-weight: 500;
+}

@@ -8,8 +8,6 @@ import TagInput from "../shared/Taginput";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-type Tab = "detalles" | "descripcion" | "resenas";
-
 interface Review {
     id: number;
     userId: string;
@@ -39,8 +37,10 @@ export default function PackageDetail() {
     const [cards, setCards] = useState<Flashcard[]>([]);
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<Tab>("detalles");
     const [error, setError] = useState<string | null>(null);
+
+    // tarjeta expandida (acordeón)
+    const [expandedCardId, setExpandedCardId] = useState<number | null>(null);
 
     // menú paquete
     const [showPkgMenu, setShowPkgMenu] = useState(false);
@@ -288,7 +288,7 @@ export default function PackageDetail() {
         <div className="detail-page">
 
             {/* ── HERO estilo Wattpad ── */}
-            <div className="detail-hero">
+            <div className="detail-hero" style={{ background: getThemeGradient(pkg.theme) }}>
 
                 {/* topbar */}
                 <div className="detail-hero-topbar">
@@ -307,7 +307,7 @@ export default function PackageDetail() {
 
                     {/* cover */}
                     <div className="detail-cover">
-                        <div className="detail-cover-gradient" style={{ background: getThemeGradient(pkg.theme) }}>
+                        <div className="detail-cover-gradient">
                             <span className="detail-cover-emoji">{coverEmoji}</span>
                             <span className="detail-cover-initials">
                                 {pkg.name.split(" ").slice(0, 3).map(w => w[0]).join("").toUpperCase()}
@@ -360,22 +360,25 @@ export default function PackageDetail() {
                 </div>
             </div>
 
-            {/* ── TABS ── */}
-            <div className="detail-tabs">
-                {(["detalles", "descripcion", "resenas"] as Tab[]).map(tab => (
-                    <button
-                        key={tab}
-                        className={`detail-tab ${activeTab === tab ? "detail-tab-active" : ""}`}
-                        onClick={() => setActiveTab(tab)}
-                    >
-                        {tab === "detalles" ? "Detalles" : tab === "descripcion" ? "Descripción" : "Reseñas"}
-                    </button>
-                ))}
-            </div>
+            {/* ══════════════════════════════════
+               CONTENIDO ÚNICO (sin tabs)
+               ══════════════════════════════════ */}
+            <div className="detail-body">
 
-            {/* ── TAB: DETALLES ── */}
-            {activeTab === "detalles" && (
-                <div className="detail-tab-content">
+                {/* ── DESCRIPCIÓN ── */}
+                {pkg.description && (
+                    <section className="detail-section">
+                        <p className="detail-desc-text">{pkg.description}</p>
+                    </section>
+                )}
+
+                {/* ── TARJETAS ── */}
+                <section className="detail-section">
+                    <div className="detail-section-header">
+                        <h2 className="detail-section-title">Tarjetas</h2>
+                        <span className="detail-section-count">{cards.length}</span>
+                    </div>
+
                     {isOwner && (
                         <button className="detail-add-btn" onClick={() => setShowForm(!showForm)}>
                             <PlusIcon /> Agregar tarjeta
@@ -405,37 +408,45 @@ export default function PackageDetail() {
                         {cards.length === 0 && !showForm && (
                             <p className="detail-empty">Sin tarjetas aún.</p>
                         )}
-                        {cards.map(card => (
-                            <div className="detail-card-item" key={card.id}>
-                                <div className="detail-card-front">{card.question}</div>
-                                <div className="detail-card-divider" />
-                                <div className="detail-card-back">{card.answer}</div>
-                                {isOwner && (
-                                    <div className="detail-card-actions">
-                                        <button className="detail-card-edit-btn" onClick={() => openEditCard(card)}>
-                                            <EditIcon /> Editar
-                                        </button>
-                                        <button className="detail-card-del-btn" onClick={() => setDeletingCardId(card.id)}>
-                                            <TrashIcon />
-                                        </button>
+                        {cards.map(card => {
+                            const isExpanded = expandedCardId === card.id;
+                            return (
+                                <div
+                                    className={`detail-card-item ${isExpanded ? "expanded" : ""}`}
+                                    key={card.id}
+                                    onClick={() => setExpandedCardId(isExpanded ? null : card.id)}
+                                >
+                                    <div className="detail-card-front">
+                                        <span>{card.question}</span>
+                                        <span className={`detail-card-chevron ${isExpanded ? "up" : ""}`}>
+                                            <ChevronIcon />
+                                        </span>
                                     </div>
-                                )}
-                            </div>
-                        ))}
+
+                                    {isExpanded && (
+                                        <>
+                                            <div className="detail-card-divider" />
+                                            <div className="detail-card-back">{card.answer}</div>
+                                            {isOwner && (
+                                                <div className="detail-card-actions" onClick={e => e.stopPropagation()}>
+                                                    <button className="detail-card-edit-btn" onClick={() => openEditCard(card)}>
+                                                        <EditIcon /> Editar
+                                                    </button>
+                                                    <button className="detail-card-del-btn" onClick={() => setDeletingCardId(card.id)}>
+                                                        <TrashIcon />
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
-                </div>
-            )}
+                </section>
 
-            {/* ── TAB: DESCRIPCIÓN ── */}
-            {activeTab === "descripcion" && (
-                <div className="detail-tab-content">
-                    <p className="detail-desc-text">{pkg.description || "Sin descripción."}</p>
-                </div>
-            )}
-
-            {/* ── TAB: RESEÑAS ── */}
-            {activeTab === "resenas" && (
-                <div className="detail-tab-content">
+                {/* ── RESEÑAS ── */}
+                <section className="detail-section">
                     <div className="detail-reviews-header">
                         <div className="detail-reviews-avg">
                             <span className="detail-reviews-score">
@@ -478,8 +489,8 @@ export default function PackageDetail() {
                             </div>
                         ))}
                     </div>
-                </div>
-            )}
+                </section>
+            </div>
 
             {/* ── BARRA INFERIOR FIJA ── */}
             <div className="detail-sticky-bar">
@@ -710,3 +721,4 @@ function EditIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fil
 function TrashIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function FolderIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
 function CardsIcon() { return <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M6 9h12M6 13h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
+function ChevronIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
