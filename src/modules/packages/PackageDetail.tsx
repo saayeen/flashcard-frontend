@@ -20,6 +20,16 @@ interface Review {
 
 const CATEGORIES = ["Universidad", "PAES", "Carrera", "Idiomas", "Licencias", "Otros"];
 
+const COVER_EMOJI: Record<string, string> = {
+    universidad: "🎓",
+    paes: "📝",
+    carrera: "💼",
+    idiomas: "🌐",
+    licencias: "🚗",
+    ciencias: "🔬",
+    otros: "📚",
+};
+
 export default function PackageDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -140,7 +150,6 @@ export default function PackageDetail() {
             if (res.ok) {
                 const allFolders: Folder[] = await res.json();
                 setFolders(allFolders);
-                // ver en cuáles está este paquete
                 const inFolders = await Promise.all(
                     allFolders.map(async f => {
                         const r = await fetch(`${API_URL}/folders/${f.id}/packages`);
@@ -273,72 +282,115 @@ export default function PackageDetail() {
     if (!pkg) return <div className="detail-loading">Paquete no encontrado</div>;
 
     const isOwner = user?.uid === pkg.userId;
+    const coverEmoji = COVER_EMOJI[(pkg.category ?? "").toLowerCase()] ?? "📚";
 
     return (
         <div className="detail-page">
 
-            {/* HERO */}
-            <div className="detail-hero" style={{ background: getThemeGradient(pkg.theme) }}>
-                <button className="detail-back-btn" onClick={() => navigate(-1)}>
-                    <BackIcon />
-                </button>
-                {isOwner && (
-                    <button className="detail-menu-btn" onClick={() => setShowPkgMenu(true)}>
-                        <DotsIcon />
+            {/* ── HERO estilo Wattpad ── */}
+            <div className="detail-hero">
+
+                {/* topbar */}
+                <div className="detail-hero-topbar">
+                    <button className="detail-back-btn" onClick={() => navigate(-1)}>
+                        <BackIcon />
                     </button>
-                )}
-                <div className="detail-hero-content">
-                    <span className="detail-category">{pkg.category}</span>
-                    <h1 className="detail-name">{pkg.name}</h1>
-                    <div className="detail-hero-meta">
-                        <span>{cards.length} tarjetas</span>
-                        {reviews.length > 0 && <span className="detail-rating">★ {avgRating.toFixed(1)}</span>}
-                        <span className="detail-visibility">{pkg.isPublic ? "Público" : "Privado"}</span>
-                    </div>
-                    {pkg.tags && pkg.tags.length > 0 && (
-                        <div className="detail-hero-tags">
-                            {pkg.tags.map(tag => (
-                                <span key={tag} className="detail-hero-tag">#{tag}</span>
-                            ))}
-                        </div>
+                    {isOwner && (
+                        <button className="detail-menu-btn" onClick={() => setShowPkgMenu(true)}>
+                            <DotsIcon />
+                        </button>
                     )}
+                </div>
+
+                {/* cover + info */}
+                <div className="detail-hero-body">
+
+                    {/* cover */}
+                    <div className="detail-cover">
+                        <div className="detail-cover-gradient" style={{ background: getThemeGradient(pkg.theme) }}>
+                            <span className="detail-cover-emoji">{coverEmoji}</span>
+                            <span className="detail-cover-initials">
+                                {pkg.name.split(" ").slice(0, 3).map(w => w[0]).join("").toUpperCase()}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* info derecha */}
+                    <div className="detail-hero-info">
+                        <span className="detail-category">{pkg.category}</span>
+                        <h1 className="detail-name">{pkg.name}</h1>
+
+                        <div className="detail-author-row">
+                            <div className="detail-author-avatar">
+                                {pkg.userId.slice(0, 1).toUpperCase()}
+                            </div>
+                            <span className="detail-author-name">
+                                {isOwner ? "Tú" : `@${pkg.userId.slice(0, 8)}`}
+                            </span>
+                        </div>
+
+                        <div className="detail-hero-stats">
+                            <div className="detail-stat">
+                                <CardsIcon />
+                                {cards.length} tarjetas
+                            </div>
+                            {reviews.length > 0 && (
+                                <>
+                                    <div className="detail-stat-dot" />
+                                    <div className="detail-stat">
+                                        <span className="detail-rating-stars">★</span>
+                                        {avgRating.toFixed(1)}
+                                    </div>
+                                </>
+                            )}
+                            <div className="detail-stat-dot" />
+                            <span className="detail-visibility">
+                                {pkg.isPublic ? "Público" : "Privado"}
+                            </span>
+                        </div>
+
+                        {pkg.tags && pkg.tags.length > 0 && (
+                            <div className="detail-hero-tags">
+                                {pkg.tags.map(tag => (
+                                    <span key={tag} className="detail-hero-tag">#{tag}</span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
-            {/* TABS */}
+            {/* ── TABS ── */}
             <div className="detail-tabs">
                 {(["detalles", "descripcion", "resenas"] as Tab[]).map(tab => (
-                    <button key={tab} className={`detail-tab ${activeTab === tab ? "detail-tab-active" : ""}`} onClick={() => setActiveTab(tab)}>
+                    <button
+                        key={tab}
+                        className={`detail-tab ${activeTab === tab ? "detail-tab-active" : ""}`}
+                        onClick={() => setActiveTab(tab)}
+                    >
                         {tab === "detalles" ? "Detalles" : tab === "descripcion" ? "Descripción" : "Reseñas"}
                     </button>
                 ))}
             </div>
 
-            {/* TAB: DETALLES */}
+            {/* ── TAB: DETALLES ── */}
             {activeTab === "detalles" && (
                 <div className="detail-tab-content">
-                    <div className="detail-actions">
-                        <button className="detail-study-btn" onClick={() => navigate(`/packages/${id}/study`)}>
-                            Estudiar paquete
+                    {isOwner && (
+                        <button className="detail-add-btn" onClick={() => setShowForm(!showForm)}>
+                            <PlusIcon /> Agregar tarjeta
                         </button>
-                        {isOwner ? (
-                            <button className="detail-add-btn" onClick={() => setShowForm(!showForm)}>
-                                <PlusIcon /> Agregar tarjeta
-                            </button>
-                        ) : (
-                            <button className="detail-fork-btn" onClick={handleFork}>
-                                <ForkIcon /> Guardar copia
-                            </button>
-                        )}
-                    </div>
+                    )}
 
                     {error && <p className="detail-error">{error}</p>}
 
                     {showForm && isOwner && (
                         <div className="detail-card-form">
-                            <textarea className="detail-card-input" placeholder="Pregunta" value={newCard.question}
+                            <textarea className="detail-card-input" placeholder="Pregunta"
+                                value={newCard.question}
                                 onChange={e => setNewCard(p => ({ ...p, question: e.target.value }))} rows={2} />
-                            <textarea className="detail-card-input" placeholder="Respuesta" value={newCard.answer}
+                            <textarea className="detail-card-input" placeholder="Respuesta"
+                                value={newCard.answer}
                                 onChange={e => setNewCard(p => ({ ...p, answer: e.target.value }))} rows={2} />
                             <div className="detail-form-actions">
                                 <button className="detail-cancel-btn" onClick={() => setShowForm(false)}>Cancelar</button>
@@ -350,7 +402,9 @@ export default function PackageDetail() {
                     )}
 
                     <div className="detail-cards">
-                        {cards.length === 0 && !showForm && <p className="detail-empty">Sin tarjetas aún.</p>}
+                        {cards.length === 0 && !showForm && (
+                            <p className="detail-empty">Sin tarjetas aún.</p>
+                        )}
                         {cards.map(card => (
                             <div className="detail-card-item" key={card.id}>
                                 <div className="detail-card-front">{card.question}</div>
@@ -372,49 +426,51 @@ export default function PackageDetail() {
                 </div>
             )}
 
-            {/* TAB: DESCRIPCIÓN */}
+            {/* ── TAB: DESCRIPCIÓN ── */}
             {activeTab === "descripcion" && (
                 <div className="detail-tab-content">
                     <p className="detail-desc-text">{pkg.description || "Sin descripción."}</p>
-                    <div className="detail-actions">
-                        <button className="detail-study-btn" onClick={() => navigate(`/packages/${id}/study`)}>
-                            Empezar a estudiar
-                        </button>
-                        {!isOwner && (
-                            <button className="detail-fork-btn" onClick={handleFork}>
-                                <ForkIcon /> Guardar copia
-                            </button>
-                        )}
-                    </div>
                 </div>
             )}
 
-            {/* TAB: RESEÑAS */}
+            {/* ── TAB: RESEÑAS ── */}
             {activeTab === "resenas" && (
                 <div className="detail-tab-content">
                     <div className="detail-reviews-header">
                         <div className="detail-reviews-avg">
-                            <span className="detail-reviews-score">{avgRating > 0 ? avgRating.toFixed(1) : "—"}</span>
+                            <span className="detail-reviews-score">
+                                {avgRating > 0 ? avgRating.toFixed(1) : "—"}
+                            </span>
                             <div className="detail-reviews-stars">
-                                {[1,2,3,4,5].map(i => <span key={i} className={i <= Math.round(avgRating) ? "star-filled" : "star-empty"}>★</span>)}
+                                {[1,2,3,4,5].map(i => (
+                                    <span key={i} className={i <= Math.round(avgRating) ? "star-filled" : "star-empty"}>★</span>
+                                ))}
                             </div>
                             <span className="detail-reviews-count">{reviews.length} reseñas</span>
                         </div>
-                        <button className={`detail-review-btn ${!user ? "detail-review-btn-disabled" : ""}`}
-                            onClick={() => user && setShowReviewModal(true)} disabled={!user}>
+                        <button
+                            className={`detail-review-btn ${!user ? "detail-review-btn-disabled" : ""}`}
+                            onClick={() => user && setShowReviewModal(true)}
+                            disabled={!user}
+                        >
                             {user ? "Evaluar paquete" : "Inicia sesión para evaluar"}
                         </button>
                     </div>
+
                     <div className="detail-reviews-list">
                         {reviews.length === 0 && <p className="detail-empty">¡Sé el primero en reseñar!</p>}
                         {reviews.map(review => (
                             <div className="detail-review-item" key={review.id}>
                                 <div className="detail-review-top">
-                                    <div className="detail-review-avatar">{review.userId.slice(0,1).toUpperCase()}</div>
+                                    <div className="detail-review-avatar">
+                                        {review.userId.slice(0,1).toUpperCase()}
+                                    </div>
                                     <div>
                                         <p className="detail-review-user">{review.userId.slice(0,8)}...</p>
                                         <div className="detail-review-stars">
-                                            {[1,2,3,4,5].map(i => <span key={i} className={i <= review.rating ? "star-filled" : "star-empty"}>★</span>)}
+                                            {[1,2,3,4,5].map(i => (
+                                                <span key={i} className={i <= review.rating ? "star-filled" : "star-empty"}>★</span>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
@@ -424,6 +480,18 @@ export default function PackageDetail() {
                     </div>
                 </div>
             )}
+
+            {/* ── BARRA INFERIOR FIJA ── */}
+            <div className="detail-sticky-bar">
+                <button className="detail-study-btn" onClick={() => navigate(`/packages/${id}/study`)}>
+                    Estudiar paquete
+                </button>
+                {!isOwner && (
+                    <button className="detail-fork-btn" onClick={handleFork}>
+                        <ForkIcon /> Guardar copia
+                    </button>
+                )}
+            </div>
 
             {/* ── MENÚ PAQUETE ── */}
             {showPkgMenu && (
@@ -438,7 +506,8 @@ export default function PackageDetail() {
                             <FolderIcon /> Agregar a carpeta
                         </button>
                         <div className="detail-sheet-divider" />
-                        <button className="detail-sheet-row detail-sheet-danger" onClick={() => { setShowPkgMenu(false); setShowDeletePkg(true); }}>
+                        <button className="detail-sheet-row detail-sheet-danger"
+                            onClick={() => { setShowPkgMenu(false); setShowDeletePkg(true); }}>
                             <TrashIcon /> Eliminar paquete
                         </button>
                         <button className="detail-sheet-cancel" onClick={() => setShowPkgMenu(false)}>Cancelar</button>
@@ -455,12 +524,14 @@ export default function PackageDetail() {
 
                         <div className="detail-edit-field">
                             <label className="detail-edit-label">Nombre</label>
-                            <input className="detail-edit-input" value={editName} onChange={e => setEditName(e.target.value)} maxLength={80} />
+                            <input className="detail-edit-input" value={editName}
+                                onChange={e => setEditName(e.target.value)} maxLength={80} />
                         </div>
 
                         <div className="detail-edit-field">
                             <label className="detail-edit-label">Descripción</label>
-                            <textarea className="detail-edit-textarea" value={editDesc} onChange={e => setEditDesc(e.target.value)} rows={3} maxLength={300} />
+                            <textarea className="detail-edit-textarea" value={editDesc}
+                                onChange={e => setEditDesc(e.target.value)} rows={3} maxLength={300} />
                         </div>
 
                         <div className="detail-edit-field">
@@ -492,11 +563,7 @@ export default function PackageDetail() {
 
                         <div className="detail-edit-field">
                             <label className="detail-edit-label">Etiquetas</label>
-                            <TagInput
-                                tags={editTags}
-                                onChange={setEditTags}
-                                placeholder="Agrega etiquetas..."
-                            />
+                            <TagInput tags={editTags} onChange={setEditTags} placeholder="Agrega etiquetas..." />
                         </div>
 
                         <div className="detail-edit-toggle-row">
@@ -505,7 +572,8 @@ export default function PackageDetail() {
                                 <p className="detail-edit-toggle-sub">Visible para otros usuarios</p>
                             </div>
                             <label className="toggle">
-                                <input type="checkbox" checked={editIsPublic} onChange={e => setEditIsPublic(e.target.checked)} />
+                                <input type="checkbox" checked={editIsPublic}
+                                    onChange={e => setEditIsPublic(e.target.checked)} />
                                 <span className="toggle-slider" />
                             </label>
                         </div>
@@ -534,7 +602,8 @@ export default function PackageDetail() {
                             {folders.map(folder => {
                                 const inFolder = pkgFolderIds.includes(folder.id);
                                 return (
-                                    <button key={folder.id} className={`detail-folder-row ${inFolder ? "in-folder" : ""}`}
+                                    <button key={folder.id}
+                                        className={`detail-folder-row ${inFolder ? "in-folder" : ""}`}
                                         onClick={() => toggleFolder(folder.id)}>
                                         <div className="detail-folder-dot" style={{ background: folder.color }} />
                                         <span className="detail-folder-name">{folder.name}</span>
@@ -571,11 +640,13 @@ export default function PackageDetail() {
                         <h3 className="detail-sheet-title">Editar tarjeta</h3>
                         <div className="detail-edit-field">
                             <label className="detail-edit-label">Pregunta</label>
-                            <textarea className="detail-edit-textarea" value={editQuestion} onChange={e => setEditQuestion(e.target.value)} rows={2} />
+                            <textarea className="detail-edit-textarea" value={editQuestion}
+                                onChange={e => setEditQuestion(e.target.value)} rows={2} />
                         </div>
                         <div className="detail-edit-field">
                             <label className="detail-edit-label">Respuesta</label>
-                            <textarea className="detail-edit-textarea" value={editAnswer} onChange={e => setEditAnswer(e.target.value)} rows={2} />
+                            <textarea className="detail-edit-textarea" value={editAnswer}
+                                onChange={e => setEditAnswer(e.target.value)} rows={2} />
                         </div>
                         <div className="detail-form-actions">
                             <button className="detail-cancel-btn" onClick={() => setEditingCard(null)}>Cancelar</button>
@@ -610,10 +681,13 @@ export default function PackageDetail() {
                         <p className="review-modal-subtitle">{pkg.name}</p>
                         <div className="review-modal-stars">
                             {[1,2,3,4,5].map(i => (
-                                <button key={i} className={`review-star-btn ${i <= newRating ? "star-filled" : "star-empty"}`} onClick={() => setNewRating(i)}>★</button>
+                                <button key={i}
+                                    className={`review-star-btn ${i <= newRating ? "star-filled" : "star-empty"}`}
+                                    onClick={() => setNewRating(i)}>★</button>
                             ))}
                         </div>
-                        <textarea className="review-modal-input" placeholder="Comentario (opcional)" value={newComment} onChange={e => setNewComment(e.target.value)} rows={3} />
+                        <textarea className="review-modal-input" placeholder="Comentario (opcional)"
+                            value={newComment} onChange={e => setNewComment(e.target.value)} rows={3} />
                         {reviewError && <p className="detail-error">{reviewError}</p>}
                         <div className="review-modal-actions">
                             <button className="detail-study-btn" onClick={handleSubmitReview} disabled={savingReview}>
@@ -635,3 +709,4 @@ function ForkIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fil
 function EditIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
 function TrashIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function FolderIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
+function CardsIcon() { return <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M6 9h12M6 13h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
