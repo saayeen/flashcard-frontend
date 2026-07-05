@@ -302,7 +302,12 @@
 .dist-good { background: #D4EDDA; }
 .dist-easy { background: #CCE5FF; }
 
-.dist-emoji { font-size: 1.5rem; }
+.dist-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
 
 .dist-number {
     font-size: 1.8rem;
