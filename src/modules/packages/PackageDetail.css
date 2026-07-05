@@ -25,7 +25,17 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: #1a1a2e;
+  background-size: cover;
+  background-position: center;
+}
+
+.detail-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* barra superior con back + dots */
@@ -37,7 +47,6 @@
   position: relative;
   z-index: 2;
 }
-
 .detail-back-btn {
   width: 36px;
   height: 36px;
@@ -76,6 +85,8 @@
   gap: 16px;
   padding: 20px 16px 24px;
   align-items: flex-start;
+  position: relative;
+  z-index: 2;
 }
 
 /* cover cuadrado estilo book cover */
@@ -98,6 +109,9 @@
   justify-content: center;
   gap: 8px;
   padding: 12px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.25);
 }
 
 .detail-cover-emoji {
