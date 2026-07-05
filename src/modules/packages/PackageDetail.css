@@ -29,7 +29,6 @@
   background-position: center;
 }
 
-
 .detail-hero::after {
   content: "";
   position: absolute;
@@ -219,23 +218,6 @@
   font-size: 12px;
 }
 
-/* tags en hero */
-.detail-hero-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 2px;
-}
-
-.detail-hero-tag {
-  background: rgba(255,255,255,0.12);
-  color: rgba(255,255,255,0.8);
-  font-size: 11px;
-  font-weight: 500;
-  padding: 3px 9px;
-  border-radius: 20px;
-}
-
 .detail-visibility {
   background: rgba(255,255,255,0.12);
   color: rgba(255,255,255,0.8);
@@ -246,43 +228,85 @@
 }
 
 /* ══════════════════
-   TABS
+   CONTENIDO ÚNICO (sin tabs)
    ══════════════════ */
-.detail-tabs {
-  display: flex;
-  border-bottom: 1.5px solid rgba(0,0,0,0.07);
+.detail-body {
   background: #ffffff;
-  position: sticky;
-  top: 0;
-  z-index: 50;
 }
 
-.detail-tab {
-  flex: 1;
-  padding: 13px 8px;
-  border: none;
-  background: transparent;
-  font-size: 14px;
-  font-weight: 500;
-  color: #9090a8;
-  cursor: pointer;
-  border-bottom: 2.5px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
-  margin-bottom: -1.5px;
-}
-
-.detail-tab-active {
-  color: #1a1a2e;
-  border-bottom-color: #D85A30;
-  font-weight: 600;
-}
-
-.detail-tab-content {
+.detail-section {
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: #ffffff;
+  border-bottom: 8px solid #f8f5ef;
+}
+
+.detail-section:last-child {
+  border-bottom: none;
+}
+
+.detail-section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.detail-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.detail-section-count {
+  font-size: 13px;
+  color: #9090a8;
+  font-weight: 500;
+}
+
+/* ══════════════════
+   DESCRIPCIÓN
+   ══════════════════ */
+.detail-desc-text {
+  font-size: 15px;
+  color: #3a3a50;
+  line-height: 1.7;
+}
+
+/* ══════════════════
+   TAGS (sección propia con color del tema)
+   ══════════════════ */
+.detail-tags-section {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-tags-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.detail-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.detail-tags-pill {
+  background: rgba(255,255,255,0.18);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
 }
 
 /* ══════════════════
@@ -353,14 +377,6 @@
 .detail-fork-btn:hover { background: #1E4A8A; }
 
 /* ══════════════════
-   TAB DETALLES — acciones inline
-   ══════════════════ */
-.detail-actions {
-  display: flex;
-  gap: 10px;
-}
-
-/* ══════════════════
    FORMULARIO NUEVA TARJETA
    ══════════════════ */
 .detail-card-form {
@@ -427,7 +443,7 @@
 }
 
 /* ══════════════════
-   TARJETAS
+   TARJETAS (acordeón)
    ══════════════════ */
 .detail-cards { display: flex; flex-direction: column; gap: 10px; }
 
@@ -438,10 +454,6 @@
   padding: 2rem 0;
 }
 
-.detail-card-item:hover {
-  border-color: rgba(0,0,0,0.12);
-} 
-
 .detail-card-item {
   background: #ffffff;
   border: 1px solid rgba(0,0,0,0.07);
@@ -450,6 +462,10 @@
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   cursor: pointer;
   transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.detail-card-item:hover {
+  border-color: rgba(0,0,0,0.12);
 }
 
 .detail-card-item.expanded {
@@ -467,6 +483,7 @@
   justify-content: space-between;
   gap: 10px;
 }
+
 .detail-card-chevron {
   display: flex;
   align-items: center;
@@ -523,41 +540,6 @@
   transition: background 0.15s;
 }
 .detail-card-del-btn:hover { background: rgba(220,38,38,0.06); }
-
-/* ══════════════════
-   TAB DESCRIPCIÓN
-   ══════════════════ */
-.detail-desc-author {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.detail-desc-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #2B5FA6;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.detail-desc-author-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: #6b6b80;
-}
-
-.detail-desc-text {
-  font-size: 15px;
-  color: #3a3a50;
-  line-height: 1.7;
-}
 
 /* ══════════════════
    TAB RESEÑAS
@@ -949,42 +931,3 @@
 .review-modal-input:focus { border-color: #6366f1; }
 
 .review-modal-actions { display: flex; flex-direction: column; gap: 8px; }
-
-/* ══════════════════
-   CONTENIDO ÚNICO (sin tabs)
-   ══════════════════ */
-.detail-body {
-  background: #ffffff;
-  padding: 4px 0 0;
-}
-
-.detail-section {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  border-bottom: 8px solid #f8f5ef;
-}
-
-.detail-section:last-child {
-  border-bottom: none;
-}
-
-.detail-section-header {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.detail-section-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin: 0;
-}
-
-.detail-section-count {
-  font-size: 13px;
-  color: #9090a8;
-  font-weight: 500;
-}

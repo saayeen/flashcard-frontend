@@ -348,14 +348,6 @@ export default function PackageDetail() {
                                 {pkg.isPublic ? "Público" : "Privado"}
                             </span>
                         </div>
-
-                        {pkg.tags && pkg.tags.length > 0 && (
-                            <div className="detail-hero-tags">
-                                {pkg.tags.map(tag => (
-                                    <span key={tag} className="detail-hero-tag">#{tag}</span>
-                                ))}
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>
@@ -367,23 +359,23 @@ export default function PackageDetail() {
 
                 {/* ── DESCRIPCIÓN ── */}
                 {pkg.description && (
-    <section className="detail-section">
-        <div className="detail-section-header">
-            <h2 className="detail-section-title">Descripción</h2>
-        </div>
+                    <section className="detail-section">
+                        <h2 className="detail-section-title">Descripción</h2>
+                        <p className="detail-desc-text">{pkg.description}</p>
+                    </section>
+                )}
 
-        <div className="detail-desc-author">
-            <div className="detail-desc-avatar">
-                {pkg.userId.slice(0, 1).toUpperCase()}
-            </div>
-            <span className="detail-desc-author-name">
-                Por {isOwner ? "ti" : `@${pkg.userId.slice(0, 8)}`}
-            </span>
-        </div>
-
-        <p className="detail-desc-text">{pkg.description}</p>
-    </section>
-)}
+                {/* ── TAGS ── */}
+                {pkg.tags && pkg.tags.length > 0 && (
+                    <section className="detail-tags-section" style={{ background: getThemeGradient(pkg.theme) }}>
+                        <h3 className="detail-tags-title">Tags</h3>
+                        <div className="detail-tags-list">
+                            {pkg.tags.map(tag => (
+                                <span key={tag} className="detail-tags-pill">#{tag}</span>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 {/* ── TARJETAS ── */}
                 <section className="detail-section">
