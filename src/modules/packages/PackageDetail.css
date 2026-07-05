@@ -38,7 +38,7 @@
   z-index: 1;
 }
 
-/* barra superior con back + dots */
+/* barra superior con back + dots/fork */
 .detail-hero-topbar {
   display: flex;
   align-items: center;
@@ -80,62 +80,33 @@
 }
 .detail-menu-btn:hover { background: rgba(255,255,255,0.25); }
 
-/* contenido principal del hero */
+/* botón "Guardar copia" en el hero (no dueño) */
+.detail-hero-fork-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(0,0,0,0.35);
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.detail-hero-fork-btn:hover { background: rgba(0,0,0,0.5); }
+
+/* contenido principal del hero (sin carátula) */
 .detail-hero-body {
   display: flex;
-  gap: 16px;
-  padding: 20px 16px 24px;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 16px 24px;
   position: relative;
   z-index: 2;
-}
-
-/* cover cuadrado estilo book cover */
-.detail-cover {
-  width: 110px;
-  height: 150px;
-  border-radius: 10px;
-  flex-shrink: 0;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  position: relative;
-}
-
-.detail-cover-gradient {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px;
-  background: rgba(255,255,255,0.18);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.25);
-}
-
-.detail-cover-emoji {
-  font-size: 32px;
-}
-
-.detail-cover-initials {
-  font-size: 13px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.9);
-  text-align: center;
-  line-height: 1.2;
-  word-break: break-word;
-}
-
-/* info derecha del hero */
-.detail-hero-info {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-top: 4px;
 }
 
 .detail-category {
@@ -153,6 +124,10 @@
   margin: 0;
   line-height: 1.2;
   letter-spacing: -0.02em;
+}
+
+.detail-name-emoji {
+  font-size: 19px;
 }
 
 .detail-author-row {
@@ -359,23 +334,6 @@
 }
 .detail-add-btn:hover { background: #f8f5ef; }
 
-.detail-fork-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 14px 16px;
-  background: #2B5FA6;
-  border: none;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s;
-}
-.detail-fork-btn:hover { background: #1E4A8A; }
-
 /* ══════════════════
    FORMULARIO NUEVA TARJETA
    ══════════════════ */
@@ -542,7 +500,7 @@
 .detail-card-del-btn:hover { background: rgba(220,38,38,0.06); }
 
 /* ══════════════════
-   TAB RESEÑAS
+   RESEÑAS
    ══════════════════ */
 .detail-reviews-header { display: flex; flex-direction: column; gap: 12px; }
 

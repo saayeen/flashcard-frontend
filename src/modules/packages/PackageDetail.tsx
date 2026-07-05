@@ -295,59 +295,52 @@ export default function PackageDetail() {
                     <button className="detail-back-btn" onClick={() => navigate(-1)}>
                         <BackIcon />
                     </button>
-                    {isOwner && (
+
+                    {isOwner ? (
                         <button className="detail-menu-btn" onClick={() => setShowPkgMenu(true)}>
                             <DotsIcon />
+                        </button>
+                    ) : (
+                        <button className="detail-hero-fork-btn" onClick={handleFork}>
+                            <ForkIcon /> Guardar copia
                         </button>
                     )}
                 </div>
 
-                {/* cover + info */}
+                {/* info */}
                 <div className="detail-hero-body">
+                    <span className="detail-category">{pkg.category}</span>
+                    <h1 className="detail-name">
+                        <span className="detail-name-emoji">{coverEmoji}</span> {pkg.name}
+                    </h1>
 
-                    {/* cover */}
-                    <div className="detail-cover">
-                        <div className="detail-cover-gradient">
-                            <span className="detail-cover-emoji">{coverEmoji}</span>
-                            <span className="detail-cover-initials">
-                                {pkg.name.split(" ").slice(0, 3).map(w => w[0]).join("").toUpperCase()}
-                            </span>
+                    <div className="detail-author-row">
+                        <div className="detail-author-avatar">
+                            {pkg.userId.slice(0, 1).toUpperCase()}
                         </div>
+                        <span className="detail-author-name">
+                            {isOwner ? "Tú" : `@${pkg.userId.slice(0, 8)}`}
+                        </span>
                     </div>
 
-                    {/* info derecha */}
-                    <div className="detail-hero-info">
-                        <span className="detail-category">{pkg.category}</span>
-                        <h1 className="detail-name">{pkg.name}</h1>
-
-                        <div className="detail-author-row">
-                            <div className="detail-author-avatar">
-                                {pkg.userId.slice(0, 1).toUpperCase()}
-                            </div>
-                            <span className="detail-author-name">
-                                {isOwner ? "Tú" : `@${pkg.userId.slice(0, 8)}`}
-                            </span>
+                    <div className="detail-hero-stats">
+                        <div className="detail-stat">
+                            <CardsIcon />
+                            {cards.length} tarjetas
                         </div>
-
-                        <div className="detail-hero-stats">
-                            <div className="detail-stat">
-                                <CardsIcon />
-                                {cards.length} tarjetas
-                            </div>
-                            {reviews.length > 0 && (
-                                <>
-                                    <div className="detail-stat-dot" />
-                                    <div className="detail-stat">
-                                        <span className="detail-rating-stars">★</span>
-                                        {avgRating.toFixed(1)}
-                                    </div>
-                                </>
-                            )}
-                            <div className="detail-stat-dot" />
-                            <span className="detail-visibility">
-                                {pkg.isPublic ? "Público" : "Privado"}
-                            </span>
-                        </div>
+                        {reviews.length > 0 && (
+                            <>
+                                <div className="detail-stat-dot" />
+                                <div className="detail-stat">
+                                    <span className="detail-rating-stars">★</span>
+                                    {avgRating.toFixed(1)}
+                                </div>
+                            </>
+                        )}
+                        <div className="detail-stat-dot" />
+                        <span className="detail-visibility">
+                            {pkg.isPublic ? "Público" : "Privado"}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -502,11 +495,6 @@ export default function PackageDetail() {
                 <button className="detail-study-btn" onClick={() => navigate(`/packages/${id}/study`)}>
                     Estudiar paquete
                 </button>
-                {!isOwner && (
-                    <button className="detail-fork-btn" onClick={handleFork}>
-                        <ForkIcon /> Guardar copia
-                    </button>
-                )}
             </div>
 
             {/* ── MENÚ PAQUETE ── */}
@@ -721,7 +709,7 @@ export default function PackageDetail() {
 function BackIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l7 7M5 12l7-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function DotsIcon() { return <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>; }
 function PlusIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/></svg>; }
-function ForkIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/><circle cx="18" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/><circle cx="6" cy="18" r="2" stroke="currentColor" strokeWidth="1.8"/><path d="M6 8v2a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V8M6 8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
+function ForkIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/><circle cx="18" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/><circle cx="6" cy="18" r="2" stroke="currentColor" strokeWidth="1.8"/><path d="M6 8v2a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V8M6 8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
 function EditIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
 function TrashIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function FolderIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
