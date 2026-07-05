@@ -367,10 +367,23 @@ export default function PackageDetail() {
 
                 {/* ── DESCRIPCIÓN ── */}
                 {pkg.description && (
-                    <section className="detail-section">
-                        <p className="detail-desc-text">{pkg.description}</p>
-                    </section>
-                )}
+    <section className="detail-section">
+        <div className="detail-section-header">
+            <h2 className="detail-section-title">Descripción</h2>
+        </div>
+
+        <div className="detail-desc-author">
+            <div className="detail-desc-avatar">
+                {pkg.userId.slice(0, 1).toUpperCase()}
+            </div>
+            <span className="detail-desc-author-name">
+                Por {isOwner ? "ti" : `@${pkg.userId.slice(0, 8)}`}
+            </span>
+        </div>
+
+        <p className="detail-desc-text">{pkg.description}</p>
+    </section>
+)}
 
                 {/* ── TARJETAS ── */}
                 <section className="detail-section">
