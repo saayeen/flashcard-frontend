@@ -3,6 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import type { Flashcard } from "../../types/index";
 import jatiImg from "../../assets/jati.png";
+import dificilImg from "../../assets/Dificil.png";
+import casiImg from "../../assets/Casi.png";
+import bienImg from "../../assets/Bien.png";
+import facilImg from "../../assets/Facil.png";
 import "./StudyScreen.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
@@ -28,12 +32,12 @@ const CARD_GRADIENTS = [
     "linear-gradient(135deg, #fed7aa, #f97316)",
 ];
 
-const NEXT_REVIEW_LABELS: Record<number, { label: string; color: string }> = {
-    1: { label: "1m",  color: "#ef4444" },
-    2: { label: "6m",  color: "#f59e0b" },
-    3: { label: "10m", color: "#3b82f6" },
-    4: { label: "5d",  color: "#22c55e" },
-};
+const QUALITY_CONFIG = [
+    { quality: 1, label: "Difícil", time: "1m",  timeColor: "#ef4444", img: dificilImg },
+    { quality: 2, label: "Casi",    time: "6m",  timeColor: "#f59e0b", img: casiImg   },
+    { quality: 3, label: "Bien",    time: "10m", timeColor: "#3b82f6", img: bienImg   },
+    { quality: 4, label: "Fácil",   time: "5d",  timeColor: "#22c55e", img: facilImg  },
+];
 
 export default function StudyScreen() {
     const { id } = useParams();
@@ -147,26 +151,18 @@ export default function StudyScreen() {
                     </div>
 
                     <div className="summary-grid">
-                        <div className="summary-stat summary-difficult">
-                            <img src={jatiImg} alt="" className="summary-stat-jati" style={{ filter: "hue-rotate(330deg) saturate(2)" }} />
-                            <span className="stat-number">{summary.difficult}</span>
-                            <span className="stat-label">Difícil</span>
-                        </div>
-                        <div className="summary-stat summary-almost">
-                            <img src={jatiImg} alt="" className="summary-stat-jati" style={{ filter: "hue-rotate(40deg) saturate(2)" }} />
-                            <span className="stat-number">{summary.almost}</span>
-                            <span className="stat-label">Casi</span>
-                        </div>
-                        <div className="summary-stat summary-good">
-                            <img src={jatiImg} alt="" className="summary-stat-jati" style={{ filter: "hue-rotate(200deg) saturate(1.5)" }} />
-                            <span className="stat-number">{summary.good}</span>
-                            <span className="stat-label">Bien</span>
-                        </div>
-                        <div className="summary-stat summary-easy">
-                            <img src={jatiImg} alt="" className="summary-stat-jati" style={{ filter: "hue-rotate(100deg) saturate(2)" }} />
-                            <span className="stat-number">{summary.easy}</span>
-                            <span className="stat-label">Fácil</span>
-                        </div>
+                        {[
+                            { img: dificilImg, number: summary.difficult, label: "Difícil", cls: "summary-difficult" },
+                            { img: casiImg,    number: summary.almost,    label: "Casi",    cls: "summary-almost"   },
+                            { img: bienImg,    number: summary.good,      label: "Bien",    cls: "summary-good"     },
+                            { img: facilImg,   number: summary.easy,      label: "Fácil",   cls: "summary-easy"     },
+                        ].map(({ img, number, label, cls }) => (
+                            <div key={label} className={`summary-stat ${cls}`}>
+                                <img src={img} alt={label} className="summary-stat-jati" />
+                                <span className="stat-number">{number}</span>
+                                <span className="stat-label">{label}</span>
+                            </div>
+                        ))}
                     </div>
 
                     <div className="summary-actions">
@@ -219,34 +215,18 @@ export default function StudyScreen() {
             {flipped && (
                 <div className="study-actions">
                     <div className="study-buttons">
-                        {([1, 2, 3, 4] as const).map(q => {
-                            const info = NEXT_REVIEW_LABELS[q];
-                            const labels = ["Difícil", "Casi", "Bien", "Fácil"];
-                            return (
-                                <button
-                                    key={q}
-                                    className={`quality-btn quality-${q}`}
-                                    onClick={e => { e.stopPropagation(); handleQuality(q); }}
-                                    disabled={animating}
-                                >
-                                    <img
-                                        src={jatiImg}
-                                        alt=""
-                                        className="quality-jati"
-                                        style={{ filter: q === 1
-                                            ? "hue-rotate(330deg) saturate(2)"
-                                            : q === 2
-                                            ? "hue-rotate(40deg) saturate(2)"
-                                            : q === 3
-                                            ? "hue-rotate(200deg) saturate(1.5)"
-                                            : "hue-rotate(100deg) saturate(2)"
-                                        }}
-                                    />
-                                    <span className="quality-label">{labels[q - 1]}</span>
-                                    <span className="quality-time" style={{ color: info.color }}>{info.label}</span>
-                                </button>
-                            );
-                        })}
+                        {QUALITY_CONFIG.map(({ quality, label, time, timeColor, img }) => (
+                            <button
+                                key={quality}
+                                className={`quality-btn quality-${quality}`}
+                                onClick={e => { e.stopPropagation(); handleQuality(quality); }}
+                                disabled={animating}
+                            >
+                                <img src={img} alt={label} className="quality-jati" />
+                                <span className="quality-label">{label}</span>
+                                <span className="quality-time" style={{ color: timeColor }}>{time}</span>
+                            </button>
+                        ))}
                     </div>
                 </div>
             )}
