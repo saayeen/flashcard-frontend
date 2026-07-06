@@ -1,15 +1,16 @@
 export interface FlashcardPackage {
     id: number;
+    userId: string;
     name: string;
     description: string;
     category: string;
     cardCount: number;
     isPublic: boolean;
     theme: string;
-    userId: string;
-    tags: string[];
-    forkedFromId?: number | null;
-    originalAuthorId?: string | null;
+    tags?: string[];
+    forkedFromId?: number;
+    originalAuthorId?: string;
+    avgRating?: number;  
 }
 
 export interface CreatePackageRequest {

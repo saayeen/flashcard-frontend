@@ -49,8 +49,6 @@ export default function Home() {
         } catch {}
     };
 
-    const avgRating = 4.8; // placeholder hasta tener ratings reales
-
     return (
         <div className="home-page">
             {/* HEADER */}
@@ -140,10 +138,12 @@ export default function Home() {
                                     <p className="home-trending-meta">
                                         {pkg.cardCount} tarjetas · {pkg.category}
                                     </p>
-                                    <div className="home-trending-rating">
-                                        <StarIcon />
-                                        <span>{avgRating}</span>
-                                    </div>
+                                    {pkg.avgRating != null && (
+                                        <div className="home-trending-rating">
+                                            <StarIcon />
+                                            <span>{pkg.avgRating.toFixed(1)}</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <ChevronIcon />
                             </div>
