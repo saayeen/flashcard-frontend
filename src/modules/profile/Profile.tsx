@@ -4,6 +4,10 @@ import { useAuth } from "../auth/AuthContext";
 import type { GlobalStats, WeeklyActivity, FlashcardPackage } from "../../types/index";
 import { getThemeGradient } from "../packages/themes";
 import "./Profile.css";
+import dificilImg from "../../assets/Dificil.png";
+import casiImg from "../../assets/Casi.png";
+import bienImg from "../../assets/Bien.png";
+import facilImg from "../../assets/Facil.png";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 const DAYS = ["L", "M", "M", "J", "V", "S", "D"];
@@ -209,22 +213,25 @@ export default function Profile() {
                         <h3 className="profile-section-title">Distribución general</h3>
                         <div className="profile-dist-grid">
                             <div className="profile-dist-card dist-difficult">
-                                <span className="dist-emoji">😰</span>
+                                <img src={dificilImg} alt="Difícil" className="dist-icon" />
                                 <span className="dist-number">{stats.distribution.difficult}</span>
                                 <span className="dist-label">Difícil</span>
                             </div>
+
                             <div className="profile-dist-card dist-almost">
-                                <span className="dist-emoji">😅</span>
+                                <img src={casiImg} alt="Casi" className="dist-icon" />
                                 <span className="dist-number">{stats.distribution.almost}</span>
                                 <span className="dist-label">Casi</span>
                             </div>
+
                             <div className="profile-dist-card dist-good">
-                                <span className="dist-emoji">😊</span>
+                                <img src={bienImg} alt="Bien" className="dist-icon" />
                                 <span className="dist-number">{stats.distribution.good}</span>
                                 <span className="dist-label">Bien</span>
                             </div>
+
                             <div className="profile-dist-card dist-easy">
-                                <span className="dist-emoji">🚀</span>
+                                <img src={facilImg} alt="Fácil" className="dist-icon" />
                                 <span className="dist-number">{stats.distribution.easy}</span>
                                 <span className="dist-label">Fácil</span>
                             </div>
