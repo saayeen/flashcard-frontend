@@ -472,10 +472,14 @@ export default function PackageDetail() {
                             <div className="detail-review-item" key={review.id}>
                                 <div className="detail-review-top">
                                     <div className="detail-review-avatar">
-                                        {review.userId.slice(0,1).toUpperCase()}
+                                        {review.userPhotoUrl
+                                            ? <img src={review.userPhotoUrl} alt={review.userName}
+                                                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                                            : review.userName?.slice(0, 1).toUpperCase() ?? "?"
+                                        }
                                     </div>
                                     <div>
-                                        <p className="detail-review-user">{review.userId.slice(0,8)}...</p>
+                                       <p className="detail-review-user">{review.userName || review.userId.slice(0, 8) + "..."}</p>
                                         <div className="detail-review-stars">
                                             {[1,2,3,4,5].map(i => (
                                                 <span key={i} className={i <= review.rating ? "star-filled" : "star-empty"}>★</span>
