@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import type { FlashcardPackage, Flashcard, CreateCardRequest, Folder } from "../../types/index";
+import type { FlashcardPackage, Flashcard, CreateCardRequest, Folder, Review  } from "../../types/index";
 import "./PackageDetail.css";
 import { getThemeGradient, THEMES } from "./themes";
 import TagInput from "../shared/Taginput";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-interface Review {
-    id: number;
-    userId: string;
-    packageId: number;
-    rating: number;
-    comment: string;
-}
 
 const CATEGORIES = ["Universidad", "PAES", "Carrera", "Idiomas", "Licencias", "Otros"];
 

@@ -30,6 +30,15 @@ export interface UpdatePackageRequest {
     tags?: string[];
 }
 
+export interface Review {
+    id: number;
+    userId: string;
+    packageId: number;
+    rating: number;
+    comment: string;
+    userName: string;
+    userPhotoUrl?: string | null;
+}
 export interface Flashcard {
     id: number;
     question: string;
