@@ -64,7 +64,7 @@ export default function PackageDetail() {
     const [savingCard, setSavingCard] = useState(false);
     const [deletingCardId, setDeletingCardId] = useState<number | null>(null);
 
-    // reseña
+    // reseñaS
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [newRating, setNewRating] = useState(0);
     const [newComment, setNewComment] = useState("");
@@ -85,6 +85,19 @@ export default function PackageDetail() {
         }).finally(() => setLoading(false));
     }, [id]);
 
+    const handleDeleteReview = async (packageId: number) => {
+    try {
+        const token = await getToken();
+        const res = await fetch(`${API_URL}/packages/${packageId}/reviews`, {
+            method: "DELETE",
+            headers: { "Authorization": `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error();
+        setReviews(prev => prev.filter(r => r.userId !== user?.uid));
+    } catch {
+        setError("No se pudo eliminar la reseña");
+    }
+};
     // ── EDITAR PAQUETE ──
     const openEditPkg = () => {
         if (!pkg) return;
@@ -478,14 +491,23 @@ export default function PackageDetail() {
                                             : review.userName?.slice(0, 1).toUpperCase() ?? "?"
                                         }
                                     </div>
-                                    <div>
-                                       <p className="detail-review-user">{review.userName || review.userId.slice(0, 8) + "..."}</p>
+                                    <div style={{ flex: 1 }}>
+                                        <p className="detail-review-user">{review.userName}</p>
                                         <div className="detail-review-stars">
                                             {[1,2,3,4,5].map(i => (
                                                 <span key={i} className={i <= review.rating ? "star-filled" : "star-empty"}>★</span>
                                             ))}
                                         </div>
                                     </div>
+                                    {/* botón eliminar solo si es tu reseña */}
+                                    {user?.uid === review.userId && (
+                                        <button
+                                            className="detail-card-del-btn"
+                                            onClick={() => handleDeleteReview(review.packageId)}
+                                        >
+                                            <TrashIcon />
+                                        </button>
+                                    )}
                                 </div>
                                 {review.comment && <p className="detail-review-comment">{review.comment}</p>}
                             </div>
