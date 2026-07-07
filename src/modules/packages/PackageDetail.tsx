@@ -70,7 +70,9 @@ export default function PackageDetail() {
     const [newComment, setNewComment] = useState("");
     const [savingReview, setSavingReview] = useState(false);
     const [reviewError, setReviewError] = useState<string | null>(null);
-
+    const hasReviewed = user
+        ? reviews.some(r => r.userId === user.uid)
+        : false;
     useEffect(() => {
         Promise.all([
             fetch(`${API_URL}/packages/${id}`).then(r => r.json()),
@@ -451,11 +453,16 @@ export default function PackageDetail() {
                             <span className="detail-reviews-count">{reviews.length} reseñas</span>
                         </div>
                         <button
-                            className={`detail-review-btn ${!user ? "detail-review-btn-disabled" : ""}`}
-                            onClick={() => user && setShowReviewModal(true)}
-                            disabled={!user}
+                            className={`detail-review-btn ${!user || hasReviewed ? "detail-review-btn-disabled" : ""}`}
+                            onClick={() => user && !hasReviewed && setShowReviewModal(true)}
+                            disabled={!user || hasReviewed}
                         >
-                            {user ? "Evaluar paquete" : "Inicia sesión para evaluar"}
+                            {!user
+                                ? "Inicia sesión para evaluar"
+                                : hasReviewed
+                                ? "Ya evaluaste este paquete"
+                                : "Evaluar paquete"
+                            }
                         </button>
                     </div>
 
