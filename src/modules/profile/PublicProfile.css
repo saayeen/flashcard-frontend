@@ -1,0 +1,61 @@
+/* ── Public Profile ────────────────────────────────────────── */
+.pubprofile-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: 16px;
+    color: #6b6b80;
+    font-size: 15px;
+}
+
+.pubprofile-back-btn {
+    padding: 10px 24px;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* BOTÓN SEGUIR */
+.pubprofile-follow-btn {
+    padding: 8px 28px;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: background 0.15s, transform 0.1s;
+    box-shadow: 0 3px 10px rgba(99,102,241,0.3);
+}
+
+.pubprofile-follow-btn:hover { background: #4f46e5; }
+.pubprofile-follow-btn:active { transform: scale(0.96); }
+.pubprofile-follow-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.pubprofile-follow-btn.following {
+    background: none;
+    border: 1.5px solid rgba(0,0,0,0.12);
+    color: #6b6b80;
+    box-shadow: none;
+}
+
+.pubprofile-follow-btn.following:hover {
+    background: rgba(0,0,0,0.04);
+}
+
+/* DESCRIPCIÓN */
+.pubprofile-description {
+    font-size: 14px;
+    color: #3a3a50;
+    line-height: 1.6;
+    font-style: italic;
+    margin: 0;
+}
