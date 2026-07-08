@@ -18,21 +18,34 @@ interface PublicUser {
     isPublic: boolean;
 }
 
+interface UserSummary {
+    id: string;
+    name: string;
+    photoUrl?: string | null;
+}
+
 export default function PublicProfile() {
     const { userId } = useParams();
     const navigate = useNavigate();
     const { user: currentUser, getToken } = useAuth();
 
-    const [profileUser, setProfileUser] = useState<PublicUser | null>(null);
-    const [packages, setPackages] = useState<FlashcardPackage[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [notFound, setNotFound] = useState(false);
-    const [tab, setTab] = useState<"desc" | "paquetes">("desc");
+    const [profileUser, setProfileUser]   = useState<PublicUser | null>(null);
+    const [packages, setPackages]         = useState<FlashcardPackage[]>([]);
+    const [loading, setLoading]           = useState(true);
+    const [notFound, setNotFound]         = useState(false);
+    const [tab, setTab]                   = useState<"desc" | "paquetes">("desc");
 
-    const [following, setFollowing] = useState(false);
+    const [following, setFollowing]       = useState(false);
     const [followersCount, setFollowersCount] = useState(0);
     const [followingCount, setFollowingCount] = useState(0);
-    const [followLoading, setFollowLoading] = useState(false);
+    const [followLoading, setFollowLoading]   = useState(false);
+
+    // listas
+    const [showFollowers, setShowFollowers] = useState(false);
+    const [showFollowing, setShowFollowing] = useState(false);
+    const [followersList, setFollowersList] = useState<UserSummary[]>([]);
+    const [followingList, setFollowingList] = useState<UserSummary[]>([]);
+    const [loadingList, setLoadingList]     = useState(false);
 
     useEffect(() => {
         if (!userId) return;
@@ -46,38 +59,24 @@ export default function PublicProfile() {
     const loadProfile = async () => {
         try {
             const token = currentUser ? await getToken() : null;
-            const authHeaders: HeadersInit = token
-                ? { "Authorization": `Bearer ${token}` }
-                : {};
+            const authHeaders: HeadersInit = token ? { "Authorization": `Bearer ${token}` } : {};
 
             const [userRes, pkgsRes, followersRes, followingRes] = await Promise.all([
                 fetch(`${API_URL}/users/${userId}`),
                 fetch(`${API_URL}/users/${userId}/packages`),
                 fetch(`${API_URL}/users/${userId}/followers/count`),
-                fetch(`${API_URL}/users/${userId}/following/count`, { headers: authHeaders }),
+                fetch(`${API_URL}/users/${userId}/following/count`),
             ]);
 
             if (!userRes.ok) { setNotFound(true); return; }
             setProfileUser(await userRes.json());
-            if (pkgsRes.ok) setPackages(await pkgsRes.json());
-            if (followersRes.ok) {
-                const data = await followersRes.json();
-                setFollowersCount(data.count ?? 0);
-            }
-            if (followingRes.ok) {
-                const data = await followingRes.json();
-                setFollowingCount(data.count ?? 0);
-            }
+            if (pkgsRes.ok)       setPackages(await pkgsRes.json());
+            if (followersRes.ok)  setFollowersCount((await followersRes.json()).count ?? 0);
+            if (followingRes.ok)  setFollowingCount((await followingRes.json()).count ?? 0);
 
-            // verificar si ya sigue
             if (token) {
-                const isFollowingRes = await fetch(`${API_URL}/users/${userId}/is-following`, {
-                    headers: authHeaders,
-                });
-                if (isFollowingRes.ok) {
-                    const data = await isFollowingRes.json();
-                    setFollowing(data.following ?? false);
-                }
+                const isFollowingRes = await fetch(`${API_URL}/users/${userId}/is-following`, { headers: authHeaders });
+                if (isFollowingRes.ok) setFollowing((await isFollowingRes.json()).following ?? false);
             }
         } catch {
             setNotFound(true);
@@ -96,12 +95,32 @@ export default function PublicProfile() {
                 headers: { "Authorization": `Bearer ${token}` },
             });
             if (res.ok) {
-                const wasFollowing = following;
-                setFollowing(!wasFollowing);
-                setFollowersCount(prev => wasFollowing ? prev - 1 : prev + 1);
+                const data = await res.json();
+                setFollowing(data.following);
+                setFollowersCount(data.followersCount);
             }
         } catch {}
         finally { setFollowLoading(false); }
+    };
+
+    const openFollowers = async () => {
+        setShowFollowers(true);
+        setLoadingList(true);
+        try {
+            const res = await fetch(`${API_URL}/users/${userId}/followers`);
+            if (res.ok) setFollowersList(await res.json());
+        } catch {}
+        finally { setLoadingList(false); }
+    };
+
+    const openFollowing = async () => {
+        setShowFollowing(true);
+        setLoadingList(true);
+        try {
+            const res = await fetch(`${API_URL}/users/${userId}/following`);
+            if (res.ok) setFollowingList(await res.json());
+        } catch {}
+        finally { setLoadingList(false); }
     };
 
     if (loading) return (
@@ -160,15 +179,15 @@ export default function PublicProfile() {
                         <span className="profile-stat-label">Paquetes</span>
                     </div>
                     <div className="profile-stat-divider" />
-                    <div className="profile-stat">
+                    <button className="profile-stat pubprofile-stat-btn" onClick={openFollowing}>
                         <span className="profile-stat-number">{followingCount}</span>
                         <span className="profile-stat-label">Siguiendo</span>
-                    </div>
+                    </button>
                     <div className="profile-stat-divider" />
-                    <div className="profile-stat">
+                    <button className="profile-stat pubprofile-stat-btn" onClick={openFollowers}>
                         <span className="profile-stat-number">{followersCount}</span>
                         <span className="profile-stat-label">Seguidores</span>
-                    </div>
+                    </button>
                 </div>
             </div>
 
@@ -195,12 +214,9 @@ export default function PublicProfile() {
                         {packages.length === 0 && <p className="profile-empty">Sin paquetes públicos aún.</p>}
                         <div className="profile-packages">
                             {packages.slice(0, 3).map(pkg => (
-                                <div
-                                    key={pkg.id}
-                                    className="profile-package-card"
+                                <div key={pkg.id} className="profile-package-card"
                                     style={{ background: getThemeGradient(pkg.theme) }}
-                                    onClick={() => navigate(`/packages/${pkg.id}`)}
-                                >
+                                    onClick={() => navigate(`/packages/${pkg.id}`)}>
                                     <div>
                                         <p className="profile-pkg-name">{pkg.name}</p>
                                         <p className="profile-pkg-sub">{pkg.cardCount} tarjetas · by @{handle}</p>
@@ -219,12 +235,9 @@ export default function PublicProfile() {
                     {packages.length === 0 && <p className="profile-empty">Sin paquetes públicos.</p>}
                     <div className="profile-packages">
                         {packages.map(pkg => (
-                            <div
-                                key={pkg.id}
-                                className="profile-package-card"
+                            <div key={pkg.id} className="profile-package-card"
                                 style={{ background: getThemeGradient(pkg.theme) }}
-                                onClick={() => navigate(`/packages/${pkg.id}`)}
-                            >
+                                onClick={() => navigate(`/packages/${pkg.id}`)}>
                                 <div>
                                     <p className="profile-pkg-name">{pkg.name}</p>
                                     <p className="profile-pkg-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
@@ -237,10 +250,70 @@ export default function PublicProfile() {
             )}
 
             <BottomNav />
+
+            {/* MODAL SEGUIDORES */}
+            {showFollowers && (
+                <UserListModal
+                    title="Seguidores"
+                    users={followersList}
+                    loading={loadingList}
+                    onClose={() => setShowFollowers(false)}
+                    onUserClick={id => { setShowFollowers(false); navigate(`/profile/${id}`); }}
+                />
+            )}
+
+            {/* MODAL SIGUIENDO */}
+            {showFollowing && (
+                <UserListModal
+                    title="Siguiendo"
+                    users={followingList}
+                    loading={loadingList}
+                    onClose={() => setShowFollowing(false)}
+                    onUserClick={id => { setShowFollowing(false); navigate(`/profile/${id}`); }}
+                />
+            )}
+        </div>
+    );
+}
+
+function UserListModal({ title, users, loading, onClose, onUserClick }: {
+    title: string;
+    users: { id: string; name: string; photoUrl?: string | null }[];
+    loading: boolean;
+    onClose: () => void;
+    onUserClick: (id: string) => void;
+}) {
+    return (
+        <div className="pubprofile-modal-overlay" onClick={onClose}>
+            <div className="pubprofile-modal" onClick={e => e.stopPropagation()}>
+                <div className="pubprofile-modal-handle" />
+                <h3 className="pubprofile-modal-title">{title}</h3>
+                {loading && <p className="pubprofile-modal-empty">Cargando...</p>}
+                {!loading && users.length === 0 && (
+                    <p className="pubprofile-modal-empty">Ningún usuario aún.</p>
+                )}
+                <div className="pubprofile-modal-list">
+                    {users.map(u => (
+                        <button key={u.id} className="pubprofile-modal-user" onClick={() => onUserClick(u.id)}>
+                            <div className="pubprofile-modal-avatar">
+                                {u.photoUrl
+                                    ? <img src={u.photoUrl} alt={u.name} />
+                                    : <span>{u.name.slice(0,2).toUpperCase()}</span>
+                                }
+                            </div>
+                            <span className="pubprofile-modal-name">{u.name}</span>
+                            <ChevronIcon />
+                        </button>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }
 
 function BackIcon() {
     return <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l7 7M5 12l7-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+}
+function ChevronIcon() {
+    return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 }

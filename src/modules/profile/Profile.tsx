@@ -4,10 +4,6 @@ import { useAuth } from "../auth/AuthContext";
 import type { GlobalStats, WeeklyActivity, FlashcardPackage } from "../../types/index";
 import { getThemeGradient } from "../packages/themes";
 import "./Profile.css";
-import dificilImg from "../../assets/Dificil.png";
-import casiImg from "../../assets/Casi.png";
-import bienImg from "../../assets/Bien.png";
-import facilImg from "../../assets/Facil.png";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 const DAYS = ["L", "M", "M", "J", "V", "S", "D"];
@@ -21,6 +17,13 @@ export default function Profile() {
     const [packages, setPackages] = useState<FlashcardPackage[]>([]);
     const [tab, setTab] = useState<"desc" | "stats">("desc");
     const [loading, setLoading] = useState(true);
+    const [followersCount, setFollowersCount] = useState(0);
+    const [followingCount, setFollowingCount] = useState(0);
+    const [showFollowers, setShowFollowers] = useState(false);
+    const [showFollowing, setShowFollowing] = useState(false);
+    const [followersList, setFollowersList] = useState<{id:string;name:string;photoUrl?:string|null}[]>([]);
+    const [followingList, setFollowingList] = useState<{id:string;name:string;photoUrl?:string|null}[]>([]);
+    const [loadingList, setLoadingList] = useState(false);
 
     // editar perfil
     const [showEditModal, setShowEditModal] = useState(false);
@@ -38,16 +41,40 @@ export default function Profile() {
         try {
             const token = await getToken();
             const headers = { "Authorization": `Bearer ${token}` };
-            const [statsRes, activityRes, pkgsRes] = await Promise.all([
+            const [statsRes, activityRes, pkgsRes, followersRes, followingRes] = await Promise.all([
                 fetch(`${API_URL}/stats`, { headers }),
                 fetch(`${API_URL}/stats/activity`, { headers }),
                 fetch(`${API_URL}/users/me/packages`, { headers }),
+                fetch(`${API_URL}/users/${user?.uid}/followers/count`),
+                fetch(`${API_URL}/users/${user?.uid}/following/count`),
             ]);
-            if (statsRes.ok) setStats(await statsRes.json());
+            if (statsRes.ok)    setStats(await statsRes.json());
             if (activityRes.ok) setActivity(await activityRes.json());
-            if (pkgsRes.ok) setPackages(await pkgsRes.json());
+            if (pkgsRes.ok)     setPackages(await pkgsRes.json());
+            if (followersRes.ok) setFollowersCount((await followersRes.json()).count ?? 0);
+            if (followingRes.ok) setFollowingCount((await followingRes.json()).count ?? 0);
         } catch {}
         finally { setLoading(false); }
+    };
+
+    const openFollowers = async () => {
+        setShowFollowers(true);
+        setLoadingList(true);
+        try {
+            const res = await fetch(`${API_URL}/users/${user?.uid}/followers`);
+            if (res.ok) setFollowersList(await res.json());
+        } catch {}
+        finally { setLoadingList(false); }
+    };
+
+    const openFollowing = async () => {
+        setShowFollowing(true);
+        setLoadingList(true);
+        try {
+            const res = await fetch(`${API_URL}/users/${user?.uid}/following`);
+            if (res.ok) setFollowingList(await res.json());
+        } catch {}
+        finally { setLoadingList(false); }
     };
 
     const openEditModal = () => {
@@ -124,15 +151,15 @@ export default function Profile() {
                 <p className="profile-handle">@{user?.email?.split("@")[0]}</p>
 
                 <div className="profile-stats-row">
-                    <div className="profile-stat">
-                        <span className="profile-stat-number">0</span>
+                    <button className="profile-stat pubprofile-stat-btn" onClick={openFollowing}>
+                        <span className="profile-stat-number">{followingCount}</span>
                         <span className="profile-stat-label">Siguiendo</span>
-                    </div>
+                    </button>
                     <div className="profile-stat-divider" />
-                    <div className="profile-stat">
-                        <span className="profile-stat-number">0</span>
+                    <button className="profile-stat pubprofile-stat-btn" onClick={openFollowers}>
+                        <span className="profile-stat-number">{followersCount}</span>
                         <span className="profile-stat-label">Seguidores</span>
-                    </div>
+                    </button>
                 </div>
             </div>
 
@@ -213,25 +240,22 @@ export default function Profile() {
                         <h3 className="profile-section-title">Distribución general</h3>
                         <div className="profile-dist-grid">
                             <div className="profile-dist-card dist-difficult">
-                                <img src={dificilImg} alt="Difícil" className="dist-icon" />
+                                <span className="dist-emoji">😰</span>
                                 <span className="dist-number">{stats.distribution.difficult}</span>
                                 <span className="dist-label">Difícil</span>
                             </div>
-
                             <div className="profile-dist-card dist-almost">
-                                <img src={casiImg} alt="Casi" className="dist-icon" />
+                                <span className="dist-emoji">😅</span>
                                 <span className="dist-number">{stats.distribution.almost}</span>
                                 <span className="dist-label">Casi</span>
                             </div>
-
                             <div className="profile-dist-card dist-good">
-                                <img src={bienImg} alt="Bien" className="dist-icon" />
+                                <span className="dist-emoji">😊</span>
                                 <span className="dist-number">{stats.distribution.good}</span>
                                 <span className="dist-label">Bien</span>
                             </div>
-
                             <div className="profile-dist-card dist-easy">
-                                <img src={facilImg} alt="Fácil" className="dist-icon" />
+                                <span className="dist-emoji">🚀</span>
                                 <span className="dist-number">{stats.distribution.easy}</span>
                                 <span className="dist-label">Fácil</span>
                             </div>
@@ -292,8 +316,69 @@ export default function Profile() {
                     </div>
                 </div>
             )}
+
+            {/* MODAL SEGUIDORES */}
+            {showFollowers && (
+                <UserListModal
+                    title="Seguidores"
+                    users={followersList}
+                    loading={loadingList}
+                    onClose={() => setShowFollowers(false)}
+                    onUserClick={id => { setShowFollowers(false); navigate(`/profile/${id}`); }}
+                />
+            )}
+
+            {/* MODAL SIGUIENDO */}
+            {showFollowing && (
+                <UserListModal
+                    title="Siguiendo"
+                    users={followingList}
+                    loading={loadingList}
+                    onClose={() => setShowFollowing(false)}
+                    onUserClick={id => { setShowFollowing(false); navigate(`/profile/${id}`); }}
+                />
+            )}
         </div>
     );
+}
+
+function UserListModal({ title, users, loading, onClose, onUserClick }: {
+    title: string;
+    users: { id: string; name: string; photoUrl?: string | null }[];
+    loading: boolean;
+    onClose: () => void;
+    onUserClick: (id: string) => void;
+}) {
+    return (
+        <div className="pubprofile-modal-overlay" onClick={onClose}>
+            <div className="pubprofile-modal" onClick={e => e.stopPropagation()}>
+                <div className="pubprofile-modal-handle" />
+                <h3 className="pubprofile-modal-title">{title}</h3>
+                {loading && <p className="pubprofile-modal-empty">Cargando...</p>}
+                {!loading && users.length === 0 && (
+                    <p className="pubprofile-modal-empty">Ningún usuario aún.</p>
+                )}
+                <div className="pubprofile-modal-list">
+                    {users.map(u => (
+                        <button key={u.id} className="pubprofile-modal-user" onClick={() => onUserClick(u.id)}>
+                            <div className="pubprofile-modal-avatar">
+                                {u.photoUrl
+                                    ? <img src={u.photoUrl} alt={u.name} />
+                                    : <span>{u.name.slice(0,2).toUpperCase()}</span>
+                                }
+                            </div>
+                            <span className="pubprofile-modal-name">{u.name}</span>
+                            <ChevronIcon />
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function ChevronIcon() {
+    return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 }
 
 function BackIcon() {
