@@ -169,24 +169,73 @@ export default function Folders() {
     };
 
     // ── VISTA DETALLE DE CARPETA ──
-    if (openFolder) {
-        const availableToAdd = myPackages.filter(p => !folderPackages.find(fp => fp.id === p.id));
+   if (openFolder) {
+    const availableToAdd = myPackages.filter(p => !folderPackages.find(fp => fp.id === p.id));
 
-        return (
-            <div className="folders-page">
-                <div className="folder-detail-header">
-                    <button className="folder-back-btn" onClick={() => { setOpenFolder(null); navigate("/folders"); }}>
-                        <BackIcon />
-                        <span>Mis carpetas</span>
+    return (
+        <div className="folders-page">
+            <div className="folder-detail-header">
+                <button className="folder-back-btn" onClick={() => { setOpenFolder(null); navigate("/folders"); }}>
+                    <BackIcon />
+                    <span>Mis carpetas</span>
+                </button>
+                <h2 className="folder-detail-title">{openFolder.name}</h2>
+            </div>
+
+            <div className="folder-detail-body">
+
+                {/* PAQUETES DE LA CARPETA — cards navegables */}
+                <div className="folder-detail-section">
+                    <p className="folder-detail-section-label">
+                        {folderPackages.length} PAQUETES
+                    </p>
+
+                    {folderPackages.length === 0 ? (
+                        <div className="folders-empty">
+                            <span className="folders-empty-icon">📦</span>
+                            <p className="folders-empty-title">Sin paquetes aún</p>
+                            <p className="folders-empty-sub">Agrega paquetes a esta carpeta</p>
+                        </div>
+                    ) : (
+                        <div className="folders-grid">
+                            {folderPackages.map(pkg => (
+                                <div
+                                    className="folder-card"
+                                    key={pkg.id}
+                                    onClick={() => navigate(`/packages/${pkg.id}`)}
+                                >
+                                    <div className="folder-card-icon" style={{ background: openFolder.color }}>
+                                        <PackageIcon />
+                                    </div>
+                                    <div className="folder-card-info">
+                                        <h2 className="folder-card-name">{pkg.name}</h2>
+                                        <p className="folder-card-sub">
+                                            {pkg.cardCount} tarjetas · {pkg.category}
+                                        </p>
+                                    </div>
+                                    <button
+                                        className="folder-pkg-remove"
+                                        onClick={e => { e.stopPropagation(); handleRemovePackage(pkg.id); }}
+                                    >
+                                        <XIcon />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    <button className="folder-add-pkg-btn" onClick={() => setShowAddPkg(true)}>
+                        + Agregar paquetes
                     </button>
                 </div>
 
-                <div className="folder-detail-body">
+                {/* EDITAR CARPETA */}
+                <div className="folder-detail-section">
                     <p className="folder-detail-section-label">EDITAR CARPETA</p>
 
                     <div className="folder-detail-form">
                         <div className="folder-edit-field">
-                            <label className="folder-edit-label">Nombre de la carpeta</label>
+                            <label className="folder-edit-label">Nombre</label>
                             <input
                                 className="folder-edit-input"
                                 value={editName}
@@ -196,7 +245,7 @@ export default function Folders() {
                         </div>
 
                         <div className="folder-edit-field">
-                            <label className="folder-edit-label">Color (opcional)</label>
+                            <label className="folder-edit-label">Color</label>
                             <div className="folder-color-row">
                                 {COLORS.map(color => (
                                     <button
@@ -208,85 +257,51 @@ export default function Folders() {
                                 ))}
                             </div>
                         </div>
-
-                        <div className="folder-edit-field">
-                            <label className="folder-edit-label">Paquetes en esta carpeta</label>
-                            {folderPackages.length === 0 ? (
-                                <p className="folder-empty-pkgs">Sin paquetes aún</p>
-                            ) : (
-                                <div className="folder-pkg-list">
-                                    {folderPackages.map(pkg => (
-                                        <div key={pkg.id} className="folder-pkg-item">
-                                            <div className="folder-pkg-dot" style={{ background: openFolder.color }} />
-                                            <span className="folder-pkg-name">{pkg.name}</span>
-                                            <button
-                                                className="folder-pkg-remove"
-                                                onClick={() => handleRemovePackage(pkg.id)}
-                                            >
-                                                <XIcon />
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                            <button
-                                className="folder-add-pkg-btn"
-                                onClick={() => setShowAddPkg(true)}
-                            >
-                                + Agregar paquetes a esta carpeta
-                            </button>
-                        </div>
                     </div>
 
                     <div className="folder-detail-actions">
-                        <button
-                            className="folder-save-edit-btn"
-                            onClick={handleSaveEdit}
-                            disabled={savingEdit}
-                        >
+                        <button className="folder-save-edit-btn" onClick={handleSaveEdit} disabled={savingEdit}>
                             {savingEdit ? "Guardando..." : "Guardar cambios"}
                         </button>
-                        <button
-                            className="folder-delete-edit-btn"
-                            onClick={() => handleDelete(openFolder.id)}
-                        >
+                        <button className="folder-delete-edit-btn" onClick={() => handleDelete(openFolder.id)}>
                             Eliminar carpeta
                         </button>
                     </div>
                 </div>
-
-                {/* MODAL: agregar paquete */}
-                {showAddPkg && (
-                    <div className="folder-modal-overlay" onClick={() => setShowAddPkg(false)}>
-                        <div className="folder-modal" onClick={e => e.stopPropagation()}>
-                            <h3 className="folder-modal-title">Agregar paquete</h3>
-                            {availableToAdd.length === 0 ? (
-                                <p className="folder-empty-pkgs">No hay paquetes disponibles</p>
-                            ) : (
-                                <div className="folder-modal-list">
-                                    {availableToAdd.map(pkg => (
-                                        <button
-                                            key={pkg.id}
-                                            className="folder-modal-item"
-                                            onClick={() => handleAddPackageToFolder(pkg.id)}
-                                        >
-                                            <span className="folder-modal-item-name">{pkg.name}</span>
-                                            <span className="folder-modal-item-cat">{pkg.category}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                            <button className="folder-modal-cancel" onClick={() => setShowAddPkg(false)}>
-                                Cancelar
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                <BottomNav />
             </div>
-        );
-    }
+
+            {/* MODAL: agregar paquete */}
+            {showAddPkg && (
+                <div className="folder-modal-overlay" onClick={() => setShowAddPkg(false)}>
+                    <div className="folder-modal" onClick={e => e.stopPropagation()}>
+                        <h3 className="folder-modal-title">Agregar paquete</h3>
+                        {availableToAdd.length === 0 ? (
+                            <p className="folder-empty-pkgs">No hay paquetes disponibles</p>
+                        ) : (
+                            <div className="folder-modal-list">
+                                {availableToAdd.map(pkg => (
+                                    <button
+                                        key={pkg.id}
+                                        className="folder-modal-item"
+                                        onClick={() => handleAddPackageToFolder(pkg.id)}
+                                    >
+                                        <span className="folder-modal-item-name">{pkg.name}</span>
+                                        <span className="folder-modal-item-cat">{pkg.category}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                        <button className="folder-modal-cancel" onClick={() => setShowAddPkg(false)}>
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            <BottomNav />
+        </div>
+    );
+}
 
     // ── VISTA PRINCIPAL ──
     return (
