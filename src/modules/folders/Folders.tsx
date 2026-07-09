@@ -40,6 +40,7 @@ export default function Folders() {
     const [editColor, setEditColor] = useState("");
     const [savingEdit, setSavingEdit] = useState(false);
     const [showAddPkg, setShowAddPkg] = useState(false);
+    const [editMode, setEditMode] = useState(false);
 
     useEffect(() => {
         loadFolders();
@@ -175,102 +176,129 @@ export default function Folders() {
     return (
         <div className="folders-page">
             <div className="folder-detail-header">
-                <button className="folder-back-btn" onClick={() => { setOpenFolder(null); navigate("/folders"); }}>
+                <button className="folder-back-btn" onClick={() => { 
+                    setOpenFolder(null); 
+                    setEditMode(false);
+                    navigate("/folders"); 
+                }}>
                     <BackIcon />
-                    <span>Mis carpetas</span>
                 </button>
                 <h2 className="folder-detail-title">{openFolder.name}</h2>
+                {/* botón editar arriba a la derecha */}
+                <button 
+                    className="folder-edit-toggle-btn"
+                    onClick={() => setEditMode(prev => !prev)}
+                >
+                    {editMode ? "Listo" : <EditIcon />}
+                </button>
             </div>
 
             <div className="folder-detail-body">
 
-                {/* PAQUETES DE LA CARPETA — cards navegables */}
-                <div className="folder-detail-section">
-                    <p className="folder-detail-section-label">
-                        {folderPackages.length} PAQUETES
-                    </p>
-
-                    {folderPackages.length === 0 ? (
-                        <div className="folders-empty">
-                            <span className="folders-empty-icon">📦</span>
-                            <p className="folders-empty-title">Sin paquetes aún</p>
-                            <p className="folders-empty-sub">Agrega paquetes a esta carpeta</p>
-                        </div>
-                    ) : (
-                        <div className="folders-grid">
-                            {folderPackages.map(pkg => (
-                                <div
-                                    className="folder-card"
-                                    key={pkg.id}
-                                    onClick={() => navigate(`/packages/${pkg.id}`)}
-                                >
-                                    <div className="folder-card-icon" style={{ background: openFolder.color }}>
-                                        <PackageIcon />
-                                    </div>
-                                    <div className="folder-card-info">
-                                        <h2 className="folder-card-name">{pkg.name}</h2>
-                                        <p className="folder-card-sub">
-                                            {pkg.cardCount} tarjetas · {pkg.category}
-                                        </p>
-                                    </div>
-                                    <button
-                                        className="folder-pkg-remove"
-                                        onClick={e => { e.stopPropagation(); handleRemovePackage(pkg.id); }}
+                {/* ── MODO VER ── */}
+                {!editMode && (
+                    <>
+                        {folderPackages.length === 0 ? (
+                            <div className="folders-empty">
+                                <span className="folders-empty-icon">📦</span>
+                                <p className="folders-empty-title">Sin paquetes aún</p>
+                                <p className="folders-empty-sub">Toca el lápiz para agregar paquetes</p>
+                            </div>
+                        ) : (
+                            <div className="folders-grid">
+                                {folderPackages.map(pkg => (
+                                    <div
+                                        className="folder-card"
+                                        key={pkg.id}
+                                        onClick={() => navigate(`/packages/${pkg.id}`)}
                                     >
-                                        <XIcon />
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    <button className="folder-add-pkg-btn" onClick={() => setShowAddPkg(true)}>
-                        + Agregar paquetes
-                    </button>
-                </div>
-
-                {/* EDITAR CARPETA */}
-                <div className="folder-detail-section">
-                    <p className="folder-detail-section-label">EDITAR CARPETA</p>
-
-                    <div className="folder-detail-form">
-                        <div className="folder-edit-field">
-                            <label className="folder-edit-label">Nombre</label>
-                            <input
-                                className="folder-edit-input"
-                                value={editName}
-                                onChange={e => setEditName(e.target.value)}
-                                maxLength={50}
-                            />
-                        </div>
-
-                        <div className="folder-edit-field">
-                            <label className="folder-edit-label">Color</label>
-                            <div className="folder-color-row">
-                                {COLORS.map(color => (
-                                    <button
-                                        key={color}
-                                        className={`folder-color-dot ${editColor === color ? "selected" : ""}`}
-                                        style={{ background: color }}
-                                        onClick={() => setEditColor(color)}
-                                    />
+                                        <div className="folder-card-icon" style={{ background: openFolder.color }}>
+                                            <PackageIcon />
+                                        </div>
+                                        <div className="folder-card-info">
+                                            <h2 className="folder-card-name">{pkg.name}</h2>
+                                            <p className="folder-card-sub">
+                                                {pkg.cardCount} tarjetas · {pkg.category}
+                                            </p>
+                                        </div>
+                                        <ChevronIcon />
+                                    </div>
                                 ))}
                             </div>
-                        </div>
-                    </div>
+                        )}
+                    </>
+                )}
 
-                    <div className="folder-detail-actions">
-                        <button className="folder-save-edit-btn" onClick={handleSaveEdit} disabled={savingEdit}>
-                            {savingEdit ? "Guardando..." : "Guardar cambios"}
-                        </button>
-                        <button className="folder-delete-edit-btn" onClick={() => handleDelete(openFolder.id)}>
-                            Eliminar carpeta
-                        </button>
-                    </div>
-                </div>
+                {/* ── MODO EDITAR ── */}
+                {editMode && (
+                    <>
+                        {/* paquetes con botón eliminar */}
+                        <div className="folder-detail-section">
+                            <p className="folder-detail-section-label">PAQUETES EN ESTA CARPETA</p>
+                            {folderPackages.length === 0 ? (
+                                <p className="folder-empty-pkgs">Sin paquetes aún</p>
+                            ) : (
+                                <div className="folder-pkg-list">
+                                    {folderPackages.map(pkg => (
+                                        <div key={pkg.id} className="folder-pkg-item">
+                                            <div className="folder-pkg-dot" style={{ background: openFolder.color }} />
+                                            <span className="folder-pkg-name">{pkg.name}</span>
+                                            <button
+                                                className="folder-pkg-remove"
+                                                onClick={() => handleRemovePackage(pkg.id)}
+                                            >
+                                                <XIcon />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                            <button className="folder-add-pkg-btn" onClick={() => setShowAddPkg(true)}>
+                                + Agregar paquetes
+                            </button>
+                        </div>
+
+                        {/* editar nombre y color */}
+                        <div className="folder-detail-section">
+                            <p className="folder-detail-section-label">EDITAR CARPETA</p>
+                            <div className="folder-detail-form">
+                                <div className="folder-edit-field">
+                                    <label className="folder-edit-label">Nombre</label>
+                                    <input
+                                        className="folder-edit-input"
+                                        value={editName}
+                                        onChange={e => setEditName(e.target.value)}
+                                        maxLength={50}
+                                    />
+                                </div>
+                                <div className="folder-edit-field">
+                                    <label className="folder-edit-label">Color</label>
+                                    <div className="folder-color-row">
+                                        {COLORS.map(color => (
+                                            <button
+                                                key={color}
+                                                className={`folder-color-dot ${editColor === color ? "selected" : ""}`}
+                                                style={{ background: color }}
+                                                onClick={() => setEditColor(color)}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="folder-detail-actions">
+                                <button className="folder-save-edit-btn" onClick={handleSaveEdit} disabled={savingEdit}>
+                                    {savingEdit ? "Guardando..." : "Guardar cambios"}
+                                </button>
+                                <button className="folder-delete-edit-btn" onClick={() => handleDelete(openFolder.id)}>
+                                    Eliminar carpeta
+                                </button>
+                            </div>
+                        </div>
+                    </>
+                )}
             </div>
 
-            {/* MODAL: agregar paquete */}
+            {/* MODAL agregar paquete */}
             {showAddPkg && (
                 <div className="folder-modal-overlay" onClick={() => setShowAddPkg(false)}>
                     <div className="folder-modal" onClick={e => e.stopPropagation()}>
@@ -587,6 +615,17 @@ function ForkIcon() {
             <circle cx="18" cy="6" r="2" stroke="currentColor" strokeWidth="1.8"/>
             <circle cx="6" cy="18" r="2" stroke="currentColor" strokeWidth="1.8"/>
             <path d="M6 8v2a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V8M6 8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+        </svg>
+    );
+}
+
+function EditIcon() {
+    return (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" 
+                stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" 
+                stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
         </svg>
     );
 }
