@@ -264,3 +264,22 @@
 }
 
 .settings-modal-confirm:hover { opacity: 0.9; }
+
+/* ── theme toggle button ── */
+.settings-theme-toggle {
+    padding: 6px 16px;
+    background: var(--accent-soft, rgba(99,102,241,0.1));
+    border: 1.5px solid var(--accent, #6366f1);
+    border-radius: 20px;
+    color: var(--accent, #6366f1);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.settings-theme-toggle:hover {
+    background: var(--accent-soft, rgba(99,102,241,0.18));
+}

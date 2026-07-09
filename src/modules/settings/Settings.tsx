@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { useTheme } from "../theme/Themecontext";
 import "./Settings.css";
-
 
 export default function Settings() {
     const { logout } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
 
     const [notifGeneral, setNotifGeneral] = useState(true);
     const [notifFollow, setNotifFollow] = useState(true);
     const [notifFork, setNotifFork] = useState(true);
-    const [darkMode, setDarkMode] = useState(false);
     const [isPublic, setIsPublic] = useState(true);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -81,7 +81,9 @@ export default function Settings() {
                     <div className="settings-card">
                         <div className="settings-row">
                             <span className="settings-row-label">Tema oscuro</span>
-                            <Toggle value={darkMode} onChange={setDarkMode} />
+                            <button className="settings-theme-toggle" onClick={e => toggleTheme(e)}>
+                                        {theme === "dark" ? "🌙 Oscuro" : "☀️ Claro"}
+                                    </button>
                         </div>
                     </div>
                 </div>

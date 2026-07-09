@@ -19,7 +19,9 @@ body,
 }
 
 body {
-  background: #FBF8F2;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  transition: background 0.3s, color 0.3s;
 }
 
 h1,
