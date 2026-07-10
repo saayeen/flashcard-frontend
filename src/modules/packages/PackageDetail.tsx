@@ -324,10 +324,14 @@ export default function PackageDetail() {
 
                     <div className="detail-author-row">
                         <div className="detail-author-avatar">
-                            {pkg.userId.slice(0, 1).toUpperCase()}
+                            {pkg.userPhotoUrl
+                                ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
+                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                                : pkg.userName.slice(0, 1).toUpperCase()
+                            }
                         </div>
                         <span className="detail-author-name">
-                            {isOwner ? "Tú" : `@${pkg.userId.slice(0, 8)}`}
+                            {isOwner ? "Tú" : pkg.userName}
                         </span>
                     </div>
 

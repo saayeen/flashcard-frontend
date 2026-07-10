@@ -11,6 +11,8 @@ export interface FlashcardPackage {
     forkedFromId?: number;
     originalAuthorId?: string;
     avgRating?: number;  
+    userName: string;
+    userPhotoUrl?: string | null;
 }
 
 export interface CreatePackageRequest {
