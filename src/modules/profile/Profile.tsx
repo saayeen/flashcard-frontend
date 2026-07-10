@@ -4,6 +4,10 @@ import { useAuth } from "../auth/AuthContext";
 import type { GlobalStats, WeeklyActivity, FlashcardPackage } from "../../types/index";
 import { getThemeGradient } from "../packages/themes";
 import "./Profile.css";
+import ImgBien from "../../assets/Bien.png";
+import ImgCasi from "../../assets/Casi.png";
+import ImgDificil from "../../assets/Dificil.png";
+import ImgFacil from "../../assets/Facil.png";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 const DAYS = ["L", "M", "M", "J", "V", "S", "D"];
@@ -237,30 +241,36 @@ export default function Profile() {
                         </div>
                     </div>
                     <div className="profile-section">
-                        <h3 className="profile-section-title">Distribución general</h3>
-                        <div className="profile-dist-grid">
-                            <div className="profile-dist-card dist-difficult">
-                                <span className="dist-emoji">😰</span>
+                <h3 className="profile-section-title">Distribución general</h3>
+
+                <div className="profile-dist-grid">
+
+                    <div className="profile-dist-card dist-difficult">
+                                <img src={ImgDificil} alt="Difícil" className="dist-image" />
                                 <span className="dist-number">{stats.distribution.difficult}</span>
                                 <span className="dist-label">Difícil</span>
                             </div>
+
                             <div className="profile-dist-card dist-almost">
-                                <span className="dist-emoji">😅</span>
+                                <img src={ImgCasi} alt="Casi" className="dist-image" />
                                 <span className="dist-number">{stats.distribution.almost}</span>
                                 <span className="dist-label">Casi</span>
                             </div>
+
                             <div className="profile-dist-card dist-good">
-                                <span className="dist-emoji">😊</span>
+                                <img src={ImgBien} alt="Bien" className="dist-image" />
                                 <span className="dist-number">{stats.distribution.good}</span>
                                 <span className="dist-label">Bien</span>
                             </div>
+
                             <div className="profile-dist-card dist-easy">
-                                <span className="dist-emoji">🚀</span>
+                                <img src={ImgFacil} alt="Fácil" className="dist-image" />
                                 <span className="dist-number">{stats.distribution.easy}</span>
                                 <span className="dist-label">Fácil</span>
                             </div>
+
                         </div>
-                    </div>
+            </div>
                 </div>
             )}
 
@@ -277,7 +287,7 @@ export default function Profile() {
                                 ? <img src={editPhotoUrl} alt="preview" className="profile-modal-avatar-img" />
                                 : <div className="profile-modal-avatar-placeholder">
                                     {editName.slice(0,2).toUpperCase() || "?"}
-                                  </div>
+                                </div>
                             }
                         </div>
 
