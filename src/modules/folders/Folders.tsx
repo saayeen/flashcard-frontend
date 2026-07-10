@@ -172,7 +172,27 @@ export default function Folders() {
             });
             const pkg = myPackages.find(p => p.id === packageId);
             if (pkg) setFolderPackages(prev => [...prev, pkg]);
+            setFolderPackageCounts(prev => ({
+                ...prev,
+                [openFolder.id]: (prev[openFolder.id] ?? 0) + 1,
+            }));
             setShowAddPkg(false);
+        } catch {}
+    };
+
+        const handleRemovePackageFromFolder = async (packageId: number) => {
+        if (!openFolder) return;
+        try {
+            const token = await getToken();
+            await fetch(`${API_URL}/folders/${openFolder.id}/packages/${packageId}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` },
+            });
+            setFolderPackages(prev => prev.filter(p => p.id !== packageId));
+            setFolderPackageCounts(prev => ({
+                ...prev,
+                [openFolder.id]: Math.max(0, (prev[openFolder.id] ?? 0) - 1),
+            }));
         } catch {}
     };
 
@@ -216,7 +236,13 @@ export default function Folders() {
                                     <p className="folder-pkg-card-name">{pkg.name}</p>
                                     <p className="folder-pkg-card-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
                                 </div>
-                                <ChevronIcon />
+                                <button
+                                    className="folder-pkg-remove-btn"
+                                    onClick={e => { e.stopPropagation(); handleRemovePackageFromFolder(pkg.id); }}
+                                    aria-label="Quitar de la carpeta"
+                                >
+                                    <TrashIcon />
+                                </button>
                             </div>
                         ))}
                     </div>
