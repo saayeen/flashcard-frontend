@@ -245,7 +245,61 @@
 .folder-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* GRID DE CARPETAS */
-.folders-grid { display: flex; flex-direction: column; gap: 8px; }
+.folders-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* ── Lista de paquetes (tab Paquetes) ─────────────────────── */
+.folders-pkg-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.folder-pkg-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.folder-pkg-row:hover { background: var(--bg-hover); }
+.folder-pkg-row:active { transform: scale(0.98); background: var(--bg-active); }
+
+.folder-pkg-row-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.folder-pkg-row-info { flex: 1; min-width: 0; }
+
+.folder-pkg-row-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.folder-pkg-row-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 2px 0 0;
+}
 
 .folder-card {
     display: flex;

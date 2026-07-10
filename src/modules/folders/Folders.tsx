@@ -416,15 +416,15 @@ export default function Folders() {
                                         </button>
                                     </div>
                                 )}
-                                <div className="folders-grid">
+                                <div className="folders-pkg-list">
                                     {myPackages.map(pkg => (
-                                        <div className="folder-card" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
-                                            <div className="folder-card-icon" style={{ background: "#6366f1" }}>
+                                        <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
+                                            <div className="folder-pkg-row-icon" style={{ background: "#6366f1" }}>
                                                 <PackageIcon />
                                             </div>
-                                            <div className="folder-card-info">
-                                                <h2 className="folder-card-name">{pkg.name}</h2>
-                                                <p className="folder-card-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
+                                            <div className="folder-pkg-row-info">
+                                                <p className="folder-pkg-row-name">{pkg.name}</p>
+                                                <p className="folder-pkg-row-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
                                             </div>
                                             <div className="folder-pkg-badges">
                                                 {pkg.isPublic
@@ -441,31 +441,31 @@ export default function Folders() {
 
                         {/* copiados */}
                         {!loading && pkgTab === "copiados" && (
-                            <>
-                                {forkedPackages.length === 0 && (
-                                    <div className="folders-empty">
-                                        <span className="folders-empty-icon">🔖</span>
-                                        <p className="folders-empty-title">Sin paquetes copiados</p>
-                                        <p className="folders-empty-sub">Guarda copias de paquetes que te gusten</p>
-                                    </div>
-                                )}
-                                <div className="folders-grid">
-                                    {forkedPackages.map(pkg => (
-                                        <div className="folder-card" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
-                                            <div className="folder-card-icon folder-card-icon-fork">
-                                                <ForkIcon />
-                                            </div>
-                                            <div className="folder-card-info">
-                                                <h2 className="folder-card-name">{pkg.name}</h2>
-                                                <p className="folder-card-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
-                                                <p className="folder-card-fork-label">Copia de otro usuario</p>
-                                            </div>
-                                            <ChevronIcon />
+                                <>
+                                    {forkedPackages.length === 0 && (
+                                        <div className="folders-empty">
+                                            <span className="folders-empty-icon">🔖</span>
+                                            <p className="folders-empty-title">Sin paquetes copiados</p>
+                                            <p className="folders-empty-sub">Guarda copias de paquetes que te gusten</p>
                                         </div>
-                                    ))}
-                                </div>
-                            </>
-                        )}
+                                    )}
+                                    <div className="folders-pkg-list">
+                                        {forkedPackages.map(pkg => (
+                                            <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
+                                                <div className="folder-pkg-row-icon folder-card-icon-fork">
+                                                    <ForkIcon />
+                                                </div>
+                                                <div className="folder-pkg-row-info">
+                                                    <p className="folder-pkg-row-name">{pkg.name}</p>
+                                                    <p className="folder-pkg-row-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
+                                                    <p className="folder-card-fork-label">Copia de otro usuario</p>
+                                                </div>
+                                                <ChevronIcon />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
                     </>
                 )}
 
