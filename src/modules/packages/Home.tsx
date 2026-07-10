@@ -75,16 +75,16 @@ export default function Home() {
             </div>
 
             <div className="home-body">
-                {/* SALUDO */}
-                {user && (
-                    <div className="home-greeting">
-                        <span className="home-greeting-wave">👋</span>
-                        <div>
-                            <p className="home-greeting-hi">Hola, {firstName}</p>
-                            <p className="home-greeting-sub">Continúa estudiando</p>
+                    {/* SALUDO / BANNER */}
+                    {user && (
+                        <div className="home-banner">
+                            <div className="home-banner-overlay" />
+                            <div className="home-banner-content">
+                                <p className="home-greeting-hi">Hola, {firstName}</p>
+                                <p className="home-greeting-sub">Continúa estudiando</p>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
                 {/* CONTINUAR ESTUDIANDO */}
                 {lastSession && lastPackage && (
