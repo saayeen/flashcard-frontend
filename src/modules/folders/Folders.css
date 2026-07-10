@@ -8,10 +8,24 @@
     padding-bottom: 80px;
 }
 .folder-detail-title {
+    flex: 1;
     font-size: 18px;
     font-weight: 700;
     color: #1a1a2e;
     margin: 0;
+}
+
+.folder-menu-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.05);
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .folder-detail-section {
@@ -351,12 +365,15 @@
 
 /* ── DETALLE DE CARPETA ─────────────────────────────────────── */
 .folder-detail-header {
-    padding: 16px 20px 8px;
-    background: #FBF8F2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.07);
+    background: #ffffff;
     position: sticky;
     top: 0;
     z-index: 10;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
 .folder-back-btn {
@@ -375,11 +392,52 @@
 .folder-back-btn:hover { opacity: 0.75; }
 
 .folder-detail-body {
-    flex: 1;
-    padding: 16px 20px 32px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
+}
+
+.folder-pkg-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #ffffff;
+    border: 0.5px solid rgba(0,0,0,0.07);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.folder-pkg-card:hover { background: #f8f5ef; }
+
+.folder-pkg-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.folder-pkg-card-info { flex: 1; min-width: 0; }
+
+.folder-pkg-card-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.folder-pkg-card-sub {
+    font-size: 12px;
+    color: #9090a8;
+    margin: 0;
 }
 
 .folder-detail-section-label {
@@ -489,21 +547,70 @@
 .folder-pkg-remove:hover { color: #dc2626; }
 
 .folder-add-pkg-btn {
-    margin-top: 6px;
-    background: none;
-    border: 1.5px dashed rgba(99,102,241,0.35);
-    border-radius: 10px;
-    padding: 10px 14px;
-    color: #6366f1;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     width: 100%;
+    padding: 11px;
+    border: 0.5px dashed rgba(0,0,0,0.2);
+    border-radius: 12px;
+    background: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b6b80;
+    cursor: pointer;
     transition: background 0.15s;
 }
 
-.folder-add-pkg-btn:hover { background: rgba(99,102,241,0.06); }
+.folder-add-pkg-btn:hover { background: rgba(0,0,0,0.03); }
 
+.folder-menu-sheet {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.folder-sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: #d8d4cc;
+    border-radius: 2px;
+    align-self: center;
+    margin-bottom: 8px;
+}
+
+.folder-sheet-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 8px;
+    padding: 0 4px;
+}
+
+.folder-sheet-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 4px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.15s;
+    width: 100%;
+    text-align: left;
+}
+.folder-sheet-row:hover { background: #f3f0ea; }
+.folder-sheet-danger { color: #dc2626; }
+.folder-sheet-divider {
+    height: 0.5px;
+    background: rgba(0,0,0,0.07);
+    margin: 2px 0;
+}
 /* ACCIONES DETALLE */
 .folder-detail-actions { display: flex; flex-direction: column; gap: 10px; }
 
