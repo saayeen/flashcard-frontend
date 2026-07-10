@@ -509,7 +509,7 @@ export default function Folders() {
             </div>
 
             {/* FAB nueva carpeta */}
-            {!showForm && (
+            {mainTab === "carpetas" && !showForm && (
                 <button
                     className="folders-fab"
                     onClick={() => setShowForm(true)}
