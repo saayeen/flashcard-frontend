@@ -6,14 +6,14 @@
     justify-content: center;
     min-height: 60vh;
     gap: 16px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     font-size: 15px;
 }
 
 .pubprofile-back-btn {
     padding: 10px 24px;
-    background: #6366f1;
-    color: #fff;
+    background: var(--accent);
+    color: var(--text-on-accent);
     border: none;
     border-radius: 10px;
     font-size: 15px;
@@ -24,8 +24,8 @@
 /* BOTÓN SEGUIR */
 .pubprofile-follow-btn {
     padding: 8px 28px;
-    background: #6366f1;
-    color: #fff;
+    background: var(--accent);
+    color: var(--text-on-accent);
     border: none;
     border-radius: 20px;
     font-size: 14px;
@@ -36,14 +36,14 @@
     box-shadow: 0 3px 10px rgba(99,102,241,0.3);
 }
 
-.pubprofile-follow-btn:hover { background: #4f46e5; }
+.pubprofile-follow-btn:hover { background: var(--accent-hover); }
 .pubprofile-follow-btn:active { transform: scale(0.96); }
 .pubprofile-follow-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .pubprofile-follow-btn.following {
     background: none;
-    border: 1.5px solid rgba(0,0,0,0.12);
-    color: #6b6b80;
+    border: 1.5px solid var(--border-strong);
+    color: var(--text-secondary);
     box-shadow: none;
 }
 
@@ -89,7 +89,7 @@
 .pubprofile-modal {
     width: 100%;
     max-width: 480px;
-    background: #ffffff;
+    background: var(--bg-surface);
     border-radius: 20px 20px 0 0;
     padding: 12px 20px 40px;
     display: flex;
@@ -118,14 +118,14 @@
 .pubprofile-modal-title {
     font-size: 17px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0 0 8px;
     flex-shrink: 0;
 }
 
 .pubprofile-modal-empty {
     font-size: 14px;
-    color: #9090a8;
+    color: var(--text-muted);
     text-align: center;
     padding: 24px 0;
     margin: 0;
@@ -151,17 +151,17 @@
     transition: background 0.15s;
 }
 
-.pubprofile-modal-user:hover { background: #f8f5ef; }
+.pubprofile-modal-user:hover { background: var(--bg-hover); }
 
 .pubprofile-modal-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: var(--text-on-accent);
     font-size: 13px;
     font-weight: 700;
     flex-shrink: 0;
@@ -178,7 +178,7 @@
     flex: 1;
     font-size: 15px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
 }
 
 .pubprofile-modal-user svg {

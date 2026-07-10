@@ -1,7 +1,7 @@
 /* ── Study page ────────────────────────────────────────────── */
 .study-page {
     min-height: 100dvh;
-    background: #FBF8F2;
+    background: var(--bg-page);
     display: flex;
     flex-direction: column;
 }
@@ -14,7 +14,7 @@
     justify-content: center;
     height: 100dvh;
     gap: 16px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     font-size: 15px;
 }
 
@@ -32,8 +32,8 @@
 
 .study-error-btn {
     padding: 10px 24px;
-    background: #6366f1;
-    color: #fff;
+    background: var(--accent);
+    color: var(--text-on-accent);
     border: none;
     border-radius: 10px;
     font-size: 15px;
@@ -53,7 +53,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: #1a1a2e;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     flex-shrink: 0;
@@ -70,7 +70,7 @@
 
 .study-progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    background: linear-gradient(90deg, var(--accent), #8b5cf6);
     border-radius: 6px;
     transition: width 0.4s ease;
 }
@@ -78,7 +78,7 @@
 .study-counter {
     font-size: 13px;
     font-weight: 600;
-    color: #6b6b80;
+    color: var(--text-secondary);
     flex-shrink: 0;
     min-width: 36px;
     text-align: right;
@@ -128,7 +128,7 @@
     justify-content: center;
     padding: 36px 28px;
     text-align: center;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 32px var(--border-strong);
 }
 
 .study-card-back {
@@ -147,7 +147,7 @@
 .study-card-text {
     font-size: 22px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
     line-height: 1.45;
 }
@@ -174,7 +174,7 @@
     border-radius: 16px;
     cursor: pointer;
     transition: transform 0.15s, opacity 0.15s;
-    background: #ffffff;
+    background: var(--bg-surface);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     border: 1px solid rgba(0,0,0,0.06);
 }
@@ -191,7 +191,7 @@
 .quality-label {
     font-size: 12px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
 }
 
 .quality-time {
@@ -201,7 +201,7 @@
 
 /* ── RESUMEN ── */
 .study-summary-page {
-    background: #FBF8F2;
+    background: var(--bg-page);
 }
 
 .summary-container {
@@ -225,7 +225,7 @@
 .summary-jati {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -242,13 +242,13 @@
 .summary-title {
     font-size: 24px;
     font-weight: 800;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
 }
 
 .summary-sub {
     font-size: 15px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     margin: 0;
 }
 
@@ -284,14 +284,14 @@
 .stat-number {
     font-size: 28px;
     font-weight: 800;
-    color: #1a1a2e;
+    color: var(--text-primary);
     line-height: 1;
 }
 
 .stat-label {
     font-size: 12px;
     font-weight: 600;
-    color: #6b6b80;
+    color: var(--text-secondary);
 }
 
 .summary-actions {
@@ -305,8 +305,8 @@
 .summary-btn-primary {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #fff;
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    color: var(--text-on-accent);
     border: none;
     border-radius: 14px;
     font-size: 16px;
@@ -326,7 +326,7 @@
     border-radius: 14px;
     font-size: 15px;
     font-weight: 600;
-    color: #6b6b80;
+    color: var(--text-secondary);
     cursor: pointer;
     transition: background 0.15s;
 }

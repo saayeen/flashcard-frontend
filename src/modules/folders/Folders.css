@@ -1,8 +1,8 @@
 /* ── Folders page ──────────────────────────────────────────── */
 .folders-page {
     min-height: 100dvh;
-    background: #FBF8F2;
-    color: #1a1a2e;
+    background: var(--bg-page);
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
     padding-bottom: 80px;
@@ -11,7 +11,7 @@
     flex: 1;
     font-size: 18px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
 }
 
@@ -21,7 +21,7 @@
     border-radius: 50%;
     border: none;
     background: rgba(0,0,0,0.05);
-    color: #1a1a2e;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,7 +38,7 @@
 .folder-detail-section-label {
     font-size: 11px;
     font-weight: 700;
-    color: #9090a8;
+    color: var(--text-muted);
     letter-spacing: 0.06em;
     margin: 0;
 }
@@ -48,14 +48,14 @@
     align-items: center;
     gap: 12px;
     padding: 14px 16px;
-    border-bottom: 1px solid rgba(0,0,0,0.07);
+    border-bottom: 1px solid var(--border);
 }
 
 .folder-detail-title {
     flex: 1;
     font-size: 18px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
 }
 
@@ -66,7 +66,7 @@
     padding: 6px 12px;
     font-size: 13px;
     font-weight: 600;
-    color: #6366f1;
+    color: var(--accent);
     cursor: pointer;
     transition: background 0.15s;
 }
@@ -80,7 +80,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 16px 20px 12px;
-    background: #FBF8F2;
+    background: var(--bg-page);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -92,7 +92,7 @@
 .folders-brand {
     font-size: 20px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
 }
 
 .folders-topbar-right { display: flex; align-items: center; gap: 4px; }
@@ -100,7 +100,7 @@
 .folders-icon-btn {
     background: none;
     border: none;
-    color: #6b6b80;
+    color: var(--text-secondary);
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
@@ -112,7 +112,7 @@
 
 .folders-icon-btn:hover {
     background: rgba(0,0,0,0.05);
-    color: #1a1a2e;
+    color: var(--text-primary);
 }
 
 /* TABS */
@@ -120,8 +120,8 @@
     display: flex;
     padding: 4px 20px 0;
     gap: 4px;
-    border-bottom: 1px solid rgba(0,0,0,0.07);
-    background: #FBF8F2;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-page);
 }
 
 .folders-tab {
@@ -132,7 +132,7 @@
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
-    color: #9090a8;
+    color: var(--text-muted);
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -141,7 +141,7 @@
 }
 
 .folders-tab:hover { color: #3a3a50; }
-.folders-tab.active { color: #6366f1; border-bottom-color: #6366f1; }
+.folders-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
 /* BODY */
 .folders-body {
@@ -155,8 +155,8 @@
 /* FORMULARIO NUEVA CARPETA */
 .folder-form {
     margin: 12px 20px;
-    background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.07);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
     border-radius: 16px;
     padding: 16px;
     display: flex;
@@ -166,11 +166,11 @@
 }
 
 .folder-input {
-    background: #FBF8F2;
+    background: var(--bg-page);
     border: 1.5px solid rgba(0,0,0,0.08);
     border-radius: 10px;
     padding: 11px 14px;
-    color: #1a1a2e;
+    color: var(--text-primary);
     font-size: 15px;
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
@@ -179,8 +179,8 @@
 }
 
 .folder-input:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .folder-input::placeholder { color: #b0b0c8; }
@@ -198,14 +198,14 @@
 }
 
 .color-dot:hover { transform: scale(1.1); }
-.color-dot.selected { border-color: #1a1a2e; transform: scale(1.15); }
+.color-dot.selected { border-color: var(--text-primary); transform: scale(1.15); }
 
 .folder-error {
     font-size: 13px;
-    color: #dc2626;
+    color: var(--danger);
     margin: 0;
     padding: 8px 12px;
-    background: rgba(220,38,38,0.07);
+    background: var(--danger-soft);
     border-radius: 8px;
     border: 1px solid rgba(220,38,38,0.12);
 }
@@ -218,7 +218,7 @@
     background: none;
     border: 1.5px solid rgba(0,0,0,0.1);
     border-radius: 10px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -230,10 +230,10 @@
 .folder-save-btn {
     flex: 1;
     padding: 12px;
-    background: #6366f1;
+    background: var(--accent);
     border: none;
     border-radius: 10px;
-    color: #fff;
+    color: var(--text-on-accent);
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
@@ -254,8 +254,8 @@
     justify-content: center;
     gap: 8px;
     padding: 20px 12px;
-    background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.07);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
     border-radius: 16px;
     cursor: pointer;
     transition: background 0.15s, transform 0.1s;
@@ -263,10 +263,10 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
-.folder-card:hover { background: #f8f5ef; }
+.folder-card:hover { background: var(--bg-hover); }
 .folder-card:active { transform: scale(0.97); }
 
-.folder-card:active { background: #f3f0ea; }
+.folder-card:active { background: var(--bg-active); }
 
 .folder-card-icon {
     width: 52px;
@@ -282,14 +282,14 @@
 .folder-card-name {
     font-size: 14px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
     line-height: 1.3;
 }
 
 .folder-card-sub {
     font-size: 12px;
-    color: #9090a8;
+    color: var(--text-muted);
     margin: 0;
 }
 
@@ -301,11 +301,11 @@
     bottom: 90px;
     left: 50%;
     transform: translateX(-50%);
-    background: #6366f1;
+    background: var(--accent);
     border: none;
     border-radius: 24px;
     padding: 13px 28px;
-    color: #fff;
+    color: var(--text-on-accent);
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
@@ -337,13 +337,13 @@
 .folders-empty-title {
     font-size: 17px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
 }
 
 .folders-empty-sub {
     font-size: 14px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     margin: 0 0 16px;
 }
 
@@ -352,7 +352,7 @@
 
 .folders-skeleton {
     height: 72px;
-    background: linear-gradient(90deg, #ede9e0 25%, #f3f0ea 50%, #ede9e0 75%);
+    background: linear-gradient(90deg, var(--skeleton-from) 25%, var(--skeleton-to) 50%, var(--skeleton-from) 75%);
     background-size: 200% 100%;
     border-radius: 14px;
     animation: skeleton-shimmer 1.4s infinite;
@@ -369,8 +369,8 @@
     align-items: center;
     gap: 12px;
     padding: 14px 16px;
-    border-bottom: 0.5px solid rgba(0,0,0,0.07);
-    background: #ffffff;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--bg-surface);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -382,7 +382,7 @@
     gap: 8px;
     background: none;
     border: none;
-    color: #6366f1;
+    color: var(--accent);
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -403,14 +403,14 @@
     align-items: center;
     gap: 12px;
     padding: 12px 14px;
-    background: #ffffff;
-    border: 0.5px solid rgba(0,0,0,0.07);
+    background: var(--bg-surface);
+    border: 0.5px solid var(--border);
     border-radius: 12px;
     cursor: pointer;
     transition: background 0.15s;
 }
 
-.folder-pkg-card:hover { background: #f8f5ef; }
+.folder-pkg-card:hover { background: var(--bg-hover); }
 
 .folder-pkg-card-icon {
     width: 36px;
@@ -427,7 +427,7 @@
 .folder-pkg-card-name {
     font-size: 14px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -436,7 +436,7 @@
 
 .folder-pkg-card-sub {
     font-size: 12px;
-    color: #9090a8;
+    color: var(--text-muted);
     margin: 0;
 }
 
@@ -444,14 +444,14 @@
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1px;
-    color: #9090a8;
+    color: var(--text-muted);
     margin: 0;
     text-transform: uppercase;
 }
 
 .folder-detail-form {
-    background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.07);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
     border-radius: 16px;
     padding: 16px;
     display: flex;
@@ -465,17 +465,17 @@
 .folder-edit-label {
     font-size: 12px;
     font-weight: 600;
-    color: #6b6b80;
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .folder-edit-input {
-    background: #FBF8F2;
+    background: var(--bg-page);
     border: 1.5px solid rgba(0,0,0,0.08);
     border-radius: 10px;
     padding: 11px 14px;
-    color: #1a1a2e;
+    color: var(--text-primary);
     font-size: 15px;
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
@@ -484,8 +484,8 @@
 }
 
 .folder-edit-input:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .folder-color-row { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -501,10 +501,10 @@
 }
 
 .folder-color-dot:hover { transform: scale(1.1); }
-.folder-color-dot.selected { border-color: #1a1a2e; transform: scale(1.15); }
+.folder-color-dot.selected { border-color: var(--text-primary); transform: scale(1.15); }
 
 /* PAQUETES EN CARPETA */
-.folder-empty-pkgs { font-size: 13px; color: #9090a8; margin: 0; }
+.folder-empty-pkgs { font-size: 13px; color: var(--text-muted); margin: 0; }
 
 .folder-pkg-list { display: flex; flex-direction: column; gap: 6px; }
 
@@ -513,7 +513,7 @@
     align-items: center;
     gap: 10px;
     padding: 10px 12px;
-    background: #FBF8F2;
+    background: var(--bg-page);
     border-radius: 10px;
     border: 1px solid rgba(0,0,0,0.06);
 }
@@ -537,14 +537,14 @@
 .folder-pkg-remove {
     background: none;
     border: none;
-    color: #9090a8;
+    color: var(--text-muted);
     cursor: pointer;
     padding: 2px;
     display: flex;
     transition: color 0.15s;
 }
 
-.folder-pkg-remove:hover { color: #dc2626; }
+.folder-pkg-remove:hover { color: var(--danger); }
 
 .folder-add-pkg-btn {
     display: flex;
@@ -558,7 +558,7 @@
     background: none;
     font-size: 14px;
     font-weight: 500;
-    color: #6b6b80;
+    color: var(--text-secondary);
     cursor: pointer;
     transition: background 0.15s;
 }
@@ -583,7 +583,7 @@
 .folder-sheet-title {
     font-size: 15px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0 0 8px;
     padding: 0 4px;
 }
@@ -597,18 +597,18 @@
     border: none;
     font-size: 14px;
     font-weight: 500;
-    color: #1a1a2e;
+    color: var(--text-primary);
     cursor: pointer;
     border-radius: 8px;
     transition: background 0.15s;
     width: 100%;
     text-align: left;
 }
-.folder-sheet-row:hover { background: #f3f0ea; }
-.folder-sheet-danger { color: #dc2626; }
+.folder-sheet-row:hover { background: var(--bg-hover); }
+.folder-sheet-danger { color: var(--danger); }
 .folder-sheet-divider {
     height: 0.5px;
-    background: rgba(0,0,0,0.07);
+    background: var(--border);
     margin: 2px 0;
 }
 /* ACCIONES DETALLE */
@@ -617,10 +617,10 @@
 .folder-save-edit-btn {
     width: 100%;
     padding: 14px;
-    background: #6366f1;
+    background: var(--accent);
     border: none;
     border-radius: 12px;
-    color: #fff;
+    color: var(--text-on-accent);
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
@@ -637,7 +637,7 @@
     background: none;
     border: 1.5px solid rgba(220,38,38,0.25);
     border-radius: 12px;
-    color: #dc2626;
+    color: var(--danger);
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -658,7 +658,7 @@
 }
 
 .folder-modal {
-    background: #ffffff;
+    background: var(--bg-surface);
     border-radius: 20px 20px 0 0;
     padding: 24px 20px 40px;
     width: 100%;
@@ -667,13 +667,13 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    box-shadow: 0 -8px 32px rgba(0,0,0,0.12);
+    box-shadow: 0 -8px 32px var(--border-strong);
 }
 
 .folder-modal-title {
     font-size: 18px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
 }
 
@@ -684,7 +684,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 13px 14px;
-    background: #FBF8F2;
+    background: var(--bg-page);
     border: 1px solid rgba(0,0,0,0.06);
     border-radius: 12px;
     cursor: pointer;
@@ -693,17 +693,17 @@
     width: 100%;
 }
 
-.folder-modal-item:hover { background: #f3f0ea; }
+.folder-modal-item:hover { background: var(--bg-hover); }
 
 .folder-modal-item-name {
     font-size: 14px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
 }
 
 .folder-modal-item-cat {
     font-size: 12px;
-    color: #9090a8;
+    color: var(--text-muted);
 }
 
 .folder-modal-cancel {
@@ -711,7 +711,7 @@
     background: none;
     border: 1.5px solid rgba(0,0,0,0.1);
     border-radius: 12px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -732,23 +732,23 @@
 .folders-pkg-subtab {
     flex: 1;
     padding: 9px 12px;
-    background: #ffffff;
+    background: var(--bg-surface);
     border: 1.5px solid rgba(0,0,0,0.08);
     border-radius: 10px;
     font-size: 13px;
     font-weight: 600;
-    color: #6b6b80;
+    color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.15s;
     text-align: center;
 }
 
-.folders-pkg-subtab:hover { background: #f3f0ea; }
+.folders-pkg-subtab:hover { background: var(--bg-hover); }
 
 .folders-pkg-subtab.active {
     background: rgba(99,102,241,0.08);
     border-color: rgba(99,102,241,0.3);
-    color: #6366f1;
+    color: var(--accent);
 }
 
 /* ── badges paquete ── */
@@ -773,7 +773,7 @@
 
 .badge-private {
     background: rgba(107,107,128,0.1);
-    color: #6b6b80;
+    color: var(--text-secondary);
 }
 
 /* ── card fork ── */

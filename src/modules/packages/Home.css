@@ -1,8 +1,8 @@
 /* ── Home page ─────────────────────────────────────────────── */
 .home-page {
     min-height: 100dvh;
-    background: #FBF8F2;
-    color: #1a1a2e;
+    background: var(--bg-page);
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
     padding-bottom: 80px;
@@ -14,7 +14,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 16px 20px 12px;
-    background: #FBF8F2;
+    background: var(--bg-page);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -36,7 +36,7 @@
 .home-header-title {
     font-size: 20px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     letter-spacing: -0.3px;
 }
 
@@ -49,7 +49,7 @@
 .home-header-btn {
     background: none;
     border: none;
-    color: #6b6b80;
+    color: var(--text-secondary);
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
@@ -67,7 +67,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
     border: none;
     cursor: pointer;
     display: flex;
@@ -86,7 +86,7 @@
 .home-avatar-initials {
     font-size: 14px;
     font-weight: 600;
-    color: #fff;
+    color: var(--text-on-accent);
     letter-spacing: 0.5px;
 }
 
@@ -114,14 +114,14 @@
 .home-greeting-hi {
     font-size: 22px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
     line-height: 1.2;
 }
 
 .home-greeting-sub {
     font-size: 14px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     margin: 2px 0 0;
 }
 
@@ -157,7 +157,7 @@
 .continue-name {
     font-size: 17px;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-on-accent);
     margin: 0 0 4px;
     white-space: nowrap;
     overflow: hidden;
@@ -188,7 +188,7 @@
 .home-section-title {
     font-size: 18px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
 }
 
@@ -204,7 +204,7 @@
     align-items: center;
     gap: 14px;
     padding: 12px 14px;
-    background: #ffffff;
+    background: var(--bg-surface);
     border-radius: 14px;
     cursor: pointer;
     transition: background 0.15s, box-shadow 0.15s;
@@ -213,12 +213,12 @@
 }
 
 .home-trending-card:hover {
-    background: #f8f5ef;
+    background: var(--bg-hover);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .home-trending-card:active {
-    background: #f3f0ea;
+    background: var(--bg-surface-2);
 }
 
 .home-trending-thumb {
@@ -233,7 +233,7 @@
 .home-trending-name {
     font-size: 15px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0 0 3px;
     white-space: nowrap;
     overflow: hidden;
@@ -242,7 +242,7 @@
 
 .home-trending-meta {
     font-size: 12px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     margin: 0 0 4px;
 }
 
@@ -292,7 +292,7 @@
 .home-package-name {
     font-size: 15px;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-on-accent);
     margin: 0;
     line-height: 1.3;
     flex: 1;
@@ -314,7 +314,7 @@
 
 .home-skeleton-card {
     height: 68px;
-    background: linear-gradient(90deg, #ede9e0 25%, #f3f0ea 50%, #ede9e0 75%);
+    background: linear-gradient(90deg, var(--skeleton-from) 25%, var(--skeleton-to) 50%, var(--skeleton-from) 75%);
     background-size: 200% 100%;
     border-radius: 14px;
     animation: skeleton-shimmer 1.4s infinite;
@@ -329,6 +329,6 @@
 .home-empty {
     text-align: center;
     padding: 32px 0;
-    color: #6b6b80;
+    color: var(--text-secondary);
     font-size: 14px;
 }

@@ -1,8 +1,8 @@
 /* ── Search page ───────────────────────────────────────────── */
 .search-page {
     min-height: 100dvh;
-    background: #FBF8F2;
-    color: #1a1a2e;
+    background: var(--bg-page);
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
     padding-bottom: 80px;
@@ -11,7 +11,7 @@
 /* TOPBAR */
 .search-topbar {
     padding: 16px 20px 12px;
-    background: #FBF8F2;
+    background: var(--bg-page);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -24,7 +24,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #ffffff;
+    background: var(--bg-surface);
     border: 1.5px solid rgba(0,0,0,0.08);
     border-radius: 14px;
     padding: 10px 14px;
@@ -37,7 +37,7 @@
     box-shadow: 0 0 0 3px rgba(99,102,241,0.08);
 }
 
-.search-input-wrapper svg { color: #6b6b80; flex-shrink: 0; }
+.search-input-wrapper svg { color: var(--text-secondary); flex-shrink: 0; }
 
 .search-input {
     flex: 1;
@@ -45,8 +45,8 @@
     border: none;
     outline: none;
     font-size: 16px;
-    color: #1a1a2e;
-    caret-color: #6366f1;
+    color: var(--text-primary);
+    caret-color: var(--accent);
     min-width: 0;
 }
 
@@ -56,7 +56,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: #6b6b80;
+    color: var(--text-secondary);
     display: flex;
     align-items: center;
     padding: 0;
@@ -64,15 +64,15 @@
     transition: color 0.15s;
 }
 
-.search-clear-btn:hover { color: #1a1a2e; }
+.search-clear-btn:hover { color: var(--text-primary); }
 
 /* TABS */
 .search-tabs {
     display: flex;
     gap: 0;
     padding: 0 20px;
-    border-bottom: 1.5px solid rgba(0,0,0,0.07);
-    background: #FBF8F2;
+    border-bottom: 1.5px solid var(--border);
+    background: var(--bg-page);
     position: sticky;
     top: 65px;
     z-index: 9;
@@ -88,18 +88,18 @@
     border-bottom: 2.5px solid transparent;
     font-size: 14px;
     font-weight: 500;
-    color: #9090a8;
+    color: var(--text-muted);
     cursor: pointer;
     transition: color 0.15s, border-color 0.15s;
     margin-bottom: -1.5px;
     white-space: nowrap;
 }
 
-.search-tab:hover { color: #1a1a2e; }
+.search-tab:hover { color: var(--text-primary); }
 
 .search-tab.active {
-    color: #6366f1;
-    border-bottom-color: #6366f1;
+    color: var(--accent);
+    border-bottom-color: var(--accent);
     font-weight: 600;
 }
 
@@ -110,8 +110,8 @@
     min-width: 18px;
     height: 18px;
     padding: 0 5px;
-    background: #6366f1;
-    color: #fff;
+    background: var(--accent);
+    color: var(--text-on-accent);
     border-radius: 99px;
     font-size: 11px;
     font-weight: 700;
@@ -132,7 +132,7 @@
 .search-section-title {
     font-size: 16px;
     font-weight: 700;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
 }
 
@@ -148,8 +148,8 @@
     align-items: center;
     gap: 10px;
     padding: 14px 16px;
-    background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.07);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
     border-radius: 14px;
     cursor: pointer;
     transition: background 0.15s, transform 0.1s;
@@ -157,14 +157,14 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
-.search-category-chip:hover { background: #f3f0ea; }
+.search-category-chip:hover { background: var(--bg-hover); }
 .search-category-chip:active { transform: scale(0.97); }
 
 .chip-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6366f1;
+    color: var(--accent);
     flex-shrink: 0;
     font-size: 20px;
 }
@@ -172,7 +172,7 @@
 .chip-label {
     font-size: 14px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
 }
 
 /* TAGS */
@@ -188,7 +188,7 @@
     border-radius: 20px;
     font-size: 13px;
     font-weight: 500;
-    color: #6366f1;
+    color: var(--accent);
     cursor: pointer;
     transition: background 0.15s;
 }
@@ -211,7 +211,7 @@
     align-items: center;
     gap: 12px;
     padding: 12px 14px;
-    background: #ffffff;
+    background: var(--bg-surface);
     border: 1px solid rgba(0,0,0,0.06);
     border-radius: 12px;
     cursor: pointer;
@@ -220,7 +220,7 @@
     width: 100%;
 }
 
-.search-recent-item:hover { background: #f8f5ef; }
+.search-recent-item:hover { background: var(--bg-hover); }
 .search-recent-item svg { color: #b0b0c0; flex-shrink: 0; }
 
 .search-recent-name {
@@ -234,7 +234,7 @@
 
 .search-recent-meta {
     font-size: 12px;
-    color: #9090a8;
+    color: var(--text-muted);
     flex-shrink: 0;
 }
 
@@ -246,8 +246,8 @@
     align-items: center;
     gap: 12px;
     padding: 14px 16px;
-    background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.07);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
     border-radius: 14px;
     cursor: pointer;
     transition: background 0.15s, box-shadow 0.15s;
@@ -255,7 +255,7 @@
 }
 
 .search-result-card:hover {
-    background: #f8f5ef;
+    background: var(--bg-hover);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
@@ -266,7 +266,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    color: #6366f1;
+    color: var(--accent);
     margin-bottom: 2px;
     display: block;
 }
@@ -274,7 +274,7 @@
 .search-result-name {
     font-size: 15px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0 0 4px;
     white-space: nowrap;
     overflow: hidden;
@@ -283,7 +283,7 @@
 
 .search-result-desc {
     font-size: 13px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     margin: 0 0 6px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -295,7 +295,7 @@
     align-items: center;
     gap: 6px;
     font-size: 12px;
-    color: #9090a8;
+    color: var(--text-muted);
 }
 
 .meta-dot { color: #c8c8d8; }
@@ -309,7 +309,7 @@
 
 .search-result-tag {
     font-size: 11px;
-    color: #6366f1;
+    color: var(--accent);
     background: rgba(99,102,241,0.08);
     padding: 2px 8px;
     border-radius: 99px;
@@ -326,22 +326,22 @@
     align-items: center;
     gap: 12px;
     padding: 14px 16px;
-    background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.07);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
     border-radius: 14px;
     cursor: pointer;
     transition: background 0.15s;
     box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
-.search-user-card:hover { background: #f8f5ef; }
+.search-user-card:hover { background: var(--bg-hover); }
 
 .search-user-avatar {
     width: 52px;
     height: 52px;
     border-radius: 50%;
     background: #D85A30;
-    color: #fff;
+    color: var(--text-on-accent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -369,7 +369,7 @@
 .search-user-name {
     font-size: 15px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -378,13 +378,13 @@
 
 .search-user-handle {
     font-size: 12px;
-    color: #9090a8;
+    color: var(--text-muted);
     margin: 0;
 }
 
 .search-user-stats {
     font-size: 12px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     margin: 2px 0 0;
 }
 
@@ -394,11 +394,11 @@
     gap: 5px;
     padding: 8px 14px;
     background: transparent;
-    border: 1.5px solid #1a1a2e;
+    border: 1.5px solid var(--text-primary);
     border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
     cursor: pointer;
     flex-shrink: 0;
     transition: background 0.15s, color 0.15s;
@@ -406,14 +406,14 @@
 }
 
 .search-follow-btn:hover {
-    background: #1a1a2e;
-    color: #fff;
+    background: var(--text-primary);
+    color: var(--text-on-accent);
 }
 
 .search-follow-btn.following {
-    background: #f3f0ea;
+    background: var(--bg-surface-2);
     border-color: #c0c0d0;
-    color: #6b6b80;
+    color: var(--text-secondary);
 }
 
 /* VACÍO */
@@ -430,13 +430,13 @@
 .search-empty-title {
     font-size: 16px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 4px 0 0;
 }
 
 .search-empty-sub {
     font-size: 14px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     margin: 0;
 }
 
@@ -445,7 +445,7 @@
 
 .search-skeleton {
     height: 80px;
-    background: linear-gradient(90deg, #ede9e0 25%, #f3f0ea 50%, #ede9e0 75%);
+    background: linear-gradient(90deg, var(--skeleton-from) 25%, var(--skeleton-to) 50%, var(--skeleton-from) 75%);
     background-size: 200% 100%;
     border-radius: 14px;
     animation: skeleton-shimmer 1.4s infinite;

@@ -1,8 +1,8 @@
 /* ── Create Package ────────────────────────────────────────── */
 .create-page {
     min-height: 100dvh;
-    background: #FBF8F2;
-    color: #1a1a2e;
+    background: var(--bg-page);
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
 }
@@ -18,7 +18,7 @@
 .create-back-btn {
     background: rgba(0,0,0,0.15);
     border: none;
-    color: #fff;
+    color: var(--text-on-accent);
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -33,7 +33,7 @@
 .create-header-title {
     font-size: 18px;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-on-accent);
     margin: 0;
 }
 
@@ -45,7 +45,7 @@
     padding: 16px 20px 8px;
     gap: 0;
     overflow: hidden;
-    background: #FBF8F2;
+    background: var(--bg-page);
 }
 
 .create-step {
@@ -64,34 +64,34 @@
     justify-content: center;
     font-size: 12px;
     font-weight: 700;
-    background: #ede9e0;
-    color: #9090a8;
+    background: var(--skeleton-from);
+    color: var(--text-muted);
     border: 1.5px solid #d8d4cc;
     flex-shrink: 0;
     transition: all 0.2s;
 }
 
 .create-step.active .step-circle {
-    background: #6366f1;
-    color: #fff;
-    border-color: #6366f1;
+    background: var(--accent);
+    color: var(--text-on-accent);
+    border-color: var(--accent);
 }
 
 .create-step.done .step-circle {
     background: #16a34a;
-    color: #fff;
+    color: var(--text-on-accent);
     border-color: #16a34a;
 }
 
 .step-label {
     font-size: 11px;
-    color: #9090a8;
+    color: var(--text-muted);
     font-weight: 500;
     white-space: nowrap;
     transition: color 0.2s;
 }
 
-.create-step.active .step-label { color: #6366f1; }
+.create-step.active .step-label { color: var(--accent); }
 .create-step.done .step-label { color: #16a34a; }
 
 .step-line {
@@ -116,17 +116,17 @@
 .create-label {
     font-size: 13px;
     font-weight: 600;
-    color: #6b6b80;
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .create-input {
-    background: #ffffff;
+    background: var(--bg-surface);
     border: 1.5px solid rgba(0,0,0,0.08);
     border-radius: 12px;
     padding: 12px 14px;
-    color: #1a1a2e;
+    color: var(--text-primary);
     font-size: 15px;
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
@@ -136,18 +136,18 @@
 }
 
 .create-input:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .create-input::placeholder { color: #b0b0c8; }
 
 .create-textarea {
-    background: #ffffff;
+    background: var(--bg-surface);
     border: 1.5px solid rgba(0,0,0,0.08);
     border-radius: 12px;
     padding: 12px 14px;
-    color: #1a1a2e;
+    color: var(--text-primary);
     font-size: 15px;
     outline: none;
     resize: none;
@@ -160,8 +160,8 @@
 }
 
 .create-textarea:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .create-textarea::placeholder { color: #b0b0c8; }
@@ -175,10 +175,10 @@
 
 .create-category-btn {
     padding: 10px 12px;
-    background: #ffffff;
+    background: var(--bg-surface);
     border: 1.5px solid rgba(0,0,0,0.08);
     border-radius: 10px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -188,14 +188,14 @@
 }
 
 .create-category-btn:hover {
-    background: #f3f0ea;
-    color: #1a1a2e;
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
 }
 
 .create-category-btn.selected {
     background: rgba(99,102,241,0.08);
-    border-color: #6366f1;
-    color: #6366f1;
+    border-color: var(--accent);
+    color: var(--accent);
     font-weight: 600;
 }
 
@@ -205,8 +205,8 @@
     align-items: center;
     gap: 8px;
     padding: 10px 14px;
-    background: #ffffff;
-    border: 1.5px dashed rgba(0,0,0,0.12);
+    background: var(--bg-surface);
+    border: 1.5px dashed var(--border-strong);
     border-radius: 12px;
     color: #b0b0c8;
     font-size: 14px;
@@ -238,13 +238,13 @@
 .theme-option:active { transform: scale(0.96); }
 
 .theme-option.selected {
-    outline: 2.5px solid #1a1a2e;
+    outline: 2.5px solid var(--text-primary);
     outline-offset: 2px;
 }
 
 .theme-check {
     font-size: 18px;
-    color: #fff;
+    color: var(--text-on-accent);
     font-weight: 700;
     text-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
@@ -262,9 +262,9 @@
     align-items: center;
     justify-content: space-between;
     padding: 14px 16px;
-    background: #ffffff;
+    background: var(--bg-surface);
     border-radius: 12px;
-    border: 1px solid rgba(0,0,0,0.07);
+    border: 1px solid var(--border);
     gap: 12px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
@@ -272,13 +272,13 @@
 .create-toggle-label {
     font-size: 15px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--text-primary);
     margin: 0 0 2px;
 }
 
 .create-toggle-sub {
     font-size: 12px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     margin: 0;
 }
 
@@ -308,13 +308,13 @@
     top: 3px;
     width: 20px;
     height: 20px;
-    background: #fff;
+    background: var(--bg-surface);
     border-radius: 50%;
     transition: transform 0.2s;
     box-shadow: 0 1px 4px rgba(0,0,0,0.15);
 }
 
-.toggle input:checked + .toggle-slider { background: #6366f1; }
+.toggle input:checked + .toggle-slider { background: var(--accent); }
 .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
 
 /* BOTONES */
@@ -323,7 +323,7 @@
     padding: 15px;
     border: none;
     border-radius: 14px;
-    color: #fff;
+    color: var(--text-on-accent);
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
@@ -340,9 +340,9 @@
     width: 100%;
     padding: 14px;
     background: none;
-    border: 1.5px solid rgba(0,0,0,0.12);
+    border: 1.5px solid var(--border-strong);
     border-radius: 14px;
-    color: #6b6b80;
+    color: var(--text-secondary);
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -354,20 +354,20 @@
 /* ERROR */
 .create-error {
     font-size: 13px;
-    color: #dc2626;
+    color: var(--danger);
     margin: 0;
     padding: 10px 14px;
-    background: rgba(220,38,38,0.07);
+    background: var(--danger-soft);
     border-radius: 8px;
     border: 1px solid rgba(220,38,38,0.15);
 }
 
 /* PASO 2 — TARJETAS */
 .create-card-form {
-    background: #ffffff;
+    background: var(--bg-surface);
     border-radius: 16px;
     padding: 16px;
-    border: 1px solid rgba(0,0,0,0.07);
+    border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -379,12 +379,12 @@
     padding: 12px;
     border: none;
     border-radius: 10px;
-    color: #fff;
+    color: var(--text-on-accent);
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: opacity 0.15s;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    box-shadow: 0 2px 8px var(--border-strong);
 }
 
 .create-add-card-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -392,8 +392,8 @@
 .create-cards-list { display: flex; flex-direction: column; gap: 8px; }
 
 .create-card-item {
-    background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.07);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 14px;
     display: flex;
@@ -423,7 +423,7 @@
 .create-card-label {
     font-size: 11px;
     font-weight: 700;
-    color: #6366f1;
+    color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     flex-shrink: 0;
@@ -441,7 +441,7 @@
 .create-card-edit-btn {
     background: none;
     border: none;
-    color: #6366f1;
+    color: var(--accent);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -451,14 +451,14 @@
 .create-card-del-btn {
     background: none;
     border: none;
-    color: #9090a8;
+    color: var(--text-muted);
     cursor: pointer;
     padding: 2px;
     display: flex;
     transition: color 0.15s;
 }
 
-.create-card-del-btn:hover { color: #dc2626; }
+.create-card-del-btn:hover { color: var(--danger); }
 
 .create-step2-footer {
     display: flex;
@@ -484,7 +484,7 @@
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 20px var(--border-strong);
 }
 
 .final-icon { font-size: 48px; }
@@ -492,7 +492,7 @@
 .final-title {
     font-size: 22px;
     font-weight: 800;
-    color: #fff;
+    color: var(--text-on-accent);
     margin: 0;
 }
 

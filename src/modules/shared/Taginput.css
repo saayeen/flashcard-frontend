@@ -1,9 +1,10 @@
+
 .tag-input-wrapper {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 6px;
-    background: #ffffff;
+    background: var(--bg-surface);
     border: 1.5px solid rgba(0,0,0,0.08);
     border-radius: 12px;
     padding: 8px 12px;
@@ -14,17 +15,16 @@
 }
 
 .tag-input-wrapper:focus-within {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .tag-chip {
-    display: inline-flex;
-    align-items: center;
+   align-items: center;
     gap: 4px;
-    background: rgba(99,102,241,0.1);
+    background: var(--accent-soft);
     border: 1px solid rgba(99,102,241,0.25);
-    color: #6366f1;
+    color: var(--accent);
     font-size: 13px;
     font-weight: 600;
     padding: 3px 8px 3px 10px;
@@ -35,7 +35,7 @@
 .tag-chip-remove {
     background: none;
     border: none;
-    color: #6366f1;
+    color: var(--accent);
     cursor: pointer;
     font-size: 16px;
     line-height: 1;
@@ -55,7 +55,7 @@
     border: none;
     outline: none;
     font-size: 14px;
-    color: #1a1a2e;
+    color: var(--text-primary);
     font-family: inherit;
     padding: 0;
 }
