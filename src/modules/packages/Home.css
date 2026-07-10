@@ -111,6 +111,43 @@
     font-size: 28px;
 }
 
+/* ── Banner con imagen (claro/oscuro) ───────────────────────── */
+.home-banner {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    min-height: 160px;
+    background-image: url('/img/BannerHomeClaro.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+}
+
+[data-theme="dark"] .home-banner {
+    background-image: url('/img/BannerHomeOscuro.png');
+}
+
+.home-banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0) 100%);
+}
+
+.home-banner-content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+.home-banner-content .home-greeting-hi {
+    color: #ffffff;
+}
+
+.home-banner-content .home-greeting-sub {
+    color: rgba(255,255,255,0.85);
+}
+
 .home-greeting-hi {
     font-size: 22px;
     font-weight: 700;

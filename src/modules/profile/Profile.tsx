@@ -268,9 +268,8 @@ export default function Profile() {
                                 <span className="dist-number">{stats.distribution.easy}</span>
                                 <span className="dist-label">Fácil</span>
                             </div>
-
                         </div>
-            </div>
+                    </div>
                 </div>
             )}
 
