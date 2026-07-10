@@ -24,10 +24,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }, [theme]);
 
     const toggleTheme = (e?: React.MouseEvent) => {
-        const newTheme = theme === "light" ? "dark" : "light";
+        const newTheme: Theme = theme === "light" ? "dark" : "light";
 
-        // View Transitions API — animación circular desde el punto de click
-        if (!document.startViewTransition || !e) {
+        // sin animación si no hay View Transitions API o no hay evento
+        if (!("startViewTransition" in document) || !e) {
             setTheme(newTheme);
             return;
         }
@@ -39,6 +39,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
             Math.max(y, window.innerHeight - y)
         );
 
+        // @ts-ignore — startViewTransition puede no estar en los tipos de TS
         const transition = document.startViewTransition(() => {
             setTheme(newTheme);
             document.documentElement.setAttribute("data-theme", newTheme);
@@ -50,7 +51,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
                 `circle(${endRadius}px at ${x}px ${y}px)`,
             ];
             document.documentElement.animate(
-                { clipPath: newTheme === "dark" ? clipPath : [...clipPath].reverse() },
+                {
+                    clipPath: newTheme === "dark"
+                        ? clipPath
+                        : [...clipPath].reverse(),
+                },
                 {
                     duration: 400,
                     easing: "ease-in",
