@@ -41,6 +41,7 @@ export default function Folders() {
     const [savingEdit, setSavingEdit] = useState(false);
     const [showAddPkg, setShowAddPkg] = useState(false);
     const [editMode, setEditMode] = useState(false);
+    const [folderPackageCounts, setFolderPackageCounts] = useState<Record<number, number>>({});
 
     useEffect(() => {
         loadFolders();
@@ -56,15 +57,33 @@ export default function Folders() {
     }, [id, folders]);
 
     const loadFolders = async () => {
-        try {
-            const token = await getToken();
-            const res = await fetch(`${API_URL}/folders`, {
-                headers: { "Authorization": `Bearer ${token}` },
-            });
-            if (res.ok) setFolders(await res.json());
-        } catch {}
-        finally { setLoading(false); }
-    };
+    try {
+        const token = await getToken();
+        const res = await fetch(`${API_URL}/folders`, {
+            headers: { "Authorization": `Bearer ${token}` },
+        });
+        if (res.ok) {
+            const data: Folder[] = await res.json();
+            setFolders(data);
+
+            // cargar conteo de paquetes por carpeta
+            const counts: Record<number, number> = {};
+            await Promise.all(
+                data.map(async folder => {
+                    const r = await fetch(`${API_URL}/folders/${folder.id}/packages`);
+                    if (r.ok) {
+                        const pkgs = await r.json();
+                        counts[folder.id] = pkgs.length;
+                    } else {
+                        counts[folder.id] = 0;
+                    }
+                })
+            );
+            setFolderPackageCounts(counts);
+        }
+    } catch {}
+    finally { setLoading(false); }
+};
 
     const loadMyPackages = async () => {
         try {
@@ -518,15 +537,15 @@ export default function Folders() {
                                     key={folder.id}
                                     onClick={() => openFolderDetail(folder)}
                                 >
-                                    <div className="folder-card-icon" style={{ background: folder.color }}>
+                                    <div className="folder-card-icon" style={{ background: folder.color + "22", color: folder.color }}>
                                         <FolderIcon />
                                     </div>
-                                    <div className="folder-card-info">
-                                        <h2 className="folder-card-name">{folder.name}</h2>
-                                    </div>
-                                    <ChevronIcon />
+                                    <h2 className="folder-card-name">{folder.name}</h2>
+                                    <p className="folder-card-sub">
+                                        {folderPackageCounts[folder.id] ?? 0} paquetes
+                                    </p>
                                 </div>
-                            ))}
+                                    ))} 
                         </div>
                     </>
                 )}
