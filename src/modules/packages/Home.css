@@ -117,7 +117,7 @@
     border-radius: 20px;
     overflow: hidden;
     min-height: 160px;
-    background-image: url('/img/BannerHomeClaro.png');
+    background-image: url('/src/assets/BannerHomeClaro.png');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -125,7 +125,7 @@
 }
 
 [data-theme="dark"] .home-banner {
-    background-image: url('/img/BannerHomeOscuro.png');
+    background-image: url('/src/assets/BannerHomeOscuro.png');
 }
 
 .home-banner-overlay {
