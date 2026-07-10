@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import { AuthProvider } from "./modules/auth/AuthContext";
 import { AuthGateProvider } from "./modules/auth/AuthGateContext";
-import { ThemeProvider } from "./modules/theme/Themecontext.tsx";
+import { ThemeProvider } from "./modules/theme/ThemeContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <ThemeProvider>

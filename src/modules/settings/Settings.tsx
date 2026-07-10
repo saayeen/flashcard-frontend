@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import { useTheme } from "../theme/Themecontext";
+import { useTheme } from "../theme/ThemeContext";
 import "./Settings.css";
 
 export default function Settings() {
