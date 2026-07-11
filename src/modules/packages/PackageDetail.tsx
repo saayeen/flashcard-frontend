@@ -330,9 +330,13 @@ export default function PackageDetail() {
                                 : pkg.userName.slice(0, 1).toUpperCase()
                             }
                         </div>
-                        <span className="detail-author-name">
+                        <button
+                            className="detail-author-name"
+                            onClick={() => { if (!isOwner) navigate(`/profile/${pkg.userId}`); }}
+                            style={{ background:"none", border:"none", padding:0, cursor: isOwner ? "default" : "pointer", font:"inherit" }}
+                            >
                             {isOwner ? "Tú" : pkg.userName}
-                        </span>
+                        </button>
                     </div>
 
                     <div className="detail-hero-stats">
@@ -376,7 +380,12 @@ export default function PackageDetail() {
                         <h3 className="detail-tags-title">Tags</h3>
                         <div className="detail-tags-list">
                             {pkg.tags.map(tag => (
-                                <span key={tag} className="detail-tags-pill">#{tag}</span>
+                                <button
+                                key={tag}
+                                className="detail-tags-pill"
+                                onClick={() => navigate(`/search?q=${encodeURIComponent(tag)}`)}
+                                style={{ background:"none", border:"none", padding:0, cursor:"pointer", font:"inherit" }}
+                            >#{tag}</button>
                             ))}
                         </div>
                     </section>
@@ -496,7 +505,11 @@ export default function PackageDetail() {
                                         }
                                     </div>
                                     <div style={{ flex: 1 }}>
-                                        <p className="detail-review-user">{review.userName}</p>
+                                    <button
+                                            className="detail-review-user"
+                                            onClick={() => navigate(`/profile/${review.userId}`)}
+                                            style={{ background:"none", border:"none", padding:0, cursor:"pointer", font:"inherit" }}
+                                        >{review.userName}</button>
                                         <div className="detail-review-stars">
                                             {[1,2,3,4,5].map(i => (
                                                 <span key={i} className={i <= review.rating ? "star-filled" : "star-empty"}>★</span>

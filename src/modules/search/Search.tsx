@@ -236,7 +236,12 @@ export default function Search() {
                                                 {pkg.tags && pkg.tags.length > 0 && (
                                                     <div className="search-result-tags">
                                                         {pkg.tags.map(tag => (
-                                                            <span key={tag} className="search-result-tag">#{tag}</span>
+                                                            <button
+                                                                key={tag}
+                                                                className="search-result-tag"
+                                                                onClick={e => { e.stopPropagation(); handleTag(tag); }}
+                                                                style={{ background:"none", border:"none", padding:0, cursor:"pointer", font:"inherit" }}
+                                                            >#{tag}</button>
                                                         ))}
                                                     </div>
                                                 )}
