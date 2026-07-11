@@ -861,3 +861,37 @@
     font-weight: 500;
     margin: 2px 0 0;
 }
+
+.folders-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin: 12px 16px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.folders-search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.folders-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.folders-search-clear {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0;
+}

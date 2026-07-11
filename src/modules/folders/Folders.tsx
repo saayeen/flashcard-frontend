@@ -559,7 +559,7 @@ export default function Folders() {
                             </div>
                         )}
                         <div className="folders-grid">
-                            {folders.map(folder => (
+                            {filteredFolders.map(folder => (
                                 <div
                                     className="folder-card"
                                     key={folder.id}
