@@ -26,7 +26,7 @@ export default function Folders() {
     const [myPackages, setMyPackages] = useState<FlashcardPackage[]>([]);
     const [forkedPackages, setForkedPackages] = useState<FlashcardPackage[]>([]);
     const [loading, setLoading] = useState(true);
-
+    const [searchQuery, setSearchQuery] = useState(""); 
     // formulario nueva carpeta
     const [showForm, setShowForm] = useState(false);
     const [newFolder, setNewFolder] = useState<CreateFolderRequest>({ name: "", color: "#68A9F4" });
@@ -199,6 +199,18 @@ export default function Folders() {
             }));
         } catch {}
     };
+
+            const filteredFolders = folders.filter(f =>
+            f.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        const filteredMyPackages = myPackages.filter(p =>
+            p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        const filteredForkedPackages = forkedPackages.filter(p =>
+            p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
 
     // ── VISTA DETALLE DE CARPETA ──
     if (openFolder) {
@@ -373,6 +385,22 @@ export default function Folders() {
                 </button>
             </div>
 
+            <div className="folders-search-bar">
+                <SearchIcon />
+                <input
+                    className="folders-search-input"
+                    type="text"
+                    placeholder={mainTab === "carpetas" ? "Buscar carpetas..." : "Buscar paquetes..."}
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                />
+                {searchQuery && (
+                    <button className="folders-search-clear" onClick={() => setSearchQuery("")}>
+                        ✕
+                    </button>
+                )}
+            </div>
+
             {/* NUEVA CARPETA FORM */}
             {showForm && (
                 <div className="folder-form">
@@ -408,22 +436,22 @@ export default function Folders() {
 
             {/* CONTENIDO */}
             <div className="folders-body">
-                {/* TAB: PAQUETES */}
+               {/* TAB: PAQUETES */}
                 {mainTab === "paquetes" && (
                     <>
                         {/* sub-tabs */}
                         <div className="folders-pkg-subtabs">
-                            <button
-                                className={`folders-pkg-subtab ${pkgTab === "propios" ? "active" : ""}`}
-                                onClick={() => setPkgTab("propios")}
-                            >
-                                Mis paquetes ({myPackages.length})
-                            </button>
+                        <button
+                            className={`folders-pkg-subtab ${pkgTab === "propios" ? "active" : ""}`}
+                            onClick={() => setPkgTab("propios")}
+                        >
+                            Mis paquetes ({filteredMyPackages.length})
+                        </button>
                             <button
                                 className={`folders-pkg-subtab ${pkgTab === "copiados" ? "active" : ""}`}
                                 onClick={() => setPkgTab("copiados")}
                             >
-                                Copiados ({forkedPackages.length})
+                                Copiados ({filteredForkedPackages.length})
                             </button>
                         </div>
 
@@ -436,7 +464,7 @@ export default function Folders() {
                         {/* propios */}
                         {!loading && pkgTab === "propios" && (
                             <>
-                                {myPackages.length === 0 && (
+                                {!searchQuery && myPackages.length === 0 && (
                                     <div className="folders-empty">
                                         <span className="folders-empty-icon">📦</span>
                                         <p className="folders-empty-title">Sin paquetes aún</p>
@@ -446,8 +474,15 @@ export default function Folders() {
                                         </button>
                                     </div>
                                 )}
+                                {searchQuery && filteredMyPackages.length === 0 && (
+                                    <div className="folders-empty">
+                                        <span className="folders-empty-icon">🔍</span>
+                                        <p className="folders-empty-title">Sin resultados</p>
+                                        <p className="folders-empty-sub">No encontramos paquetes con ese nombre</p>
+                                    </div>
+                                )}
                                 <div className="folders-pkg-list">
-                                    {myPackages.map(pkg => (
+                                    {filteredMyPackages.map(pkg => (
                                         <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
                                             <div className="folder-pkg-row-icon" style={{ background: "#6366f1" }}>
                                                 <PackageIcon />
@@ -472,15 +507,22 @@ export default function Folders() {
                         {/* copiados */}
                         {!loading && pkgTab === "copiados" && (
                                 <>
-                                    {forkedPackages.length === 0 && (
+                                    {!searchQuery && forkedPackages.length === 0 && (
                                         <div className="folders-empty">
                                             <span className="folders-empty-icon">🔖</span>
                                             <p className="folders-empty-title">Sin paquetes copiados</p>
                                             <p className="folders-empty-sub">Guarda copias de paquetes que te gusten</p>
                                         </div>
                                     )}
+                                    {searchQuery && filteredForkedPackages.length === 0 && (
+                                        <div className="folders-empty">
+                                            <span className="folders-empty-icon">🔍</span>
+                                            <p className="folders-empty-title">Sin resultados</p>
+                                            <p className="folders-empty-sub">No encontramos paquetes con ese nombre</p>
+                                        </div>
+                                    )}
                                     <div className="folders-pkg-list">
-                                        {forkedPackages.map(pkg => (
+                                        {filteredForkedPackages.map(pkg => (
                                             <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
                                                 <div className="folder-pkg-row-icon folder-card-icon-fork">
                                                     <ForkIcon />
@@ -498,7 +540,6 @@ export default function Folders() {
                             )}
                     </>
                 )}
-
                 {/* TAB: CARPETAS */}
                 {mainTab === "carpetas" && (
                     <>

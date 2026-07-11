@@ -469,20 +469,20 @@ export default function PackageDetail() {
                             </div>
                             <span className="detail-reviews-count">{reviews.length} reseñas</span>
                         </div>
-                        <button
-                            className={`detail-review-btn ${!user || hasReviewed || cannotReview ? "detail-review-btn-disabled" : ""}`}
-                            onClick={() => user && !hasReviewed && !cannotReview && setShowReviewModal(true)}
-                            disabled={!user || hasReviewed || cannotReview}
-                        >
-                            {!user
-                                ? "Inicia sesión para evaluar"
-                                : cannotReview
-                                ? "No puedes evaluar tu propio paquete"
-                                : hasReviewed
-                                ? "Ya evaluaste este paquete"
-                                : "Evaluar paquete"
-                            }
-                        </button>
+                        {!cannotReview && (
+                            <button
+                                className={`detail-review-btn ${!user || hasReviewed ? "detail-review-btn-disabled" : ""}`}
+                                onClick={() => user && !hasReviewed && setShowReviewModal(true)}
+                                disabled={!user || hasReviewed}
+                            >
+                                {!user
+                                    ? "Inicia sesión para evaluar"
+                                    : hasReviewed
+                                    ? "Ya evaluaste este paquete"
+                                    : "Evaluar paquete"
+                                }
+                            </button>
+                        )}
                     </div>
 
                     <div className="detail-reviews-list">
