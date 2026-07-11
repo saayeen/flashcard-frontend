@@ -16,7 +16,7 @@ const COLORS = [
 type MainTab = "paquetes" | "carpetas";
 
 export default function Folders() {
-    const { getToken } = useAuth();
+    const { getToken, user } = useAuth();
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -27,6 +27,10 @@ export default function Folders() {
     const [forkedPackages, setForkedPackages] = useState<FlashcardPackage[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState(""); 
+    const initials = user?.displayName
+    ? user.displayName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
+    : "?";
+    
     // formulario nueva carpeta
     const [showForm, setShowForm] = useState(false);
     const [newFolder, setNewFolder] = useState<CreateFolderRequest>({ name: "", color: "#68A9F4" });
@@ -358,12 +362,14 @@ export default function Folders() {
                     <span className="folders-brand">Jati</span>
                 </div>
                 <div className="folders-topbar-right">
-                    <button className="folders-icon-btn" aria-label="Buscar" onClick={() => navigate("/search")}>
-                        <SearchIcon />
-                    </button>
-                    <button className="folders-icon-btn" aria-label="Perfil" onClick={() => navigate("/profile")}>
-                        <UserIcon />
-                    </button>
+                    {user && (
+                        <button className="folders-icon-btn folders-header-avatar" aria-label="Perfil" onClick={() => navigate("/profile")}>
+                            {user.photoURL
+                                ? <img src={user.photoURL} alt="Perfil" className="folders-avatar-img" />
+                                : <span className="folders-avatar-initials">{initials}</span>
+                            }
+                        </button>
+                    )}
                 </div>
             </div>
 

@@ -22,13 +22,15 @@ export default function Header() {
                     <button className="header-icon-btn" onClick={() => navigate("/search")} aria-label="Buscar">
                         <SearchIcon />
                     </button>
-                    <button className="header-avatar-btn" onClick={() => user ? navigate("/profile") : navigate("/")} aria-label="Perfil">
-                        {user?.photoURL ? (
-                            <img src={user.photoURL} alt="Perfil" className="header-avatar-img" />
-                        ) : (
-                            <span className="header-avatar-initials">{initials}</span>
-                        )}
-                    </button>
+                    {user && (
+                        <button className="header-avatar-btn" onClick={() => navigate("/profile")} aria-label="Perfil">
+                            {user.photoURL ? (
+                                <img src={user.photoURL} alt="Perfil" className="header-avatar-img" />
+                            ) : (
+                                <span className="header-avatar-initials">{initials}</span>
+                            )}
+                        </button>
+                    )}
                 </div>
             </div>
         </header>

@@ -25,8 +25,8 @@ export default function Home() {
 
     const firstName = user?.displayName?.split(" ")[0] ?? null;
     const initials = user?.displayName
-        ? user.displayName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
-        : "?";
+    ? user.displayName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
+    : "?";
 
     useEffect(() => {
         getPackages()
