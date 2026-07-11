@@ -280,7 +280,7 @@ export default function PackageDetail() {
     if (!pkg) return <div className="detail-loading">Paquete no encontrado</div>;
 
     const isOwner = user?.uid === pkg.userId;
-const cannotReview = user?.uid === pkg.userId || user?.uid === pkg.originalAuthorId;
+    const cannotReview = user?.uid === pkg.userId || user?.uid === pkg.originalAuthorId;
 
 
     return (
@@ -470,13 +470,13 @@ const cannotReview = user?.uid === pkg.userId || user?.uid === pkg.originalAutho
                             <span className="detail-reviews-count">{reviews.length} reseñas</span>
                         </div>
                         <button
-                            className={`detail-review-btn ${!user || hasReviewed || isOwner ? "detail-review-btn-disabled" : ""}`}
-                            onClick={() => user && !hasReviewed && !isOwner && setShowReviewModal(true)}
-                            disabled={!user || hasReviewed || isOwner}
+                            className={`detail-review-btn ${!user || hasReviewed || cannotReview ? "detail-review-btn-disabled" : ""}`}
+                            onClick={() => user && !hasReviewed && !cannotReview && setShowReviewModal(true)}
+                            disabled={!user || hasReviewed || cannotReview}
                         >
                             {!user
                                 ? "Inicia sesión para evaluar"
-                                : isOwner
+                                : cannotReview
                                 ? "No puedes evaluar tu propio paquete"
                                 : hasReviewed
                                 ? "Ya evaluaste este paquete"
