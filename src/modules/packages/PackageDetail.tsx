@@ -5,6 +5,7 @@ import type { FlashcardPackage, Flashcard, CreateCardRequest, Folder, Review  } 
 import "./PackageDetail.css";
 import { getThemeGradient, THEMES } from "./themes";
 import TagInput from "../shared/Taginput";
+import AuthModal from "../auth/AuthModal";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -21,7 +22,7 @@ export default function PackageDetail() {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
+    const [showAuthModal, setShowAuthModal] = useState(false);
     // tarjeta expandida (acordeón)
     const [expandedCardId, setExpandedCardId] = useState<number | null>(null);
 
@@ -528,7 +529,10 @@ export default function PackageDetail() {
 
             {/* ── BARRA INFERIOR FIJA ── */}
             <div className="detail-sticky-bar">
-                <button className="detail-study-btn" onClick={() => navigate(`/packages/${id}/study`)}>
+                <button
+                    className="detail-study-btn"
+                    onClick={() => user ? navigate(`/packages/${id}/study`) : setShowAuthModal(true)}
+                >
                     Estudiar paquete
                 </button>
             </div>
@@ -714,6 +718,10 @@ export default function PackageDetail() {
             )}
 
             {/* ── RESEÑA ── */}
+
+            {showAuthModal && (
+                <AuthModal onClose={() => setShowAuthModal(false)} />
+            )}
             {showReviewModal && (
                 <div className="review-modal-overlay" onClick={() => setShowReviewModal(false)}>
                     <div className="review-modal-card" onClick={e => e.stopPropagation()}>

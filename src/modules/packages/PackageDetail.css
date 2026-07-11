@@ -310,7 +310,7 @@
 .detail-study-btn {
   flex: 1;
   padding: 14px;
-  background: #D85A30;
+  background: linear-gradient(135deg, #68A9F4, #1B3A5C);
   color: var(--text-on-accent);
   border: none;
   border-radius: 12px;
@@ -319,8 +319,12 @@
   cursor: pointer;
   transition: background 0.15s, transform 0.1s;
 }
-.detail-study-btn:hover { background: #C44E27; }
-.detail-study-btn:active { transform: scale(0.98); }
+.detail-study-btn:hover {
+  background: linear-gradient(135deg, #5a9aeb, #16304d);
+}
+.detail-study-btn:active {
+  transform: scale(0.98);
+}
 
 .detail-add-btn {
   display: flex;
@@ -432,8 +436,8 @@
 }
 
 .detail-card-item.expanded {
-  border-color: rgba(216,90,48,0.3);
-  box-shadow: 0 2px 10px rgba(216,90,48,0.08);
+  border-color: rgba(58, 119, 168, 0.301);
+  box-shadow: 0 2px 10px rgba(48, 79, 216, 0.08);
 }
 
 .detail-card-front {
