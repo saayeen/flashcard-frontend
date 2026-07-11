@@ -133,12 +133,15 @@ export default function Folders() {
         } catch {}
     };
 
-    const openFolderDetail = async (folder: Folder) => {
+        const openFolderDetail = async (folder: Folder) => {
         setOpenFolder(folder);
         setEditName(folder.name);
         setEditColor(folder.color);
         try {
-            const res = await fetch(`${API_URL}/folders/${folder.id}/packages`);
+            const token = await getToken();
+            const res = await fetch(`${API_URL}/folders/${folder.id}/packages`, {
+                headers: { "Authorization": `Bearer ${token}` },
+            });
             if (res.ok) setFolderPackages(await res.json());
         } catch { setFolderPackages([]); }
     };
@@ -166,10 +169,11 @@ export default function Folders() {
         if (!openFolder) return;
         try {
             const token = await getToken();
-            await fetch(`${API_URL}/folders/${openFolder.id}/packages/${packageId}`, {
+            const res = await fetch(`${API_URL}/folders/${openFolder.id}/packages/${packageId}`, {
                 method: "POST",
                 headers: { "Authorization": `Bearer ${token}` },
             });
+            if (!res.ok) return; // no actualizar UI si falló
             const pkg = myPackages.find(p => p.id === packageId);
             if (pkg) setFolderPackages(prev => [...prev, pkg]);
             setFolderPackageCounts(prev => ({
