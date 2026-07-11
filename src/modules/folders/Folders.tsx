@@ -56,35 +56,35 @@ export default function Folders() {
         }
     }, [id, folders]);
 
-    const loadFolders = async () => {
-    try {
-        const token = await getToken();
-        const res = await fetch(`${API_URL}/folders`, {
-            headers: { "Authorization": `Bearer ${token}` },
-        });
-        if (res.ok) {
-            const data: Folder[] = await res.json();
-            setFolders(data);
+            const loadFolders = async () => {
+            try {
+            const token = await getToken();
+            const res = await fetch(`${API_URL}/folders`, {
+                headers: { "Authorization": `Bearer ${token}` },
+            });
+            if (res.ok) {
+                const data: Folder[] = await res.json();
+                setFolders(data);
 
-            // cargar conteo de paquetes por carpeta
-            const counts: Record<number, number> = {};
-            await Promise.all(
-                data.map(async folder => {
-                    const r = await fetch(`${API_URL}/folders/${folder.id}/packages`);
-                    if (r.ok) {
-                        const pkgs = await r.json();
-                        counts[folder.id] = pkgs.length;
-                    } else {
-                        counts[folder.id] = 0;
-                    }
-                })
-            );
-            setFolderPackageCounts(counts);
-        }
-    } catch {}
-    finally { setLoading(false); }
-};
-
+                const counts: Record<number, number> = {};
+                await Promise.all(
+                    data.map(async folder => {
+                        const r = await fetch(`${API_URL}/folders/${folder.id}/packages`, {
+                            headers: { "Authorization": `Bearer ${token}` },
+                        });
+                        if (r.ok) {
+                            const pkgs = await r.json();
+                            counts[folder.id] = pkgs.length;
+                        } else {
+                            counts[folder.id] = 0;
+                        }
+                    })
+                );
+                setFolderPackageCounts(counts);
+            }
+        } catch {}
+        finally { setLoading(false); }
+        };
     const loadMyPackages = async () => {
         try {
             const token = await getToken();

@@ -137,11 +137,9 @@ export default function Profile() {
                         ? <img src={user.photoURL} className="profile-avatar" alt="avatar" />
                         : <div className="profile-avatar-placeholder">
                             {user?.displayName?.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()}
-                          </div>
+                        </div>
                     }
-                    <button className="profile-avatar-edit-btn" onClick={openEditModal} aria-label="Editar foto">
-                        <PencilIcon />
-                    </button>
+                
                 </div>
 
                 {/* NOMBRE con lápiz */}

@@ -11,16 +11,6 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 const CATEGORIES = ["Universidad", "PAES", "Carrera", "Idiomas", "Licencias", "Otros"];
 
-const COVER_EMOJI: Record<string, string> = {
-    universidad: "🎓",
-    paes: "📝",
-    carrera: "💼",
-    idiomas: "🌐",
-    licencias: "🚗",
-    ciencias: "🔬",
-    otros: "📚",
-};
-
 export default function PackageDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -290,7 +280,7 @@ export default function PackageDetail() {
     if (!pkg) return <div className="detail-loading">Paquete no encontrado</div>;
 
     const isOwner = user?.uid === pkg.userId;
-    const coverEmoji = COVER_EMOJI[(pkg.category ?? "").toLowerCase()] ?? "📚";
+
 
     return (
         <div className="detail-page">
@@ -319,7 +309,7 @@ export default function PackageDetail() {
                 <div className="detail-hero-body">
                     <span className="detail-category">{pkg.category}</span>
                     <h1 className="detail-name">
-                        <span className="detail-name-emoji">{coverEmoji}</span> {pkg.name}
+                
                     </h1>
 
                     <div className="detail-author-row">
@@ -362,7 +352,7 @@ export default function PackageDetail() {
             </div>
 
             {/* ══════════════════════════════════
-               CONTENIDO ÚNICO (sin tabs)
+            CONTENIDO ÚNICO (sin tabs)
                ══════════════════════════════════ */}
             <div className="detail-body">
 
