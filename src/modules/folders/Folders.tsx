@@ -28,9 +28,7 @@ export default function Folders() {
     const [myPackages, setMyPackages] = useState<FlashcardPackage[]>([]);
     const [forkedPackages, setForkedPackages] = useState<FlashcardPackage[]>([]);
     const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState(""); 
 
-    
     // formulario nueva carpeta
     const [showForm, setShowForm] = useState(false);
     const [newFolder, setNewFolder] = useState<CreateFolderRequest>({ name: "", color: "#68A9F4" });
@@ -47,6 +45,7 @@ export default function Folders() {
     const [folderPackageCounts, setFolderPackageCounts] = useState<Record<number, number>>({});
     const [showFolderMenu, setShowFolderMenu] = useState(false);
     const [editMode, setEditMode] = useState(false);
+
     useEffect(() => {
         loadFolders();
         loadMyPackages();
@@ -60,8 +59,8 @@ export default function Folders() {
         }
     }, [id, folders]);
 
-            const loadFolders = async () => {
-            try {
+    const loadFolders = async () => {
+        try {
             const token = await getToken();
             const res = await fetch(`${API_URL}/folders`, {
                 headers: { "Authorization": `Bearer ${token}` },
@@ -88,7 +87,8 @@ export default function Folders() {
             }
         } catch {}
         finally { setLoading(false); }
-        };
+    };
+
     const loadMyPackages = async () => {
         try {
             const token = await getToken();
@@ -137,7 +137,7 @@ export default function Folders() {
         } catch {}
     };
 
-        const openFolderDetail = async (folder: Folder) => {
+    const openFolderDetail = async (folder: Folder) => {
         setOpenFolder(folder);
         setEditName(folder.name);
         setEditColor(folder.color);
@@ -188,7 +188,7 @@ export default function Folders() {
         } catch {}
     };
 
-        const handleRemovePackageFromFolder = async (packageId: number) => {
+    const handleRemovePackageFromFolder = async (packageId: number) => {
         if (!openFolder) return;
         try {
             const token = await getToken();
@@ -204,155 +204,142 @@ export default function Folders() {
         } catch {}
     };
 
-            const filteredFolders = folders.filter(f =>
-            f.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-
-        const filteredMyPackages = myPackages.filter(p =>
-            p.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-
-        const filteredForkedPackages = forkedPackages.filter(p =>
-            p.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-
     // ── VISTA DETALLE DE CARPETA ──
     if (openFolder) {
-    const availableToAdd = myPackages.filter(p => !folderPackages.find(fp => fp.id === p.id));
+        const availableToAdd = myPackages.filter(p => !folderPackages.find(fp => fp.id === p.id));
 
-    return (
-        <div className="folders-page">
-            {/* HEADER */}
-            <div className="folder-detail-header">
-                <button className="folder-back-btn" onClick={() => { setOpenFolder(null); setEditMode(false); navigate("/folders"); }}>
-                    <BackIcon />
-                </button>
-                <h2 className="folder-detail-title">{openFolder.name}</h2>
-                <button className="folder-menu-btn" onClick={() => setShowFolderMenu(true)}>
-                    <DotsIcon />
-                </button>
-            </div>
+        return (
+            <div className="folders-page">
+                {/* HEADER */}
+                <div className="folder-detail-header">
+                    <button className="folder-back-btn" onClick={() => { setOpenFolder(null); setEditMode(false); navigate("/folders"); }}>
+                        <BackIcon />
+                    </button>
+                    <h2 className="folder-detail-title">{openFolder.name}</h2>
+                    <button className="folder-menu-btn" onClick={() => setShowFolderMenu(true)}>
+                        <DotsIcon />
+                    </button>
+                </div>
 
-            {/* PAQUETES */}
-            <div className="folder-detail-body">
-                {folderPackages.length === 0 ? (
-                    <div className="folders-empty">
-                        <span className="folders-empty-icon">📦</span>
-                        <p className="folders-empty-title">Sin paquetes aún</p>
-                        <p className="folders-empty-sub">Agrega paquetes a esta carpeta</p>
-                    </div>
-                ) : (
-                    <div className="folder-pkg-cards">
-                        {folderPackages.map(pkg => (
-                            <div
-                                key={pkg.id}
-                                className="folder-pkg-card"
-                                onClick={() => navigate(`/packages/${pkg.id}`)}
-                            >
-                                {/* 3. Ícono dentro de carpeta abierta — fondo de color, usa la variante outline */}
+                {/* PAQUETES */}
+                <div className="folder-detail-body">
+                    {folderPackages.length === 0 ? (
+                        <div className="folders-empty">
+                            <span className="folders-empty-icon">📦</span>
+                            <p className="folders-empty-title">Sin paquetes aún</p>
+                            <p className="folders-empty-sub">Agrega paquetes a esta carpeta</p>
+                        </div>
+                    ) : (
+                        <div className="folder-pkg-cards">
+                            {folderPackages.map(pkg => (
+                                <div
+                                    key={pkg.id}
+                                    className="folder-pkg-card"
+                                    onClick={() => navigate(`/packages/${pkg.id}`)}
+                                >
                                     <div className="folder-pkg-card-icon" style={{ background: getThemeGradient(pkg.theme) }}>
                                         <CardStackIconOutline />
                                     </div>
-                                <div className="folder-pkg-card-info">
-                                    <p className="folder-pkg-card-name">{pkg.name}</p>
-                                    <p className="folder-pkg-card-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
+                                    <div className="folder-pkg-card-info">
+                                        <p className="folder-pkg-card-name">{pkg.name}</p>
+                                        <p className="folder-pkg-card-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
+                                    </div>
+                                    <button
+                                        className="folder-pkg-remove-btn"
+                                        onClick={e => { e.stopPropagation(); handleRemovePackageFromFolder(pkg.id); }}
+                                        aria-label="Quitar de la carpeta"
+                                    >
+                                        <TrashIcon />
+                                    </button>
                                 </div>
-                                <button
-                                    className="folder-pkg-remove-btn"
-                                    onClick={e => { e.stopPropagation(); handleRemovePackageFromFolder(pkg.id); }}
-                                    aria-label="Quitar de la carpeta"
-                                >
-                                    <TrashIcon />
-                                </button>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+                    )}
+
+                    <button className="folder-add-pkg-btn" onClick={() => setShowAddPkg(true)}>
+                        <span>+</span> Agregar paquetes
+                    </button>
+                </div>
+
+                {/* BOTTOM SHEET MENÚ */}
+                {showFolderMenu && (
+                    <div className="folder-modal-overlay" onClick={() => setShowFolderMenu(false)}>
+                        <div className="folder-modal folder-menu-sheet" onClick={e => e.stopPropagation()}>
+                            <div className="folder-sheet-handle" />
+                            <p className="folder-sheet-title">{openFolder.name}</p>
+
+                            {!editMode ? (
+                                <>
+                                    <button className="folder-sheet-row" onClick={() => setEditMode(true)}>
+                                        <EditIcon /> Editar nombre y color
+                                    </button>
+                                    <div className="folder-sheet-divider" />
+                                    <button className="folder-sheet-row folder-sheet-danger" onClick={() => handleDelete(openFolder.id)}>
+                                        <TrashIcon /> Eliminar carpeta
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <div className="folder-edit-field">
+                                        <label className="folder-edit-label">Nombre</label>
+                                        <input className="folder-edit-input" value={editName}
+                                            onChange={e => setEditName(e.target.value)} maxLength={50} />
+                                    </div>
+                                    <div className="folder-edit-field">
+                                        <label className="folder-edit-label">Color</label>
+                                        <div className="folder-color-row">
+                                            {COLORS.map(color => (
+                                                <button key={color}
+                                                    className={`folder-color-dot ${editColor === color ? "selected" : ""}`}
+                                                    style={{ background: color }}
+                                                    onClick={() => setEditColor(color)}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="folder-form-actions">
+                                        <button className="folder-cancel-btn" onClick={() => setEditMode(false)}>Cancelar</button>
+                                        <button className="folder-save-btn" onClick={async () => { await handleSaveEdit(); setEditMode(false); setShowFolderMenu(false); }} disabled={savingEdit}>
+                                            {savingEdit ? "Guardando..." : "Guardar"}
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+
+                            <button className="folder-modal-cancel" onClick={() => { setShowFolderMenu(false); setEditMode(false); }}>
+                                Cancelar
+                            </button>
+                        </div>
                     </div>
                 )}
 
-                <button className="folder-add-pkg-btn" onClick={() => setShowAddPkg(true)}>
-                    <span>+</span> Agregar paquetes
-                </button>
+                {/* MODAL AGREGAR PAQUETE */}
+                {showAddPkg && (
+                    <div className="folder-modal-overlay" onClick={() => setShowAddPkg(false)}>
+                        <div className="folder-modal" onClick={e => e.stopPropagation()}>
+                            <h3 className="folder-modal-title">Agregar paquete</h3>
+                            {availableToAdd.length === 0 ? (
+                                <p className="folder-empty-pkgs">No hay paquetes disponibles</p>
+                            ) : (
+                                <div className="folder-modal-list">
+                                    {availableToAdd.map(pkg => (
+                                        <button key={pkg.id} className="folder-modal-item"
+                                            onClick={() => handleAddPackageToFolder(pkg.id)}>
+                                            <span className="folder-modal-item-name">{pkg.name}</span>
+                                            <span className="folder-modal-item-cat">{pkg.category}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                            <button className="folder-modal-cancel" onClick={() => setShowAddPkg(false)}>Cancelar</button>
+                        </div>
+                    </div>
+                )}
+
+                <BottomNav />
             </div>
-
-            {/* BOTTOM SHEET MENÚ */}
-            {showFolderMenu && (
-                <div className="folder-modal-overlay" onClick={() => setShowFolderMenu(false)}>
-                    <div className="folder-modal folder-menu-sheet" onClick={e => e.stopPropagation()}>
-                        <div className="folder-sheet-handle" />
-                        <p className="folder-sheet-title">{openFolder.name}</p>
-
-                        {!editMode ? (
-                            <>
-                                <button className="folder-sheet-row" onClick={() => setEditMode(true)}>
-                                    <EditIcon /> Editar nombre y color
-                                </button>
-                                <div className="folder-sheet-divider" />
-                                <button className="folder-sheet-row folder-sheet-danger" onClick={() => handleDelete(openFolder.id)}>
-                                    <TrashIcon /> Eliminar carpeta
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <div className="folder-edit-field">
-                                    <label className="folder-edit-label">Nombre</label>
-                                    <input className="folder-edit-input" value={editName}
-                                        onChange={e => setEditName(e.target.value)} maxLength={50} />
-                                </div>
-                                <div className="folder-edit-field">
-                                    <label className="folder-edit-label">Color</label>
-                                    <div className="folder-color-row">
-                                        {COLORS.map(color => (
-                                            <button key={color}
-                                                className={`folder-color-dot ${editColor === color ? "selected" : ""}`}
-                                                style={{ background: color }}
-                                                onClick={() => setEditColor(color)}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="folder-form-actions">
-                                    <button className="folder-cancel-btn" onClick={() => setEditMode(false)}>Cancelar</button>
-                                    <button className="folder-save-btn" onClick={async () => { await handleSaveEdit(); setEditMode(false); setShowFolderMenu(false); }} disabled={savingEdit}>
-                                        {savingEdit ? "Guardando..." : "Guardar"}
-                                    </button>
-                                </div>
-                            </>
-                        )}
-
-                        <button className="folder-modal-cancel" onClick={() => { setShowFolderMenu(false); setEditMode(false); }}>
-                            Cancelar
-                        </button>
-                    </div>
-                </div>
-            )}
-
-            {/* MODAL AGREGAR PAQUETE */}
-            {showAddPkg && (
-                <div className="folder-modal-overlay" onClick={() => setShowAddPkg(false)}>
-                    <div className="folder-modal" onClick={e => e.stopPropagation()}>
-                        <h3 className="folder-modal-title">Agregar paquete</h3>
-                        {availableToAdd.length === 0 ? (
-                            <p className="folder-empty-pkgs">No hay paquetes disponibles</p>
-                        ) : (
-                            <div className="folder-modal-list">
-                                {availableToAdd.map(pkg => (
-                                    <button key={pkg.id} className="folder-modal-item"
-                                        onClick={() => handleAddPackageToFolder(pkg.id)}>
-                                        <span className="folder-modal-item-name">{pkg.name}</span>
-                                        <span className="folder-modal-item-cat">{pkg.category}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-                        <button className="folder-modal-cancel" onClick={() => setShowAddPkg(false)}>Cancelar</button>
-                    </div>
-                </div>
-            )}
-
-            <BottomNav />
-        </div>
-    );
-}
+        );
+    }
 
     // ── VISTA PRINCIPAL ──
     return (
@@ -362,7 +349,6 @@ export default function Folders() {
 
             {/* TABS */}
             <div className="folders-tabs">
-                {/* 1. Tab superior — fondo var(--bg-page), usa CardStackIcon con fill */}
                 <button className={`folders-tab ${mainTab === "paquetes" ? "active" : ""}`} onClick={() => setMainTab("paquetes")}>
                     <CardStackIcon />
                     Paquetes
@@ -374,22 +360,6 @@ export default function Folders() {
                     <FolderIcon />
                     Carpetas
                 </button>
-            </div>
-
-            <div className="folders-search-bar">
-                <SearchIcon />
-                <input
-                    className="folders-search-input"
-                    type="text"
-                    placeholder={mainTab === "carpetas" ? "Buscar carpetas..." : "Buscar paquetes..."}
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                />
-                {searchQuery && (
-                    <button className="folders-search-clear" onClick={() => setSearchQuery("")}>
-                        ✕
-                    </button>
-                )}
             </div>
 
             {/* NUEVA CARPETA FORM */}
@@ -427,22 +397,22 @@ export default function Folders() {
 
             {/* CONTENIDO */}
             <div className="folders-body">
-               {/* TAB: PAQUETES */}
+                {/* TAB: PAQUETES */}
                 {mainTab === "paquetes" && (
                     <>
                         {/* sub-tabs */}
                         <div className="folders-pkg-subtabs">
-                        <button
-                            className={`folders-pkg-subtab ${pkgTab === "propios" ? "active" : ""}`}
-                            onClick={() => setPkgTab("propios")}
-                        >
-                            Mis paquetes ({filteredMyPackages.length})
-                        </button>
+                            <button
+                                className={`folders-pkg-subtab ${pkgTab === "propios" ? "active" : ""}`}
+                                onClick={() => setPkgTab("propios")}
+                            >
+                                Mis paquetes ({myPackages.length})
+                            </button>
                             <button
                                 className={`folders-pkg-subtab ${pkgTab === "copiados" ? "active" : ""}`}
                                 onClick={() => setPkgTab("copiados")}
                             >
-                                Copiados ({filteredForkedPackages.length})
+                                Copiados ({forkedPackages.length})
                             </button>
                         </div>
 
@@ -455,7 +425,7 @@ export default function Folders() {
                         {/* propios */}
                         {!loading && pkgTab === "propios" && (
                             <>
-                                {!searchQuery && myPackages.length === 0 && (
+                                {myPackages.length === 0 && (
                                     <div className="folders-empty">
                                         <span className="folders-empty-icon">📦</span>
                                         <p className="folders-empty-title">Sin paquetes aún</p>
@@ -465,20 +435,13 @@ export default function Folders() {
                                         </button>
                                     </div>
                                 )}
-                                {searchQuery && filteredMyPackages.length === 0 && (
-                                    <div className="folders-empty">
-                                        <span className="folders-empty-icon">🔍</span>
-                                        <p className="folders-empty-title">Sin resultados</p>
-                                        <p className="folders-empty-sub">No encontramos paquetes con ese nombre</p>
-                                    </div>
-                                )}
+
                                 <div className="folders-pkg-list">
-                                    {filteredMyPackages.map(pkg => (
+                                    {myPackages.map(pkg => (
                                         <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
-                                        {/* 2. Fila "mis paquetes" — fondo de color sólido, usa la variante outline */}
-                                                <div className="folder-pkg-row-icon" style={{ background: getThemeGradient(pkg.theme), color: "#fff" }}>
-                                                    <CardStackIconOutline />
-                                                </div>
+                                            <div className="folder-pkg-row-icon" style={{ background: getThemeGradient(pkg.theme), color: "#fff" }}>
+                                                <CardStackIconOutline />
+                                            </div>
                                             <div className="folder-pkg-row-info">
                                                 <p className="folder-pkg-row-name">{pkg.name}</p>
                                                 <p className="folder-pkg-row-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
@@ -498,38 +461,31 @@ export default function Folders() {
 
                         {/* copiados */}
                         {!loading && pkgTab === "copiados" && (
-                                <>
-                                    {!searchQuery && forkedPackages.length === 0 && (
-                                        <div className="folders-empty">
-                                            <span className="folders-empty-icon">🔖</span>
-                                            <p className="folders-empty-title">Sin paquetes copiados</p>
-                                            <p className="folders-empty-sub">Guarda copias de paquetes que te gusten</p>
-                                        </div>
-                                    )}
-                                    {searchQuery && filteredForkedPackages.length === 0 && (
-                                        <div className="folders-empty">
-                                            <span className="folders-empty-icon">🔍</span>
-                                            <p className="folders-empty-title">Sin resultados</p>
-                                            <p className="folders-empty-sub">No encontramos paquetes con ese nombre</p>
-                                        </div>
-                                    )}
-                                    <div className="folders-pkg-list">
-                                        {filteredForkedPackages.map(pkg => (
-                                            <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
-                                                <div className="folder-pkg-row-icon" style={{ background: getThemeGradient(pkg.theme) }}>
-                                                    <ForkIcon />
-                                                </div>
-                                                <div className="folder-pkg-row-info">
-                                                    <p className="folder-pkg-row-name">{pkg.name}</p>
-                                                    <p className="folder-pkg-row-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
-                                                    <p className="folder-card-fork-label">Copia de otro usuario</p>
-                                                </div>
-                                                <ChevronIcon />
-                                            </div>
-                                        ))}
+                            <>
+                                {forkedPackages.length === 0 && (
+                                    <div className="folders-empty">
+                                        <span className="folders-empty-icon">🔖</span>
+                                        <p className="folders-empty-title">Sin paquetes copiados</p>
+                                        <p className="folders-empty-sub">Guarda copias de paquetes que te gusten</p>
                                     </div>
-                                </>
-                            )}
+                                )}
+                                <div className="folders-pkg-list">
+                                    {forkedPackages.map(pkg => (
+                                        <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
+                                            <div className="folder-pkg-row-icon" style={{ background: getThemeGradient(pkg.theme) }}>
+                                                <ForkIcon />
+                                            </div>
+                                            <div className="folder-pkg-row-info">
+                                                <p className="folder-pkg-row-name">{pkg.name}</p>
+                                                <p className="folder-pkg-row-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
+                                                <p className="folder-card-fork-label">Copia de otro usuario</p>
+                                            </div>
+                                            <ChevronIcon />
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </>
                 )}
                 {/* TAB: CARPETAS */}
@@ -551,13 +507,13 @@ export default function Folders() {
                             </div>
                         )}
                         <div className="folders-grid">
-                            {filteredFolders.map(folder => (
+                            {folders.map(folder => (
                                 <div
                                     className="folder-card"
                                     key={folder.id}
                                     onClick={() => openFolderDetail(folder)}
                                 >
-                                <div
+                                    <div
                                         className="folder-card-icon"
                                         style={{ background: getFolderGradient(folder.color), color: "#fff" }}
                                     >
@@ -568,7 +524,7 @@ export default function Folders() {
                                         {folderPackageCounts[folder.id] ?? 0} paquetes
                                     </p>
                                 </div>
-                                    ))} 
+                            ))}
                         </div>
                     </>
                 )}
@@ -624,15 +580,6 @@ function BackIcon() {
     );
 }
 
-function SearchIcon() {
-    return (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
-            <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-        </svg>
-    );
-}
-
 function ChevronIcon() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -670,7 +617,6 @@ function DotsIcon() {
         <circle cx="19" cy="12" r="1.5" fill="currentColor"/>
     </svg>;
 }
-
 
 function TrashIcon() {
     return <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
