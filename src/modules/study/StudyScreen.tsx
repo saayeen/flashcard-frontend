@@ -25,14 +25,13 @@ interface SessionSummary {
 
 // modo oscuro —  (pastel, suaves)
 const CARD_GRADIENTS_DARK = [
-    "linear-gradient(135deg, #f9a8d4, #fb7185)",
-    "linear-gradient(135deg, #a5f3fc, #38bdf8)",
-    "linear-gradient(135deg, #bbf7d0, #34d399)",
-    "linear-gradient(135deg, #fde68a, #f59e0b)",
-    "linear-gradient(135deg, #c4b5fd, #8b5cf6)",
-    "linear-gradient(135deg, #fed7aa, #f97316)",
+    "linear-gradient(135deg, #db2777, #9d174d)",
+    "linear-gradient(135deg, #0284c7, #1e40af)",
+    "linear-gradient(135deg, #059669, #065f46)",
+    "linear-gradient(135deg, #ea580c, #9a3412)",
+    "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+    "linear-gradient(135deg, #dc2626, #7f1d1d)",
 ];
-
 // modo claro — mas oscuros/saturados
 const CARD_GRADIENTS_LIGHT = [
     "linear-gradient(135deg, #f9a8d4, #fb7185)",
