@@ -245,7 +245,7 @@
    ══════════════════ */
 .detail-desc-text {
   font-size: 15px;
-  color: #3a3a50;
+  color: var(--text-secondary);
   line-height: 1.7;
 }
 
