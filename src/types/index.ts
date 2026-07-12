@@ -14,6 +14,7 @@ export interface FlashcardPackage {
     userName: string;
     userPhotoUrl?: string | null;
     originalAuthorName?: string;
+    originalAuthorPhotoUrl?: string;
 }
 
 export interface CreatePackageRequest {
