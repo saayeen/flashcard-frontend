@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import jatiImg from "../../assets/jati.png";
+import "./AppHeader.css";
 
 interface AppHeaderProps {
     user?: { photoURL?: string | null; displayName?: string | null } | null;
