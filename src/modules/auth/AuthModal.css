@@ -1,7 +1,7 @@
 .auth-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(43, 38, 32, 0.45);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,7 +19,8 @@
   position: relative;
   width: 100%;
   max-width: 340px;
-  background: var(--bg-page);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 2.5rem 1.75rem 2rem;
   display: flex;
@@ -27,6 +28,7 @@
   align-items: center;
   text-align: center;
   animation: pop-in 0.2s ease-out;
+  box-shadow: var(--shadow-lg);
 }
 
 @keyframes pop-in {
@@ -44,14 +46,14 @@
   background: transparent;
   font-size: 20px;
   line-height: 1;
-  color: #A89F8C;
+  color: var(--text-muted);
   cursor: pointer;
   border-radius: 50%;
 }
 
 .auth-modal-close:hover {
-  background: #EFE9DC;
-  color: #2B2620;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .auth-modal-mascot {
@@ -65,14 +67,14 @@
 .auth-modal-title {
   font-size: 19px;
   font-weight: 700;
-  color: #2B2620;
+  color: var(--text-primary);
   margin: 0 0 6px;
   letter-spacing: -0.01em;
 }
 
 .auth-modal-subtitle {
   font-size: 13px;
-  color: #7A7263;
+  color: var(--text-secondary);
   margin: 0 0 1.75rem;
   line-height: 1.5;
   max-width: 260px;
@@ -100,21 +102,21 @@
 }
 
 .google-btn-primary {
-  background: #2B2620;
+  background: var(--text-primary);
   border: none;
-  color: var(--bg-page);
-  box-shadow: 0 4px 14px rgba(43, 38, 32, 0.18);
+  color: var(--bg-surface);
+  box-shadow: var(--shadow-md);
 }
 
 .google-btn-primary:hover:not(:disabled) {
-  background: #3D362D;
-  box-shadow: 0 6px 18px rgba(43, 38, 32, 0.22);
+  opacity: 0.9;
+  box-shadow: var(--shadow-lg);
   transform: translateY(-1px);
 }
 
 .auth-modal-switch {
   font-size: 13px;
-  color: #7A7263;
+  color: var(--text-secondary);
   margin: 1rem 0 0;
 }
 
@@ -124,12 +126,12 @@
   padding: 0;
   font-size: 13px;
   font-weight: 600;
-  color: #3887fc;
+  color: var(--accent);
   cursor: pointer;
 }
 
 .auth-modal-link:hover:not(:disabled) {
-  color: #0a0808;
+  color: var(--accent-hover);
 }
 
 .auth-modal-link:disabled {
@@ -151,8 +153,8 @@
 .spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid #E0D8C7;
-  border-top-color: #D85A30;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -163,6 +165,6 @@
 
 .login-error {
   font-size: 13px;
-  color: #C0392B;
+  color: var(--danger);
   margin: 1rem 0 0;
 }
