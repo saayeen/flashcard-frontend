@@ -39,7 +39,7 @@ export default function PackageDetail() {
     const [editTags, setEditTags] = useState<string[]>([]);
     const [savingPkg, setSavingPkg] = useState(false);
     const [showDeletePkg, setShowDeletePkg] = useState(false);
-
+    const [editTheme, setEditTheme] = useState("");
     // GUARDAR COPIA
 
     const [alreadyForked, setAlreadyForked] = useState(false);
@@ -142,6 +142,7 @@ export default function PackageDetail() {
         setEditCategory(pkg.category);
         setEditIsPublic(pkg.isPublic);
         setEditTags(pkg.tags ?? []);
+        setEditTheme(pkg.theme);        // NUEVO
         setShowPkgMenu(false);
         setShowEditPkg(true);
     };
@@ -156,6 +157,7 @@ export default function PackageDetail() {
                     description: editDesc,
                     isPublic: editIsPublic,
                     tags: editTags,
+                    theme: editTheme,
                 };
                 if (!pkg.forkedFromId) {
                     body.name = editName;
@@ -692,9 +694,9 @@ export default function PackageDetail() {
                             <div className="detail-edit-themes">
                                 {THEMES.map(t => (
                                     <button key={t.id}
-                                        className={`detail-edit-theme-btn ${pkg.theme === t.id ? "selected" : ""}`}
+                                        className={`detail-edit-theme-btn ${editTheme === t.id ? "selected" : ""}`}
                                         style={{ background: t.gradient }}
-                                        onClick={() => {}}
+                                        onClick={() => setEditTheme(t.id)}
                                     >
                                         <span className="theme-name">{t.name}</span>
                                     </button>
