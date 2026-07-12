@@ -46,6 +46,22 @@ export default function Folders() {
     const [showFolderMenu, setShowFolderMenu] = useState(false);
     const [editMode, setEditMode] = useState(false);
 
+    //search
+
+    const [showLocalSearch, setShowLocalSearch] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+
+        const filteredFolders = folders.filter(f =>
+        f.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const filteredMyPackages = myPackages.filter(p =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const filteredForkedPackages = forkedPackages.filter(p =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    //----------------------------
+
     useEffect(() => {
         loadFolders();
         loadMyPackages();
@@ -345,7 +361,25 @@ export default function Folders() {
     return (
         <div className="folders-page">
             {/* HEADER */}
-            <AppHeader user={user} />
+            <AppHeader user={user} onSearchClick={() => setShowLocalSearch(prev => !prev)} />
+                {showLocalSearch && (
+                <div className="folders-search-bar">
+                    <SearchIcon />
+                    <input
+                        className="folders-search-input"
+                        type="text"
+                        placeholder={mainTab === "carpetas" ? "Buscar carpetas..." : "Buscar paquetes..."}
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        autoFocus
+                    />
+                    {searchQuery && (
+                        <button className="folders-search-clear" onClick={() => setSearchQuery("")}>
+                            ✕
+                        </button>
+                    )}
+                </div>
+            )}
 
             {/* TABS */}
             <div className="folders-tabs">
@@ -406,13 +440,13 @@ export default function Folders() {
                                 className={`folders-pkg-subtab ${pkgTab === "propios" ? "active" : ""}`}
                                 onClick={() => setPkgTab("propios")}
                             >
-                                Mis paquetes ({myPackages.length})
+                                Mis paquetes ({filteredMyPackages.length})
                             </button>
                             <button
                                 className={`folders-pkg-subtab ${pkgTab === "copiados" ? "active" : ""}`}
                                 onClick={() => setPkgTab("copiados")}
                             >
-                                Copiados ({forkedPackages.length})
+                                Copiados ({filteredForkedPackages.length})
                             </button>
                         </div>
 
@@ -437,7 +471,7 @@ export default function Folders() {
                                 )}
 
                                 <div className="folders-pkg-list">
-                                    {myPackages.map(pkg => (
+                                    {filteredMyPackages.map(pkg => (
                                         <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
                                             <div className="folder-pkg-row-icon" style={{ background: getThemeGradient(pkg.theme), color: "#fff" }}>
                                                 <CardStackIconOutline />
@@ -470,7 +504,7 @@ export default function Folders() {
                                     </div>
                                 )}
                                 <div className="folders-pkg-list">
-                                    {forkedPackages.map(pkg => (
+                                    {filteredForkedPackages.map(pkg => (
                                         <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
                                             <div className="folder-pkg-row-icon" style={{ background: getThemeGradient(pkg.theme) }}>
                                                 <ForkIcon />
@@ -507,7 +541,7 @@ export default function Folders() {
                             </div>
                         )}
                         <div className="folders-grid">
-                            {folders.map(folder => (
+                            {filteredFolders.map(folder => (
                                 <div
                                     className="folder-card"
                                     key={folder.id}
@@ -633,6 +667,14 @@ function CardStackIconOutline() {
             <rect x="4" y="6" width="12" height="15" rx="2.5"
                 fill="rgba(255,255,255,0.9)"
                 stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+    );
+}
+function SearchIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
+            <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
     );
 }

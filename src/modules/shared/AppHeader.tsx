@@ -4,11 +4,17 @@ import "./AppHeader.css";
 
 interface AppHeaderProps {
     user?: { photoURL?: string | null; displayName?: string | null } | null;
+    onSearchClick?: () => void; // si no se pasa, navega a /search (búsqueda global)
 }
 
-export default function AppHeader({ user }: AppHeaderProps) {
+export default function AppHeader({ user, onSearchClick }: AppHeaderProps) {
     const navigate = useNavigate();
     const initials = user?.displayName?.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase();
+
+    const handleSearchClick = () => {
+        if (onSearchClick) onSearchClick();
+        else navigate("/search");
+    };
 
     return (
         <div className="app-header">
@@ -17,7 +23,7 @@ export default function AppHeader({ user }: AppHeaderProps) {
                 <span className="app-header-title">Jati</span>
             </div>
             <div className="app-header-actions">
-                <button className="app-header-search-btn" onClick={() => navigate("/search")} aria-label="Buscar">
+                <button className="app-header-search-btn" onClick={handleSearchClick} aria-label="Buscar">
                     <SearchIcon />
                 </button>
                 <button className="app-header-avatar" onClick={() => navigate("/profile")} aria-label="Perfil">
