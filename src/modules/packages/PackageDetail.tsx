@@ -372,10 +372,10 @@ export default function PackageDetail() {
                         <section className="detail-tags-section">
                             <h3 className="detail-tags-title">Tags</h3>
                             <div className="detail-tags-list">
-                                {pkg.tags.map((tag, i) => (
+                                {pkg.tags.map(tag => (
                                     <button
                                         key={tag}
-                                        className={`detail-tags-pill tag-color-${i % 4}`}
+                                        className="detail-tags-pill"
                                         onClick={() => navigate(`/search?q=${encodeURIComponent(tag)}`)}
                                         style={{ border:"none", cursor:"pointer", font:"inherit" }}
                                     >#{tag}</button>

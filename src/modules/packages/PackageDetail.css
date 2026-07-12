@@ -276,25 +276,17 @@
 }
 
 .detail-tags-pill {
+  font-size: 11px;
   font-weight: 600;
-  padding: 3px 7px;
-  border-radius: 999px;
-  font-size: 0.15rem;
+  color: var(--accent);
+  background: rgba(99,102,241,0.08);
+  padding: 4px 10px;
+  border-radius: 99px;
   transition: background 0.15s ease;
 }
 
-.tag-color-0 { background: rgba(168,85,247,0.18); color: #C084FC; }
-.tag-color-1 { background: rgba(59,130,246,0.18); color: #7DB4FA; }
-.tag-color-2 { background: rgba(236,72,153,0.18); color: #F472B6; }
-.tag-color-3 { background: rgba(34,197,94,0.18); color: #6EE7A7; }
-
-.tag-color-0:hover { background: rgba(168,85,247,0.28); }
-.tag-color-1:hover { background: rgba(59,130,246,0.28); }
-.tag-color-2:hover { background: rgba(236,72,153,0.28); }
-.tag-color-3:hover { background: rgba(34,197,94,0.28); }
-
 .detail-tags-pill:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(99,102,241,0.18);
 }
 
 /* ══════════════════
