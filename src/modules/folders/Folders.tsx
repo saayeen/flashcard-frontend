@@ -696,8 +696,12 @@ function TrashIcon() {
 function CardStackIconOutline() {
     return (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <rect x="9" y="2" width="11" height="15" rx="2" stroke="currentColor" strokeWidth="1.6" />
-            <rect x="4" y="7" width="11" height="15" rx="2" stroke="currentColor" strokeWidth="1.6" />
+            <rect x="8" y="3" width="12" height="15" rx="2.5"
+                fill="rgba(255,255,255,0.25)"
+                stroke="currentColor" strokeWidth="1.5" />
+            <rect x="4" y="6" width="12" height="15" rx="2.5"
+                fill="rgba(255,255,255,0.9)"
+                stroke="currentColor" strokeWidth="1.5" />
         </svg>
     );
 }
