@@ -249,9 +249,10 @@ export default function Folders() {
                                 className="folder-pkg-card"
                                 onClick={() => navigate(`/packages/${pkg.id}`)}
                             >
-                                <div className="folder-pkg-card-icon" style={{ background: openFolder.color + "22", color: openFolder.color }}>
-                                    <PackageIcon />
-                                </div>
+                                {/* 3. Ícono dentro de carpeta abierta — fondo de color, usa la variante outline */}
+                                    <div className="folder-pkg-card-icon" style={{ background: openFolder.color + "22", color: openFolder.color }}>
+                                        <CardStackIconOutline />
+                                    </div>
                                 <div className="folder-pkg-card-info">
                                     <p className="folder-pkg-card-name">{pkg.name}</p>
                                     <p className="folder-pkg-card-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
@@ -375,11 +376,9 @@ export default function Folders() {
 
             {/* TABS */}
             <div className="folders-tabs">
-                <button
-                    className={`folders-tab ${mainTab === "paquetes" ? "active" : ""}`}
-                    onClick={() => setMainTab("paquetes")}
-                >
-                    <PackageIcon />
+                {/* 1. Tab superior — fondo var(--bg-page), usa CardStackIcon con fill */}
+                <button className={`folders-tab ${mainTab === "paquetes" ? "active" : ""}`} onClick={() => setMainTab("paquetes")}>
+                    <CardStackIcon />
                     Paquetes
                 </button>
                 <button
@@ -490,9 +489,10 @@ export default function Folders() {
                                 <div className="folders-pkg-list">
                                     {filteredMyPackages.map(pkg => (
                                         <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
-                                            <div className="folder-pkg-row-icon" style={{ background: "#6366f1" }}>
-                                                <PackageIcon />
-                                            </div>
+                                        {/* 2. Fila "mis paquetes" — fondo de color sólido, usa la variante outline */}
+                                                <div className="folder-pkg-row-icon" style={{ background: "#6366f1" }}>
+                                                    <CardStackIconOutline />
+                                                </div>
                                             <div className="folder-pkg-row-info">
                                                 <p className="folder-pkg-row-name">{pkg.name}</p>
                                                 <p className="folder-pkg-row-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
@@ -571,7 +571,10 @@ export default function Folders() {
                                     key={folder.id}
                                     onClick={() => openFolderDetail(folder)}
                                 >
-                                    <div className="folder-card-icon" style={{ background: folder.color + "22", color: folder.color }}>
+                                <div
+                                        className="folder-card-icon"
+                                        style={{ background: getFolderGradient(folder.color), color: "#fff" }}
+                                    >
                                         <FolderIcon />
                                     </div>
                                     <h2 className="folder-card-name">{folder.name}</h2>
@@ -601,6 +604,11 @@ export default function Folders() {
     );
 }
 
+function getFolderGradient(color: string) {
+    // degradado del color elegido hacia una versión más oscura
+    return `linear-gradient(135deg, ${color}, ${color}CC)`;
+}
+
 function FolderIcon() {
     return (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -610,11 +618,14 @@ function FolderIcon() {
     );
 }
 
-function PackageIcon() {
+function CardStackIcon() {
     return (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="1.8" />
-            <path d="M3 9h18M9 21V9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            <rect x="9" y="2" width="11" height="15" rx="2"
+                stroke="currentColor" strokeWidth="1.6" />
+            <rect x="4" y="7" width="11" height="15" rx="2"
+                fill="var(--bg-surface, #14151f)"
+                stroke="currentColor" strokeWidth="1.6" />
         </svg>
     );
 }
@@ -679,4 +690,13 @@ function TrashIcon() {
     return <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>;
+}
+
+function CardStackIconOutline() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <rect x="9" y="2" width="11" height="15" rx="2" stroke="currentColor" strokeWidth="1.6" />
+            <rect x="4" y="7" width="11" height="15" rx="2" stroke="currentColor" strokeWidth="1.6" />
+        </svg>
+    );
 }
