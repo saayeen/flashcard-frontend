@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import type { FlashcardPackage, Flashcard, CreateCardRequest, Folder, Review  } from "../../types/index";
@@ -7,6 +7,7 @@ import { getThemeGradient, THEMES } from "./themes";
 import TagInput from "../shared/Taginput";
 import AuthModal from "../auth/AuthModal";
 import elephantImg from "../../assets/reviews.png";
+
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -22,6 +23,7 @@ export default function PackageDetail() {
     const [cards, setCards] = useState<Flashcard[]>([]);
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
+    const loadedIdsRef = useRef<Set<string>>(new Set());
     const [error, setError] = useState<string | null>(null);
     const [showAuthModal, setShowAuthModal] = useState(false);
     // tarjeta expandida (acordeón)
@@ -79,6 +81,23 @@ export default function PackageDetail() {
             setPkg(pkgData);
             setCards(Array.isArray(cardsData) ? cardsData : []);
             setReviews(Array.isArray(reviewsData) ? reviewsData : []);
+        }).finally(() => setLoading(false));
+    }, [id]);
+
+    useEffect(() => {
+        if (!id) return;
+        const alreadyLoaded = loadedIdsRef.current.has(id);
+        if (!alreadyLoaded) setLoading(true);
+
+        Promise.all([
+            fetch(`${API_URL}/packages/${id}`).then(r => r.json()),
+            fetch(`${API_URL}/packages/${id}/cards`).then(r => r.json()),
+            fetch(`${API_URL}/packages/${id}/reviews`).then(r => r.json()),
+        ]).then(([pkgData, cardsData, reviewsData]) => {
+            setPkg(pkgData);
+            setCards(Array.isArray(cardsData) ? cardsData : []);
+            setReviews(Array.isArray(reviewsData) ? reviewsData : []);
+            loadedIdsRef.current.add(id);
         }).finally(() => setLoading(false));
     }, [id]);
 
@@ -270,21 +289,21 @@ export default function PackageDetail() {
     };
 
         const handleFork = async () => {
-            try {
-                const token = await getToken();
-                const res = await fetch(`${API_URL}/packages/${id}/fork`, {
-                    method: "POST",
-                    headers: { "Authorization": `Bearer ${token}` },
-                });
-                if (res.status === 409) {
-                    setAlreadyForked(true);
-                    setError("Ya tienes una copia de este paquete");
-                    return;
-                }
-                if (!res.ok) throw new Error();
-                navigate(`/packages/${(await res.json()).id}`);
-            } catch { setError("No se pudo guardar la copia"); }
-        };
+        try {
+            const token = await getToken();
+            const res = await fetch(`${API_URL}/packages/${id}/fork`, {
+                method: "POST",
+                headers: { "Authorization": `Bearer ${token}` },
+            });
+            if (res.status === 409) {
+                setAlreadyForked(true);
+                setError("Ya tienes una copia de este paquete");
+                return;
+            }
+            if (!res.ok) throw new Error();
+            setAlreadyForked(true);
+        } catch { setError("No se pudo guardar la copia"); }
+    };
 
     const handleSubmitReview = async () => {
         if (newRating === 0) { setReviewError("Selecciona una calificación"); return; }
