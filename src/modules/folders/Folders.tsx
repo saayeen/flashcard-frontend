@@ -4,6 +4,7 @@ import { useAuth } from "../auth/AuthContext";
 import type { Folder, CreateFolderRequest, FlashcardPackage } from "../../types/index";
 import BottomNav from "../navigation/BottomNav";
 import "./Folders.css";
+import { getThemeGradient } from "../packages/themes";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -250,7 +251,7 @@ export default function Folders() {
                                 onClick={() => navigate(`/packages/${pkg.id}`)}
                             >
                                 {/* 3. Ícono dentro de carpeta abierta — fondo de color, usa la variante outline */}
-                                    <div className="folder-pkg-card-icon" style={{ background: openFolder.color + "22", color: openFolder.color }}>
+                                    <div className="folder-pkg-card-icon" style={{ background: getThemeGradient(pkg.theme) }}>
                                         <CardStackIconOutline />
                                     </div>
                                 <div className="folder-pkg-card-info">
@@ -490,7 +491,7 @@ export default function Folders() {
                                     {filteredMyPackages.map(pkg => (
                                         <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
                                         {/* 2. Fila "mis paquetes" — fondo de color sólido, usa la variante outline */}
-                                                <div className="folder-pkg-row-icon" style={{ background: "#6366f1" }}>
+                                                <div className="folder-pkg-row-icon" style={{ background: getThemeGradient(pkg.theme), color: "#fff" }}>
                                                     <CardStackIconOutline />
                                                 </div>
                                             <div className="folder-pkg-row-info">
@@ -530,7 +531,7 @@ export default function Folders() {
                                     <div className="folders-pkg-list">
                                         {filteredForkedPackages.map(pkg => (
                                             <div className="folder-pkg-row" key={pkg.id} onClick={() => navigate(`/packages/${pkg.id}`)}>
-                                                <div className="folder-pkg-row-icon folder-card-icon-fork">
+                                                <div className="folder-pkg-row-icon" style={{ background: getThemeGradient(pkg.theme) }}>
                                                     <ForkIcon />
                                                 </div>
                                                 <div className="folder-pkg-row-info">
