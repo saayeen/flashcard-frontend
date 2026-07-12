@@ -873,12 +873,12 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-hover);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 10px 14px;
     margin: 12px 16px;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
 }
 
 .folders-search-input {
@@ -886,23 +886,22 @@
     background: transparent;
     border: none;
     outline: none;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 0.95rem;
 }
 
 .folders-search-input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-muted);
 }
 
 .folders-search-clear {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     cursor: pointer;
     font-size: 0.9rem;
     padding: 0;
 }
-
 .folders-header-avatar {
     width: 32px;
     height: 32px;
