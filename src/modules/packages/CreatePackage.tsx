@@ -5,13 +5,13 @@ import type { CreatePackageRequest, CreateCardRequest, Flashcard } from "../../t
 import { THEMES, getThemeGradient } from "./themes";
 import TagInput from "../shared/Taginput";
 import "./CreatePackage.css";
-import facilImg from "../../assets/Facil.png";
+import FinalImg from "../../assets/Facil.png";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 type Step = 1 | 2 | 3;
 
-const CATEGORIES = ["Universidad", "PAES", "Carrera", "Idiomas", "Licencias", "Otros"];
+const CATEGORIES = ["Universidad", "PAES", "Idiomas", "Licencia de conducir", "Otros"];
 
 export default function CreatePackage() {
     const { getToken } = useAuth();
@@ -319,7 +319,7 @@ export default function CreatePackage() {
             {step === 3 && (
                 <div className="create-final">
                     <div className="create-final-card" style={{ background: gradient }}>
-                        <img src={facilImg} alt="" className="final-icon-img" />
+                        <img src={FinalImg} alt="" className="final-icon-img" />
                         {form.isPublic ? (
                             <>
                                 <h2 className="final-title">¡Paquete publicado!</h2>
