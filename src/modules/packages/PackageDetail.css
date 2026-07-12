@@ -277,9 +277,9 @@
 
 .detail-tags-pill {
   font-weight: 600;
-  padding: 6px 14px;
+  padding: 3px 7px;
   border-radius: 999px;
-  font-size: 0.85rem;
+  font-size: 0.43rem;
   transition: background 0.15s ease;
 }
 
