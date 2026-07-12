@@ -198,7 +198,7 @@
 }
 
 .profile-streak-card {
-    background: linear-gradient(135deg, #FF9A5C, #FF6B9D);
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
     border-radius: 16px;
     padding: 24px;
     display: flex;
@@ -210,6 +210,7 @@
     display: flex;
     align-items: center;
     color: var(--text-on-accent);
+    flex-shrink: 0;
 }
 
 .profile-streak-number {
