@@ -68,6 +68,7 @@ export default function PackageDetail() {
     const [newRating, setNewRating] = useState(0);
     const [newComment, setNewComment] = useState("");
     const [savingReview, setSavingReview] = useState(false);
+    const [visibleReviewsCount, setVisibleReviewsCount] = useState(5);
     const [reviewError, setReviewError] = useState<string | null>(null);
     const hasReviewed = user
         ? reviews.some(r => r.userId === user.uid)
@@ -609,9 +610,9 @@ export default function PackageDetail() {
                     )}
                 </div>
 
-                    <div className="detail-reviews-list">
+                   <div className="detail-reviews-list">
                         {reviews.length === 0 && <p className="detail-empty">¡Sé el primero en reseñar!</p>}
-                        {reviews.map(review => (
+                        {reviews.slice(0, visibleReviewsCount).map(review => (
                             <div className="detail-review-item" key={review.id}>
                                 <div className="detail-review-top">
                                     <button
@@ -638,7 +639,6 @@ export default function PackageDetail() {
                                             ))}
                                         </div>
                                     </div>
-                                    {/* botón eliminar solo si es tu reseña */}
                                     {user?.uid === review.userId && (
                                         <button
                                             className="detail-card-del-btn"
@@ -652,6 +652,16 @@ export default function PackageDetail() {
                             </div>
                         ))}
                     </div>
+
+                    {reviews.length > visibleReviewsCount && (
+                        <button
+                            className="detail-add-btn"
+                            style={{ width: "100%", justifyContent: "center", marginTop: 10 }}
+                            onClick={() => setVisibleReviewsCount(c => c + 5)}
+                        >
+                            Ver más reseñas ({reviews.length - visibleReviewsCount})
+                        </button>
+                    )}
                 </section>
             </div>
 
