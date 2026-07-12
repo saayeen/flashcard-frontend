@@ -18,7 +18,9 @@ export default function Profile() {
 
     const [stats, setStats] = useState<GlobalStats | null>(null);
     const [activity, setActivity] = useState<WeeklyActivity[]>([]);
-    const [packages, setPackages] = useState<FlashcardPackage[]>([]);
+    const [ownPackages, setOwnPackages] = useState<FlashcardPackage[]>([]);
+    const [forkedPackages, setForkedPackages] = useState<FlashcardPackage[]>([]);
+    const [bio, setBio] = useState<string>("");
     const [tab, setTab] = useState<"desc" | "stats">("desc");
     const [loading, setLoading] = useState(true);
     const [followersCount, setFollowersCount] = useState(0);
@@ -33,6 +35,7 @@ export default function Profile() {
     const [showEditModal, setShowEditModal] = useState(false);
     const [editName, setEditName] = useState("");
     const [editPhotoUrl, setEditPhotoUrl] = useState("");
+    const [editBio, setEditBio] = useState("");
     const [savingProfile, setSavingProfile] = useState(false);
     const [editError, setEditError] = useState<string | null>(null);
 
@@ -45,16 +48,20 @@ export default function Profile() {
         try {
             const token = await getToken();
             const headers = { "Authorization": `Bearer ${token}` };
-            const [statsRes, activityRes, pkgsRes, followersRes, followingRes] = await Promise.all([
+            const [statsRes, activityRes, ownRes, forkedRes, meRes, followersRes, followingRes] = await Promise.all([
                 fetch(`${API_URL}/stats`, { headers }),
                 fetch(`${API_URL}/stats/activity`, { headers }),
                 fetch(`${API_URL}/users/me/packages`, { headers }),
+                fetch(`${API_URL}/users/me/packages/forked`, { headers }),
+                fetch(`${API_URL}/users/me`, { headers }),
                 fetch(`${API_URL}/users/${user?.uid}/followers/count`),
                 fetch(`${API_URL}/users/${user?.uid}/following/count`),
             ]);
             if (statsRes.ok)    setStats(await statsRes.json());
             if (activityRes.ok) setActivity(await activityRes.json());
-            if (pkgsRes.ok)     setPackages(await pkgsRes.json());
+            if (ownRes.ok)      setOwnPackages(await ownRes.json());
+            if (forkedRes.ok)   setForkedPackages(await forkedRes.json());
+            if (meRes.ok)       setBio((await meRes.json()).description ?? "");
             if (followersRes.ok) setFollowersCount((await followersRes.json()).count ?? 0);
             if (followingRes.ok) setFollowingCount((await followingRes.json()).count ?? 0);
         } catch {}
@@ -84,6 +91,7 @@ export default function Profile() {
     const openEditModal = () => {
         setEditName(user?.displayName ?? "");
         setEditPhotoUrl(user?.photoURL ?? "");
+        setEditBio(bio);
         setEditError(null);
         setShowEditModal(true);
     };
@@ -103,9 +111,10 @@ export default function Profile() {
             await fetch(`${API_URL}/users/me`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-                body: JSON.stringify({ name: editName.trim() }),
+                body: JSON.stringify({ name: editName.trim(), description: editBio.trim() }),
             });
 
+            setBio(editBio.trim());
             setShowEditModal(false);
         } catch {
             setEditError("No se pudo guardar, intenta de nuevo");
@@ -139,7 +148,7 @@ export default function Profile() {
                             {user?.displayName?.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()}
                         </div>
                     }
-                
+
                 </div>
 
                 {/* NOMBRE con lápiz */}
@@ -178,14 +187,29 @@ export default function Profile() {
             {/* TAB: DESCRIPCIÓN */}
             {tab === "desc" && (
                 <div className="profile-body">
+                    {/* BIO */}
+                    <div className="profile-section">
+                        {bio ? (
+                            <button className="profile-bio-text-btn" onClick={openEditModal}>
+                                <p className="profile-bio-text">{bio}</p>
+                            </button>
+                        ) : (
+                            <button className="profile-bio-empty" onClick={openEditModal}>
+                                <PencilIcon />
+                                <span>Cuéntanos algo sobre ti...</span>
+                            </button>
+                        )}
+                    </div>
+
+                    {/* PAQUETES PUBLICADOS (propios) */}
                     <div className="profile-section">
                         <h3 className="profile-section-title">Paquetes publicados</h3>
                         {loading && <p className="profile-empty">Cargando...</p>}
-                        {!loading && packages.length === 0 && (
-                            <p className="profile-empty">No has publicado paquetes aún.</p>
+                        {!loading && ownPackages.length === 0 && (
+                            <p className="profile-empty">No has publicado paquetes propios aún.</p>
                         )}
-                        <div className="profile-packages">
-                            {packages.map(pkg => (
+                        <div className="profile-packages profile-packages-scroll">
+                            {ownPackages.map(pkg => (
                                 <div
                                     className="profile-package-card"
                                     key={pkg.id}
@@ -195,6 +219,33 @@ export default function Profile() {
                                     <div>
                                         <p className="profile-pkg-name">{pkg.name}</p>
                                         <p className="profile-pkg-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
+                                    </div>
+                                    <span className="profile-pkg-badge">{pkg.isPublic ? "Público" : "Privado"}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* PAQUETES EDITADOS (forkeados) */}
+                    <div className="profile-section">
+                        <h3 className="profile-section-title">Paquetes editados</h3>
+                        {!loading && forkedPackages.length === 0 && (
+                            <p className="profile-empty">No tienes paquetes editados aún.</p>
+                        )}
+                        <div className="profile-packages profile-packages-scroll">
+                            {forkedPackages.map(pkg => (
+                                <div
+                                    className="profile-package-card"
+                                    key={pkg.id}
+                                    style={{ background: getThemeGradient(pkg.theme) }}
+                                    onClick={() => navigate(`/packages/${pkg.id}`)}
+                                >
+                                    <div>
+                                        <p className="profile-pkg-name">{pkg.name}</p>
+                                        <p className="profile-pkg-sub">
+                                            {pkg.cardCount} tarjetas
+                                            {pkg.originalAuthorName ? ` · original de ${pkg.originalAuthorName}` : ""}
+                                        </p>
                                     </div>
                                     <span className="profile-pkg-badge">{pkg.isPublic ? "Público" : "Privado"}</span>
                                 </div>
@@ -297,6 +348,19 @@ export default function Profile() {
                                 placeholder="Tu nombre"
                                 maxLength={60}
                             />
+                        </div>
+
+                        <div className="profile-modal-field">
+                            <label className="profile-modal-label">Descripción</label>
+                            <textarea
+                                className="profile-modal-input profile-modal-textarea"
+                                value={editBio}
+                                onChange={e => setEditBio(e.target.value)}
+                                placeholder="Cuéntanos algo sobre ti..."
+                                maxLength={160}
+                                rows={3}
+                            />
+                            <p className="profile-modal-hint">{editBio.length}/160</p>
                         </div>
 
                         <div className="profile-modal-field">

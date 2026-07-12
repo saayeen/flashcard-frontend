@@ -525,3 +525,63 @@
 
 .profile-modal-save:hover { opacity: 0.9; }
 .profile-modal-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── BIO ── */
+.profile-bio-text-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.profile-bio-text {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.profile-bio-empty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: var(--bg-hover);
+    border: 1.5px dashed var(--border-strong);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.profile-bio-empty:hover {
+    background: var(--bg-active);
+    color: var(--text-secondary);
+}
+
+/* ── SCROLL POR SECCIÓN DE PAQUETES ── */
+.profile-packages-scroll {
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.profile-packages-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.profile-packages-scroll::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 3px;
+}
+
+/* ── textarea de bio en el modal ── */
+.profile-modal-textarea {
+    resize: none;
+    font-family: inherit;
+    line-height: 1.5;
+}
