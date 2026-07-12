@@ -38,6 +38,11 @@ export default function PackageDetail() {
     const [savingPkg, setSavingPkg] = useState(false);
     const [showDeletePkg, setShowDeletePkg] = useState(false);
 
+    // GUARDAR COPIA
+
+    const [alreadyForked, setAlreadyForked] = useState(false);
+    const [forkStatusLoaded, setForkStatusLoaded] = useState(false);
+
     // carpetas
     const [showFolderModal, setShowFolderModal] = useState(false);
     const [folders, setFolders] = useState<Folder[]>([]);
@@ -76,6 +81,26 @@ export default function PackageDetail() {
             setReviews(Array.isArray(reviewsData) ? reviewsData : []);
         }).finally(() => setLoading(false));
     }, [id]);
+
+    //consultar el estado del fork
+    useEffect(() => {
+        if (!id) return;
+        const checkForkStatus = async () => {
+            try {
+                const token = await getToken();
+                const res = await fetch(`${API_URL}/packages/${id}/fork-status`, {
+                    headers: { "Authorization": `Bearer ${token}` },
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    setAlreadyForked(data.forked);
+                }
+            } catch {}
+            finally { setForkStatusLoaded(true); }
+        };
+        checkForkStatus();
+    }, [id]);
+
 
     const handleDeleteReview = async (packageId: number) => {
     try {
@@ -244,17 +269,22 @@ export default function PackageDetail() {
         } catch {}
     };
 
-    const handleFork = async () => {
-        try {
-            const token = await getToken();
-            const res = await fetch(`${API_URL}/packages/${id}/fork`, {
-                method: "POST",
-                headers: { "Authorization": `Bearer ${token}` },
-            });
-            if (!res.ok) throw new Error();
-            navigate(`/packages/${(await res.json()).id}`);
-        } catch { setError("No se pudo guardar la copia"); }
-    };
+        const handleFork = async () => {
+            try {
+                const token = await getToken();
+                const res = await fetch(`${API_URL}/packages/${id}/fork`, {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${token}` },
+                });
+                if (res.status === 409) {
+                    setAlreadyForked(true);
+                    setError("Ya tienes una copia de este paquete");
+                    return;
+                }
+                if (!res.ok) throw new Error();
+                navigate(`/packages/${(await res.json()).id}`);
+            } catch { setError("No se pudo guardar la copia"); }
+        };
 
     const handleSubmitReview = async () => {
         if (newRating === 0) { setReviewError("Selecciona una calificación"); return; }
@@ -302,8 +332,12 @@ export default function PackageDetail() {
                             <DotsIcon />
                         </button>
                     ) : (
-                        <button className="detail-hero-fork-btn" onClick={handleFork}>
-                            <ForkIcon /> Guardar copia
+                        <button
+                            className="detail-hero-fork-btn"
+                            onClick={handleFork}
+                            disabled={forkStatusLoaded && alreadyForked}
+                        >
+                            <ForkIcon /> {alreadyForked ? "Ya tienes una copia" : "Guardar copia"}
                         </button>
                     )}
                 </div>
