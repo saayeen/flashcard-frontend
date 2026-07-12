@@ -397,54 +397,60 @@ export default function PackageDetail() {
 
                             {/* Caso 2: fork de otra persona */}
                         {!isOwner && pkg.forkedFromId && pkg.originalAuthorName && (
-                                <>
+                                <div className="detail-author-card">
                                     <span className="detail-author-label">Original de</span>
-                                    <div className="detail-author-hero-row">
-                                        <div className="detail-author-avatar detail-author-avatar-lg">
+                                    <button
+                                        className="detail-author-chip"
+                                        onClick={() => navigate(`/profile/${pkg.originalAuthorId}`)}
+                                    >
+                                        <div className="detail-author-avatar detail-author-avatar-sm">
                                             {pkg.originalAuthorPhotoUrl
                                                 ? <img src={pkg.originalAuthorPhotoUrl} alt={pkg.originalAuthorName}
                                                     style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
                                                 : pkg.originalAuthorName.slice(0, 1).toUpperCase()
                                             }
                                         </div>
-                                        <div className="detail-author-hero-text">
-                                            <span className="detail-author-name-lg">{pkg.originalAuthorName}</span>
-                                            <button
-                                                className="detail-author-edited-by"
-                                                onClick={() => navigate(`/profile/${pkg.userId}`)}
-                                            >
-                                                <div className="detail-author-avatar detail-author-avatar-xs">
-                                                    {pkg.userPhotoUrl
-                                                        ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
-                                                            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-                                                        : pkg.userName.slice(0, 1).toUpperCase()
-                                                    }
-                                                </div>
-                                                Editado por {pkg.userName}
-                                            </button>
+                                        <span className="detail-author-name">{pkg.originalAuthorName}</span>
+                                    </button>
+
+                                    <button
+                                        className="detail-author-edited-pill"
+                                        onClick={() => navigate(`/profile/${pkg.userId}`)}
+                                    >
+                                        <div className="detail-author-avatar detail-author-avatar-xs">
+                                            {pkg.userPhotoUrl
+                                                ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
+                                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                                                : pkg.userName.slice(0, 1).toUpperCase()
+                                            }
                                         </div>
-                                    </div>
-                                </>
+                                        Editado por {pkg.userName}
+                                    </button>
+                                </div>
                             )}
 
                             {/* Caso 3: tu propia copia forkeada */}
                             {isOwner && pkg.forkedFromId && pkg.originalAuthorName && (
-                                <>
+                                <div className="detail-author-card">
                                     <span className="detail-author-label">Original de</span>
-                                    <div className="detail-author-hero-row">
-                                        <div className="detail-author-avatar detail-author-avatar-lg">
+                                    <button
+                                        className="detail-author-chip"
+                                        onClick={() => navigate(`/profile/${pkg.originalAuthorId}`)}
+                                    >
+                                        <div className="detail-author-avatar detail-author-avatar-sm">
                                             {pkg.originalAuthorPhotoUrl
                                                 ? <img src={pkg.originalAuthorPhotoUrl} alt={pkg.originalAuthorName}
                                                     style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
                                                 : pkg.originalAuthorName.slice(0, 1).toUpperCase()
                                             }
                                         </div>
-                                        <div className="detail-author-hero-text">
-                                            <span className="detail-author-name-lg">{pkg.originalAuthorName}</span>
-                                            <span className="detail-author-edited-by-static">Editado por ti</span>
-                                        </div>
-                                    </div>
-                                </>
+                                        <span className="detail-author-name">{pkg.originalAuthorName}</span>
+                                    </button>
+
+                                    <span className="detail-author-edited-pill detail-author-edited-pill-static">
+                                        Editado por ti
+                                    </span>
+                                </div>
                             )}
                         </div>
 
