@@ -8,6 +8,7 @@ import casiImg from "../../assets/Casi.png";
 import bienImg from "../../assets/Bien.png";
 import facilImg from "../../assets/Facil.png";
 import "./StudyScreen.css";
+import { useTheme } from "../theme/ThemeContext";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -64,18 +65,9 @@ export default function StudyScreen() {
     const [error, setError]             = useState<string | null>(null);
     const [animating, setAnimating]     = useState(false);
 
-    const [isDark, setIsDark] = useState(
-        () => document.documentElement.getAttribute("data-theme") === "dark"
-            );
-
-            useEffect(() => {
-                const observer = new MutationObserver(() => {
-                    setIsDark(document.documentElement.getAttribute("data-theme") === "dark");
-                });
-                observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-                return () => observer.disconnect();
-            }, []);
-
+    const { theme } = useTheme();
+    const isDark = theme === "dark";
+    
     useEffect(() => {
         const init = async () => {
             try {
