@@ -487,7 +487,13 @@
     box-shadow: 0 4px 20px var(--border-strong);
 }
 
-.final-icon { font-size: 48px; }
+.final-icon-img {
+  width: 66px;
+  height: 66px;
+  object-fit: contain;
+  margin: 0 auto 12px;
+  display: block;
+}
 
 .final-title {
     font-size: 22px;

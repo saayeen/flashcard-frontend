@@ -726,18 +726,18 @@ export default function PackageDetail() {
 
             {/* ── ELIMINAR TARJETA ── */}
             {deletingCardId !== null && (
-                <div className="detail-modal-overlay" onClick={() => setDeletingCardId(null)}>
-                    <div className="detail-confirm-modal" onClick={e => e.stopPropagation()}>
-                        <span className="detail-confirm-icon">⚠️</span>
-                        <h3 className="detail-confirm-title">¿Eliminar tarjeta?</h3>
-                        <p className="detail-confirm-sub">Esta acción no se puede deshacer.</p>
-                        <div className="detail-form-actions">
-                            <button className="detail-cancel-btn" onClick={() => setDeletingCardId(null)}>Cancelar</button>
-                            <button className="detail-danger-btn" onClick={() => handleDeleteCard(deletingCardId)}>Eliminar</button>
+                    <div className="detail-modal-overlay" onClick={() => setDeletingCardId(null)}>
+                        <div className="detail-confirm-modal" onClick={e => e.stopPropagation()}>
+                            <span className="detail-confirm-icon"><WarningIcon /></span>
+                            <h3 className="detail-confirm-title">¿Eliminar tarjeta?</h3>
+                            <p className="detail-confirm-sub">Esta acción no se puede deshacer.</p>
+                            <div className="detail-form-actions">
+                                <button className="detail-cancel-btn" onClick={() => setDeletingCardId(null)}>Cancelar</button>
+                                <button className="detail-danger-btn" onClick={() => handleDeleteCard(deletingCardId)}>Eliminar</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
 
             {/* ── RESEÑA ── */}
 
