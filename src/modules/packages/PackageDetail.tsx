@@ -146,29 +146,33 @@ export default function PackageDetail() {
         setShowEditPkg(true);
     };
 
-    const handleSavePkg = async () => {
-        if (!editName.trim()) return;
-        setSavingPkg(true);
-        try {
-            const token = await getToken();
-            const res = await fetch(`${API_URL}/packages/${id}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-                body: JSON.stringify({
-                    name: editName,
+        const handleSavePkg = async () => {
+            if (!pkg) return;
+            if (!pkg.forkedFromId && !editName.trim()) return;
+            setSavingPkg(true);
+            try {
+                const token = await getToken();
+                const body: any = {
                     description: editDesc,
-                    category: editCategory,
                     isPublic: editIsPublic,
                     tags: editTags,
-                }),
-            });
-            if (res.ok) {
-                setPkg(await res.json());
-                setShowEditPkg(false);
-            }
-        } catch {}
-        finally { setSavingPkg(false); }
-    };
+                };
+                if (!pkg.forkedFromId) {
+                    body.name = editName;
+                    body.category = editCategory;
+                }
+                const res = await fetch(`${API_URL}/packages/${id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                    body: JSON.stringify(body),
+                });
+                if (res.ok) {
+                    setPkg(await res.json());
+                    setShowEditPkg(false);
+                }
+            } catch {}
+            finally { setSavingPkg(false); }
+        };
 
     const handleDeletePkg = async () => {
         try {
@@ -652,28 +656,36 @@ export default function PackageDetail() {
                         <h3 className="detail-sheet-title">Editar paquete</h3>
 
                         <div className="detail-edit-field">
-                            <label className="detail-edit-label">Nombre</label>
-                            <input className="detail-edit-input" value={editName}
-                                onChange={e => setEditName(e.target.value)} maxLength={80} />
-                        </div>
-
-                        <div className="detail-edit-field">
-                            <label className="detail-edit-label">Descripción</label>
-                            <textarea className="detail-edit-textarea" value={editDesc}
-                                onChange={e => setEditDesc(e.target.value)} rows={3} maxLength={300} />
-                        </div>
-
-                        <div className="detail-edit-field">
-                            <label className="detail-edit-label">Categoría</label>
-                            <div className="detail-edit-categories">
-                                {CATEGORIES.map(cat => (
-                                    <button key={cat}
-                                        className={`detail-edit-cat-btn ${editCategory === cat ? "selected" : ""}`}
-                                        onClick={() => setEditCategory(cat)}
-                                    >{cat}</button>
-                                ))}
+                                <label className="detail-edit-label">Nombre</label>
+                                {pkg.forkedFromId ? (
+                                    <p className="detail-edit-locked-value">{pkg.name}</p>
+                                ) : (
+                                    <input className="detail-edit-input" value={editName}
+                                        onChange={e => setEditName(e.target.value)} maxLength={80} />
+                                )}
                             </div>
-                        </div>
+
+                            <div className="detail-edit-field">
+                                <label className="detail-edit-label">Descripción</label>
+                                <textarea className="detail-edit-textarea" value={editDesc}
+                                    onChange={e => setEditDesc(e.target.value)} rows={3} maxLength={300} />
+                            </div>
+
+                            <div className="detail-edit-field">
+                                <label className="detail-edit-label">Categoría</label>
+                                {pkg.forkedFromId ? (
+                                    <p className="detail-edit-locked-value">{pkg.category}</p>
+                                ) : (
+                                    <div className="detail-edit-categories">
+                                        {CATEGORIES.map(cat => (
+                                            <button key={cat}
+                                                className={`detail-edit-cat-btn ${editCategory === cat ? "selected" : ""}`}
+                                                onClick={() => setEditCategory(cat)}
+                                            >{cat}</button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
 
                         <div className="detail-edit-field">
                             <label className="detail-edit-label">Tema visual</label>
