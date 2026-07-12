@@ -22,14 +22,24 @@ interface SessionSummary {
     easy: number;
 }
 
-// gradientes por tarjeta — ciclan entre estas opciones
-const CARD_GRADIENTS = [
+// modo oscuro —  (pastel, suaves)
+const CARD_GRADIENTS_DARK = [
     "linear-gradient(135deg, #f9a8d4, #fb7185)",
     "linear-gradient(135deg, #a5f3fc, #38bdf8)",
     "linear-gradient(135deg, #bbf7d0, #34d399)",
     "linear-gradient(135deg, #fde68a, #f59e0b)",
     "linear-gradient(135deg, #c4b5fd, #8b5cf6)",
     "linear-gradient(135deg, #fed7aa, #f97316)",
+];
+
+// modo claro — mas oscuros/saturados
+const CARD_GRADIENTS_LIGHT = [
+    "linear-gradient(135deg, #ec4899, #be123c)",
+    "linear-gradient(135deg, #0891b2, #0369a1)",
+    "linear-gradient(135deg, #16a34a, #047857)",
+    "linear-gradient(135deg, #d97706, #b45309)",
+    "linear-gradient(135deg, #7c3aed, #6d28d9)",
+    "linear-gradient(135deg, #ea580c, #9a3412)",
 ];
 
 const QUALITY_CONFIG = [
@@ -53,6 +63,18 @@ export default function StudyScreen() {
     const [loading, setLoading]         = useState(true);
     const [error, setError]             = useState<string | null>(null);
     const [animating, setAnimating]     = useState(false);
+
+    const [isDark, setIsDark] = useState(
+        () => document.documentElement.getAttribute("data-theme") === "dark"
+            );
+
+            useEffect(() => {
+                const observer = new MutationObserver(() => {
+                    setIsDark(document.documentElement.getAttribute("data-theme") === "dark");
+                });
+                observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+                return () => observer.disconnect();
+            }, []);
 
     useEffect(() => {
         const init = async () => {
@@ -181,7 +203,8 @@ export default function StudyScreen() {
     /* ── ESTUDIANDO ── */
     const card = cards[currentIndex];
     const progress = ((currentIndex) / cards.length) * 100;
-    const gradient = CARD_GRADIENTS[currentIndex % CARD_GRADIENTS.length];
+    const gradients = isDark ? CARD_GRADIENTS_DARK : CARD_GRADIENTS_LIGHT;
+    const gradient = gradients[currentIndex % gradients.length];
 
     return (
         <div className="study-page">
