@@ -37,11 +37,11 @@ export default function TagInput({ tags, onChange, placeholder = "Agrega etiquet
             {tags.map(tag => (
                 <span key={tag} className="tag-chip">
                     #{tag}
-                    <button
-                        className="tag-chip-remove"
-                        onClick={e => { e.stopPropagation(); removeTag(tag); }}
-                        type="button"
-                    >×</button>
+                    <button className="tag-chip-remove" onClick={e => { e.stopPropagation(); removeTag(tag); }} type="button" aria-label={`Quitar ${tag}`}>
+                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none">
+                            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                        </svg>
+                    </button>
                 </span>
             ))}
             {tags.length < max && (

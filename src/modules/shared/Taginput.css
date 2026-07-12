@@ -44,15 +44,19 @@
     border-radius: 50%;
     color: var(--accent);
     cursor: pointer;
-    font-size: 13px;
-    line-height: 1;
     padding: 0;
-    opacity: 0.85;
+    margin: 0;
+    line-height: 0;
+    font-size: 0;
+    flex-shrink: 0;
     transition: opacity 0.15s, background 0.15s;
 }
 
+.tag-chip-remove svg {
+    display: block;
+    pointer-events: none;
+}
 .tag-chip-remove:hover {
-    opacity: 1;
     background: rgba(99,102,241,0.3);
 }
 .tag-input-field {
