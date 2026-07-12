@@ -51,7 +51,7 @@
 .nav-item-create {
     width: 52px;
     height: 52px;
-    background: radial-gradient(circle,rgba(58, 123, 213, 1) 0%, rgba(148, 187, 233, 1) 100%);
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
     border-radius: 16px;
     padding: 0;
     color: var(--text-on-accent);
@@ -62,10 +62,10 @@
 }
 
 .nav-item-create:hover {
-    background: radial-gradient(circle,rgba(58, 123, 213, 1) 0%, rgba(148, 187, 233, 1) 100%);
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
     color: var(--text-on-accent);
     transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(99, 109, 241, 0.4);
+    box-shadow: 0 6px 18px rgba(99,102,241,0.4);
 }
 
 .nav-item-create:active {

@@ -310,7 +310,7 @@
 .detail-study-btn {
   flex: 1;
   padding: 14px;
-  background: radial-gradient(circle,rgba(58, 123, 213, 1) 0%, rgba(148, 187, 233, 1) 100%);
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
   color: var(--text-on-accent);
   border: none;
   border-radius: 12px;
@@ -532,7 +532,7 @@
 
 .detail-review-btn {
   padding: 13px;
-  background: radial-gradient(circle,rgba(58, 123, 213, 1) 0%, rgba(148, 187, 233, 1) 100%);
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
   color: var(--text-on-accent);
   border: none;
   border-radius: 12px;
@@ -542,7 +542,7 @@
   transition: background 0.15s;
   width: 100%;
 }
-.detail-review-btn:hover:not(:disabled) { background: #C44E27; }
+.detail-review-btn:hover:not(:disabled) { background: #3A7BD5; }
 
 .detail-review-btn-disabled {
   background: var(--bg-surface-2);
@@ -1023,8 +1023,6 @@
   padding: 10px 20px;
   font-size: 14px;
 }
-----------------------------------------------------
-
 
 .profile-page {
     min-height: 100vh;
@@ -1226,7 +1224,7 @@
 }
 
 .profile-streak-card {
-    background: linear-gradient(135deg, #FF9A5C, #FF6B9D);
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
     border-radius: 16px;
     padding: 24px;
     display: flex;

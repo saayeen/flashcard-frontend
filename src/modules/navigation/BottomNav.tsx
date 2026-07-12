@@ -74,14 +74,13 @@ function PlusIcon() {
 function CardStackIcon() {
     return (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <rect x="9" y="4" width="11" height="14" rx="1.5"
-                stroke="currentColor" strokeWidth="1.6"
-                transform="rotate(8 14.5 11)" />
-            <rect x="7" y="3" width="11" height="14" rx="1.5"
+            <rect x="7" y="3" width="14" height="10" rx="2"
                 stroke="currentColor" strokeWidth="1.6" />
-            <rect x="4" y="5" width="11" height="14" rx="1.5"
-                stroke="currentColor" strokeWidth="1.6"
-                transform="rotate(-8 9.5 12)" />
+            <rect x="4" y="7" width="14" height="10" rx="2"
+                stroke="currentColor" strokeWidth="1.6" />
+            <rect x="2" y="11" width="14" height="10" rx="2"
+                fill="var(--bg-surface, #14151f)"
+                stroke="currentColor" strokeWidth="1.6" />
         </svg>
     );
 }
