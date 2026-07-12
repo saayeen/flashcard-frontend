@@ -691,7 +691,10 @@
   align-items: center;
   gap: 8px;
 }
-.detail-confirm-icon { font-size: 36px; }
+.detail-confirm-icon {
+  display: flex;
+  color: var(--danger);
+}
 .detail-confirm-title { font-size: 17px; font-weight: 700; color: var(--text-primary); margin: 4px 0 0; text-align: center; }
 .detail-confirm-sub { font-size: 14px; color: var(--text-secondary); text-align: center; margin: 0 0 8px; }
 

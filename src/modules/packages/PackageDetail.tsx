@@ -687,7 +687,7 @@ export default function PackageDetail() {
             {showDeletePkg && (
                 <div className="detail-modal-overlay" onClick={() => setShowDeletePkg(false)}>
                     <div className="detail-confirm-modal" onClick={e => e.stopPropagation()}>
-                        <span className="detail-confirm-icon">⚠️</span>
+                        <span className="detail-confirm-icon"><WarningIcon /></span>
                         <h3 className="detail-confirm-title">¿Eliminar paquete?</h3>
                         <p className="detail-confirm-sub">Esta acción no se puede deshacer.</p>
                         <div className="detail-form-actions">
@@ -791,4 +791,15 @@ function EditIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fil
 function TrashIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
 function FolderIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
 function CardsIcon() { return <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M6 9h12M6 13h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>; }
-function ChevronIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function ChevronIcon() { 
+    return <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
+function WarningIcon() {
+    return (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3.5L2.5 20h19L12 3.5z"
+                stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round" />
+            <path d="M12 9.5v4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="12" cy="17" r="1" fill="currentColor" />
+        </svg>
+    );
+}
