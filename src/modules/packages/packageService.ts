@@ -18,6 +18,12 @@ export async function getMyPackages(token: string): Promise<FlashcardPackage[]> 
     return res.json();
 }
 
+export async function getTrendingPackages(): Promise<FlashcardPackage[]> {
+    const res = await fetch(`${API_URL}/search/trending`);
+    if (!res.ok) throw new Error("No se pudieron cargar las tendencias");
+    return res.json();
+}
+
 // paquetes copiados (fork)
 export async function getMyForkedPackages(token: string): Promise<FlashcardPackage[]> {
     const res = await fetch(`${API_URL}/users/me/packages/forked`, {

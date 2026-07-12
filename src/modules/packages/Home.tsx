@@ -5,8 +5,12 @@ import { getPackages } from "./packageService";
 import BottomNav from "../navigation/BottomNav";
 import { useAuth } from "../auth/AuthContext";
 import { getThemeGradient } from "./themes";
+import AuthModal from "../auth/AuthModal";
 import "./Home.css";
 import AppHeader from "../shared/AppHeader";
+import { useTheme } from "../theme/ThemeContext"; 
+import bannerClaro from "../../assets/BannerHomeClaro.png";
+import bannerOscuro from "../../assets/BannerHomeOscuro.png";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -22,15 +26,25 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
     const { user, getToken } = useAuth();
     const navigate = useNavigate();
-
+    const [trending, setTrending] = useState<FlashcardPackage[]>([]);
     const firstName = user?.displayName?.split(" ")[0] ?? null;
 
+    const { theme } = useTheme();
+    const bannerImg = theme === "dark" ? bannerOscuro : bannerClaro;
+    const [showAuthModal, setShowAuthModal] = useState(false);
+
     useEffect(() => {
-        getPackages()
-            .then(setPackages)
-            .finally(() => setLoading(false));
-        if (user) loadLastSession();
-    }, [user]);
+    getPackages()
+        .then(setPackages)
+        .finally(() => setLoading(false));
+
+    fetch(`${API_URL}/search/trending`)
+        .then(r => r.json())
+        .then(data => setTrending(Array.isArray(data) ? data.slice(0, 5) : []))
+        .catch(() => {});
+
+    if (user) loadLastSession();
+}, [user]);
 
     const loadLastSession = async () => {
         try {
@@ -52,12 +66,23 @@ export default function Home() {
             {/* HEADER */}
             <div className="home-body">
                     {/* SALUDO / BANNER */}
-                    {user && (
-                        <div className="home-banner">
+                    {user ? (
+                        <div className="home-banner" style={{ backgroundImage: `url(${bannerImg})` }}>
                             <div className="home-banner-overlay" />
                             <div className="home-banner-content">
                                 <p className="home-greeting-hi">Hola, {firstName}</p>
                                 <p className="home-greeting-sub">Continúa estudiando</p>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="home-banner" style={{ backgroundImage: `url(${bannerImg})` }}>
+                            <div className="home-banner-overlay" />
+                            <div className="home-banner-content">
+                                <p className="home-greeting-hi">Bienvenido a Jati</p>
+                                <p className="home-greeting-sub">¿Quieres estudiar con cartas?</p>
+                                <button className="home-banner-cta" onClick={() => setShowAuthModal(true)}>
+                                    Iniciar sesión
+                                </button>
                             </div>
                         </div>
                     )}
@@ -99,7 +124,7 @@ export default function Home() {
                     )}
 
                     <div className="home-trending-list">
-                        {packages.slice(0, 5).map((pkg) => (
+                        {trending.map((pkg) => (
                             <div
                                 className="home-trending-card"
                                 key={pkg.id}
@@ -154,6 +179,7 @@ export default function Home() {
             </div>
 
             <BottomNav />
+            {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
         </div>
     );
 }
