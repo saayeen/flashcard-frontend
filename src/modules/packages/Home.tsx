@@ -7,6 +7,7 @@ import { useAuth } from "../auth/AuthContext";
 import jatiImg from "../../assets/jati.png";
 import { getThemeGradient } from "./themes";
 import "./Home.css";
+import AppHeader from "../shared/AppHeader";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -51,29 +52,8 @@ export default function Home() {
 
     return (
         <div className="home-page">
+        <AppHeader user={user} />
             {/* HEADER */}
-            <div className="home-header">
-                <div className="home-header-left">
-                    <img src={jatiImg} alt="Jati" className="home-header-logo" />
-                    <span className="home-header-title">Jati</span>
-                </div>
-                <div className="home-header-right">
-                    <button className="home-header-btn" onClick={() => navigate("/search")} aria-label="Buscar">
-                        <SearchIcon />
-                    </button>
-                    <button
-                        className="home-header-avatar"
-                        onClick={() => user ? navigate("/profile") : navigate("/")}
-                        aria-label="Perfil"
-                    >
-                        {user?.photoURL
-                            ? <img src={user.photoURL} alt="perfil" className="home-avatar-img" />
-                            : <span className="home-avatar-initials">{initials}</span>
-                        }
-                    </button>
-                </div>
-            </div>
-
             <div className="home-body">
                     {/* SALUDO / BANNER */}
                     {user && (

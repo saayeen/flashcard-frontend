@@ -5,6 +5,7 @@ import type { Folder, CreateFolderRequest, FlashcardPackage } from "../../types/
 import BottomNav from "../navigation/BottomNav";
 import "./Folders.css";
 import { getThemeGradient } from "../packages/themes";
+import AppHeader from "../shared/AppHeader";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -359,21 +360,7 @@ export default function Folders() {
     return (
         <div className="folders-page">
             {/* HEADER */}
-            <div className="folders-topbar">
-                <div className="folders-topbar-left">
-                    <span className="folders-brand">Jati</span>
-                </div>
-                <div className="folders-topbar-right">
-                    {user && (
-                        <button className="folders-icon-btn folders-header-avatar" aria-label="Perfil" onClick={() => navigate("/profile")}>
-                            {user.photoURL
-                                ? <img src={user.photoURL} alt="Perfil" className="folders-avatar-img" />
-                                : <span className="folders-avatar-initials">{initials}</span>
-                            }
-                        </button>
-                    )}
-                </div>
-            </div>
+            <AppHeader user={user} />
 
             {/* TABS */}
             <div className="folders-tabs">
