@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "144730253457",
+    "project_id": "flashcard-app-6ab27",
+    "storage_bucket": "flashcard-app-6ab27.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144730253457:android:e3fd708ac82119b088f730",
+        "android_client_info": {
+          "package_name": "com.jati.flashcard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "144730253457-ju79dl9n4tht3bkqrpbgrh8kj9feam6k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jati.flashcard",
+            "certificate_hash": "d59a090712776d7009210d2aee70305f8b440f18"
+          }
+        },
+        {
+          "client_id": "144730253457-5ts6m2ss2h5rj4djdm4jjverbmetgfvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAUahfMSJP2lqVuKlH_FssNiyr8Y2h5Dg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "144730253457-5ts6m2ss2h5rj4djdm4jjverbmetgfvl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,6 +6,7 @@ import "./PackageDetail.css";
 import { getThemeGradient, THEMES } from "./themes";
 import TagInput from "../shared/Taginput";
 import AuthModal from "../auth/AuthModal";
+import elephantImg from "../../assets/reviews.png";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -367,21 +368,21 @@ export default function PackageDetail() {
                 )}
 
                 {/* ── TAGS ── */}
-                {pkg.tags && pkg.tags.length > 0 && (
-                    <section className="detail-tags-section" style={{ background: getThemeGradient(pkg.theme) }}>
-                        <h3 className="detail-tags-title">Tags</h3>
-                        <div className="detail-tags-list">
-                            {pkg.tags.map(tag => (
-                                <button
-                                key={tag}
-                                className="detail-tags-pill"
-                                onClick={() => navigate(`/search?q=${encodeURIComponent(tag)}`)}
-                                style={{ background:"none", border:"none", padding:0, cursor:"pointer", font:"inherit" }}
-                            >#{tag}</button>
-                            ))}
-                        </div>
-                    </section>
-                )}
+                    {pkg.tags && pkg.tags.length > 0 && (
+                        <section className="detail-tags-section">
+                            <h3 className="detail-tags-title">Tags</h3>
+                            <div className="detail-tags-list">
+                                {pkg.tags.map(tag => (
+                                    <button
+                                    key={tag}
+                                    className="detail-tags-pill"
+                                    onClick={() => navigate(`/search?q=${encodeURIComponent(tag)}`)}
+                                    style={{ background:"none", border:"none", padding:0, cursor:"pointer", font:"inherit" }}
+                                >#{tag}</button>
+                                ))}
+                            </div>
+                        </section>
+                    )}
 
                 {/* ── TARJETAS ── */}
                 <section className="detail-section">
@@ -458,33 +459,49 @@ export default function PackageDetail() {
 
                 {/* ── RESEÑAS ── */}
                 <section className="detail-section">
-                    <div className="detail-reviews-header">
-                        <div className="detail-reviews-avg">
-                            <span className="detail-reviews-score">
-                                {avgRating > 0 ? avgRating.toFixed(1) : "—"}
-                            </span>
-                            <div className="detail-reviews-stars">
-                                {[1,2,3,4,5].map(i => (
-                                    <span key={i} className={i <= Math.round(avgRating) ? "star-filled" : "star-empty"}>★</span>
-                                ))}
-                            </div>
-                            <span className="detail-reviews-count">{reviews.length} reseñas</span>
-                        </div>
-                        {!cannotReview && (
-                            <button
-                                className={`detail-review-btn ${!user || hasReviewed ? "detail-review-btn-disabled" : ""}`}
-                                onClick={() => user && !hasReviewed && setShowReviewModal(true)}
-                                disabled={!user || hasReviewed}
-                            >
-                                {!user
-                                    ? "Inicia sesión para evaluar"
-                                    : hasReviewed
-                                    ? "Ya evaluaste este paquete"
-                                    : "Evaluar paquete"
-                                }
-                            </button>
+                <div className="detail-reviews-header">
+                    <div className="detail-reviews-avg">
+                        {reviews.length > 0 ? (
+                            <>
+                                <span className="detail-reviews-score">{avgRating.toFixed(1)}</span>
+                                <div className="detail-reviews-stars">
+                                    {[1,2,3,4,5].map(i => (
+                                        <span key={i} className={i <= Math.round(avgRating) ? "star-filled" : "star-empty"}>★</span>
+                                    ))}
+                                </div>
+                                <span className="detail-reviews-count">{reviews.length} reseñas</span>
+                            </>
+                        ) : (
+                            <>
+                                <span className="detail-reviews-no-rating-star">★</span>
+                                <span className="detail-reviews-count">Sin reseñas todavía</span>
+                            </>
                         )}
                     </div>
+
+                    {/* Botón normal para quien no puede reseñar aún (no logueado o ya reseñó) */}
+                    {!cannotReview && (!user || hasReviewed) && (
+                        <button
+                            className="detail-review-btn detail-review-btn-disabled"
+                            onClick={() => !user && setShowAuthModal(true)}
+                        >
+                            {!user ? "Inicia sesión para evaluar" : "Ya evaluaste este paquete"}
+                        </button>
+                    )}
+
+                    {/* Invitación con el elefante, solo cuando SÍ puede evaluar */}
+                    {!cannotReview && user && !hasReviewed && (
+                        <div className="detail-review-invite">
+                            <img src={elephantImg} alt="" className="detail-review-invite-img" />
+                            <div className="detail-review-invite-content">
+                                <p className="detail-review-invite-text">¿Qué te pareció este paquete?</p>
+                                <button className="detail-review-btn" onClick={() => setShowReviewModal(true)}>
+                                    Evaluar paquete
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
 
                     <div className="detail-reviews-list">
                         {reviews.length === 0 && <p className="detail-empty">¡Sé el primero en reseñar!</p>}

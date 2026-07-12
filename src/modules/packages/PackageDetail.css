@@ -257,6 +257,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background: var(--bg-surface-2, #12131c);
 }
 
 .detail-tags-title {
@@ -275,22 +276,21 @@
 }
 
 .detail-tags-pill {
-    background: rgba(255, 255, 255, 0.25);
-    color: #fff;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    backdrop-filter: blur(4px);
-    transition: background 0.15s ease;
+  background: rgba(255, 255, 255, 0.12);
+  color: #8FC1FF;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  transition: background 0.15s ease;
 }
 
 .detail-tags-pill:hover {
-    background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* ══════════════════
-   BOTÓN ESTUDIAR — fijo abajo
+  BOTÓN ESTUDIAR — fijo abajo
    ══════════════════ */
 .detail-sticky-bar {
   position: fixed;
@@ -898,9 +898,55 @@
 .review-modal-input:focus { border-color: var(--accent); }
 
 .review-modal-actions { display: flex; flex-direction: column; gap: 8px; }
+
+/* estrella gris cuando no hay reseñas */
+.detail-reviews-no-rating-star {
+  font-size: 30px;
+  color: #d8d4cc;
+  line-height: 1;
+}
+
+/* tarjeta de invitación a evaluar, con el elefante */
+.detail-review-invite {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, #EAF2FF, #F7FAFF);
+  border: 1px solid rgba(43,95,166,0.12);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-top: 4px;
+}
+
+.detail-review-invite-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.detail-review-invite-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.detail-review-invite-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* el botón ya no necesita ser 100% ancho dentro de la invitación */
+.detail-review-invite .detail-review-btn {
+  width: auto;
+  padding: 10px 20px;
+  font-size: 14px;
+}
 ----------------------------------------------------
 
-PROFILE.CSS
 
 .profile-page {
     min-height: 100vh;

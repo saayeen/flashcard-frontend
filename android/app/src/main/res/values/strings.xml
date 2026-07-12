@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Jati</string>
+    <string name="title_activity_main">Jati</string>
+    <string name="package_name">com.jati.flashcard</string>
+    <string name="custom_url_scheme">com.jati.flashcard</string>
+</resources>

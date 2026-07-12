@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "./firebaseConfig";
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
+import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { auth } from "./firebaseConfig";
 import jatiImg from "../../assets/jati.png";
 import "./AuthModal.css";
 
@@ -12,19 +13,30 @@ export default function AuthModal({ onClose }: AuthModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // ambos botones llaman a la misma función — Firebase + tu backend
-  // ya manejan "crear si no existe, entrar si existe" automáticamente
   const handleGoogleLogin = async () => {
     setLoading(true);
     setError(null);
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const idToken = await result.user.getIdToken();
+      // 1. Login nativo (abre el selector de cuentas de Android)
+      const result = await FirebaseAuthentication.signInWithGoogle();
+      const idToken = result.credential?.idToken;
+      const accessToken = result.credential?.accessToken;
+
+      if (!idToken) {
+        throw new Error("No se obtuvo el token de Google");
+      }
+
+      // 2. Puente hacia el SDK web: esto dispara onAuthStateChanged
+      const credential = GoogleAuthProvider.credential(idToken, accessToken);
+      const userCredential = await signInWithCredential(auth, credential);
+
+      // 3. Token de Firebase (ya con la sesión sincronizada) para tu backend
+      const firebaseIdToken = await userCredential.user.getIdToken();
 
       const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:8080"}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }),
+        body: JSON.stringify({ idToken: firebaseIdToken }),
       });
 
       if (!response.ok) {
@@ -43,39 +55,22 @@ export default function AuthModal({ onClose }: AuthModalProps) {
   return (
     <div className="auth-modal-overlay" onClick={onClose}>
       <div className="auth-modal-card" onClick={(e) => e.stopPropagation()}>
-        <button className="auth-modal-close" onClick={onClose} aria-label="Cerrar">
-          ×
-        </button>
-
+        <button className="auth-modal-close" onClick={onClose} aria-label="Cerrar">×</button>
         <img src={jatiImg} alt="Jati" className="auth-modal-mascot" />
-
         <h2 className="auth-modal-title">Empieza con Jati</h2>
-        <p className="auth-modal-subtitle">
-          Tu compañero de estudio colaborativo
-        </p>
-
+        <p className="auth-modal-subtitle">Tu compañero de estudio colaborativo</p>
         <div className="auth-modal-actions">
-          <button
-            className="google-btn google-btn-primary"
-            onClick={handleGoogleLogin}
-            disabled={loading}
-          >
+          <button className="google-btn google-btn-primary" onClick={handleGoogleLogin} disabled={loading}>
             {loading ? <span className="spinner" /> : <GoogleIcon />}
             {loading ? "Conectando..." : "Crear cuenta con Google"}
           </button>
         </div>
-
         <p className="auth-modal-switch">
           ¿Ya tienes cuenta?{" "}
-          <button
-            className="auth-modal-link"
-            onClick={handleGoogleLogin}
-            disabled={loading}
-          >
+          <button className="auth-modal-link" onClick={handleGoogleLogin} disabled={loading}>
             Inicia sesión
           </button>
         </p>
-
         {error && <p className="login-error">{error}</p>}
       </div>
     </div>
