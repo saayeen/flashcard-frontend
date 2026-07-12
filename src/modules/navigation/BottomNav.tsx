@@ -35,10 +35,10 @@ export default function BottomNav() {
             <button
                 className={`nav-item ${isActive("/folders") ? "nav-item-active" : ""}`}
                 onClick={handleFolders}
-                aria-label="Carpetas"
+                aria-label="Paquetes"
             >
-                <FolderIcon />
-                <span className="nav-label">Carpetas</span>
+                <CardStackIcon />
+                <span className="nav-label">Paquetes</span>
             </button>
         </nav>
     );
@@ -71,16 +71,17 @@ function PlusIcon() {
     );
 }
 
-function FolderIcon() {
+function CardStackIcon() {
     return (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path
-                d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
+            <rect x="9" y="4" width="11" height="14" rx="1.5"
+                stroke="currentColor" strokeWidth="1.6"
+                transform="rotate(8 14.5 11)" />
+            <rect x="7" y="3" width="11" height="14" rx="1.5"
+                stroke="currentColor" strokeWidth="1.6" />
+            <rect x="4" y="5" width="11" height="14" rx="1.5"
+                stroke="currentColor" strokeWidth="1.6"
+                transform="rotate(-8 9.5 12)" />
         </svg>
     );
 }
