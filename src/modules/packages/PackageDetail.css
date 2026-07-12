@@ -310,7 +310,7 @@
 .detail-study-btn {
   flex: 1;
   padding: 14px;
-  background: linear-gradient(135deg, #68A9F4, #1B3A5C);
+  background: radial-gradient(circle,rgba(58, 123, 213, 1) 0%, rgba(148, 187, 233, 1) 100%);
   color: var(--text-on-accent);
   border: none;
   border-radius: 12px;
@@ -532,7 +532,7 @@
 
 .detail-review-btn {
   padding: 13px;
-  background: #D85A30;
+  background: radial-gradient(circle,rgba(58, 123, 213, 1) 0%, rgba(148, 187, 233, 1) 100%);
   color: var(--text-on-accent);
   border: none;
   border-radius: 12px;
@@ -576,6 +576,15 @@
   justify-content: center;
   font-size: 14px;
   font-weight: 700;
+  flex-shrink: 0;
+}
+
+.detail-review-avatar-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
   flex-shrink: 0;
 }
 

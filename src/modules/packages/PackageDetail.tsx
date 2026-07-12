@@ -508,15 +508,20 @@ export default function PackageDetail() {
                         {reviews.map(review => (
                             <div className="detail-review-item" key={review.id}>
                                 <div className="detail-review-top">
-                                    <div className="detail-review-avatar">
-                                        {review.userPhotoUrl
-                                            ? <img src={review.userPhotoUrl} alt={review.userName}
-                                                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-                                            : review.userName?.slice(0, 1).toUpperCase() ?? "?"
-                                        }
-                                    </div>
-                                    <div style={{ flex: 1 }}>
                                     <button
+                                        className="detail-review-avatar-btn"
+                                        onClick={() => navigate(`/profile/${review.userId}`)}
+                                    >
+                                        <div className="detail-review-avatar">
+                                            {review.userPhotoUrl
+                                                ? <img src={review.userPhotoUrl} alt={review.userName}
+                                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                                                : review.userName?.slice(0, 1).toUpperCase() ?? "?"
+                                            }
+                                        </div>
+                                    </button>
+                                    <div style={{ flex: 1 }}>
+                                        <button
                                             className="detail-review-user"
                                             onClick={() => navigate(`/profile/${review.userId}`)}
                                             style={{ background:"none", border:"none", padding:0, cursor:"pointer", font:"inherit" }}
@@ -747,7 +752,7 @@ export default function PackageDetail() {
                             <div className="review-modal-header-text">
                                 <h3 className="review-modal-title">Evaluar paquete</h3>
                                 <p className="review-modal-subtitle">
-                                    <span className="review-modal-subtitle-icon">💻</span> {pkg.name}
+                                    <span className="review-modal-subtitle-icon"></span> {pkg.name}
                                 </p>
                             </div>
                         </div>
