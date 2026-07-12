@@ -368,21 +368,31 @@ export default function PackageDetail() {
                         {pkg.name}
                     </h1>
 
-                    <div className="detail-author-row">
-                        <div className="detail-author-avatar">
-                            {pkg.userPhotoUrl
-                                ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
-                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-                                : pkg.userName.slice(0, 1).toUpperCase()
-                            }
-                        </div>
-                        <button
-                            className="detail-author-name"
-                            onClick={() => { if (!isOwner) navigate(`/profile/${pkg.userId}`); }}
-                            style={{ background:"none", border:"none", padding:0, cursor: isOwner ? "default" : "pointer", font:"inherit" }}
-                            >
-                            {isOwner ? "Tú" : pkg.userName}
-                        </button>
+                    <div className="detail-author-card">
+                        {!isOwner && (
+                            <>
+                                <span className="detail-author-label">Creado por</span>
+                                <button
+                                    className="detail-author-chip"
+                                    onClick={() => navigate(`/profile/${pkg.userId}`)}
+                                >
+                                    <div className="detail-author-avatar">
+                                        {pkg.userPhotoUrl
+                                            ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
+                                                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                                            : pkg.userName.slice(0, 1).toUpperCase()
+                                        }
+                                    </div>
+                                    <span className="detail-author-name">{pkg.userName}</span>
+                                </button>
+                            </>
+                        )}
+
+                        {pkg.forkedFromId && pkg.originalAuthorName && (
+                            <p className="detail-fork-attribution">
+                                Original de <strong>{pkg.originalAuthorName}</strong>
+                            </p>
+                        )}
                     </div>
 
                     <div className="detail-hero-stats">

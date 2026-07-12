@@ -13,6 +13,7 @@ export interface FlashcardPackage {
     avgRating?: number;  
     userName: string;
     userPhotoUrl?: string | null;
+    originalAuthorName?: string;
 }
 
 export interface CreatePackageRequest {
