@@ -29,9 +29,7 @@ export default function Folders() {
     const [forkedPackages, setForkedPackages] = useState<FlashcardPackage[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState(""); 
-    const initials = user?.displayName
-    ? user.displayName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
-    : "?";
+
     
     // formulario nueva carpeta
     const [showForm, setShowForm] = useState(false);

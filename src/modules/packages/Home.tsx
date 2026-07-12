@@ -4,7 +4,6 @@ import type { FlashcardPackage } from "../../types/index";
 import { getPackages } from "./packageService";
 import BottomNav from "../navigation/BottomNav";
 import { useAuth } from "../auth/AuthContext";
-import jatiImg from "../../assets/jati.png";
 import { getThemeGradient } from "./themes";
 import "./Home.css";
 import AppHeader from "../shared/AppHeader";
@@ -25,9 +24,6 @@ export default function Home() {
     const navigate = useNavigate();
 
     const firstName = user?.displayName?.split(" ")[0] ?? null;
-    const initials = user?.displayName
-    ? user.displayName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
-    : "?";
 
     useEffect(() => {
         getPackages()
@@ -162,14 +158,6 @@ export default function Home() {
     );
 }
 
-function SearchIcon() {
-    return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
-            <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-        </svg>
-    );
-}
 
 function PlayIcon() {
     return (
