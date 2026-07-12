@@ -396,35 +396,33 @@ export default function PackageDetail() {
                             )}
 
                             {/* Caso 2: fork de otra persona */}
-                            {!isOwner && pkg.forkedFromId && pkg.originalAuthorName && (
+                        {!isOwner && pkg.forkedFromId && pkg.originalAuthorName && (
                                 <>
                                     <span className="detail-author-label">Original de</span>
-                                    <div className="detail-author-dual-row">
-                                        <div className="detail-author-mini-chip">
-                                            <div className="detail-author-avatar detail-author-avatar-sm">
-                                                {pkg.originalAuthorPhotoUrl
-                                                    ? <img src={pkg.originalAuthorPhotoUrl} alt={pkg.originalAuthorName}
-                                                        style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-                                                    : pkg.originalAuthorName.slice(0, 1).toUpperCase()
-                                                }
-                                            </div>
-                                            <span className="detail-author-name">{pkg.originalAuthorName}</span>
+                                    <div className="detail-author-hero-row">
+                                        <div className="detail-author-avatar detail-author-avatar-lg">
+                                            {pkg.originalAuthorPhotoUrl
+                                                ? <img src={pkg.originalAuthorPhotoUrl} alt={pkg.originalAuthorName}
+                                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                                                : pkg.originalAuthorName.slice(0, 1).toUpperCase()
+                                            }
                                         </div>
-                                        <span className="detail-author-connector">· Editado por</span>
-                                        <button
-                                            className="detail-author-mini-chip"
-                                            onClick={() => navigate(`/profile/${pkg.userId}`)}
-                                            style={{ border: "none", background: "none", cursor: "pointer" }}
-                                        >
-                                            <div className="detail-author-avatar detail-author-avatar-sm">
-                                                {pkg.userPhotoUrl
-                                                    ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
-                                                        style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-                                                    : pkg.userName.slice(0, 1).toUpperCase()
-                                                }
-                                            </div>
-                                            <span className="detail-author-name">{pkg.userName}</span>
-                                        </button>
+                                        <div className="detail-author-hero-text">
+                                            <span className="detail-author-name-lg">{pkg.originalAuthorName}</span>
+                                            <button
+                                                className="detail-author-edited-by"
+                                                onClick={() => navigate(`/profile/${pkg.userId}`)}
+                                            >
+                                                <div className="detail-author-avatar detail-author-avatar-xs">
+                                                    {pkg.userPhotoUrl
+                                                        ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
+                                                            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                                                        : pkg.userName.slice(0, 1).toUpperCase()
+                                                    }
+                                                </div>
+                                                Editado por {pkg.userName}
+                                            </button>
+                                        </div>
                                     </div>
                                 </>
                             )}
@@ -433,18 +431,18 @@ export default function PackageDetail() {
                             {isOwner && pkg.forkedFromId && pkg.originalAuthorName && (
                                 <>
                                     <span className="detail-author-label">Original de</span>
-                                    <div className="detail-author-dual-row">
-                                        <div className="detail-author-mini-chip">
-                                            <div className="detail-author-avatar detail-author-avatar-sm">
-                                                {pkg.originalAuthorPhotoUrl
-                                                    ? <img src={pkg.originalAuthorPhotoUrl} alt={pkg.originalAuthorName}
-                                                        style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-                                                    : pkg.originalAuthorName.slice(0, 1).toUpperCase()
-                                                }
-                                            </div>
-                                            <span className="detail-author-name">{pkg.originalAuthorName}</span>
+                                    <div className="detail-author-hero-row">
+                                        <div className="detail-author-avatar detail-author-avatar-lg">
+                                            {pkg.originalAuthorPhotoUrl
+                                                ? <img src={pkg.originalAuthorPhotoUrl} alt={pkg.originalAuthorName}
+                                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                                                : pkg.originalAuthorName.slice(0, 1).toUpperCase()
+                                            }
                                         </div>
-                                        <span className="detail-author-connector">· Editado por <strong>ti</strong></span>
+                                        <div className="detail-author-hero-text">
+                                            <span className="detail-author-name-lg">{pkg.originalAuthorName}</span>
+                                            <span className="detail-author-edited-by-static">Editado por ti</span>
+                                        </div>
                                     </div>
                                 </>
                             )}
