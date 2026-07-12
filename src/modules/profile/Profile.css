@@ -206,7 +206,11 @@
     gap: 12px;
 }
 
-.profile-streak-emoji { font-size: 2rem; }
+.profile-streak-emoji {
+    display: flex;
+    align-items: center;
+    color: var(--text-on-accent);
+}
 
 .profile-streak-number {
     font-size: 2.5rem;
