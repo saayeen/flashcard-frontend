@@ -34,12 +34,12 @@ const CARD_GRADIENTS_DARK = [
 
 // modo claro — mas oscuros/saturados
 const CARD_GRADIENTS_LIGHT = [
-    "linear-gradient(135deg, #ec4899, #be123c)",
-    "linear-gradient(135deg, #0891b2, #0369a1)",
-    "linear-gradient(135deg, #16a34a, #047857)",
-    "linear-gradient(135deg, #d97706, #b45309)",
-    "linear-gradient(135deg, #7c3aed, #6d28d9)",
-    "linear-gradient(135deg, #ea580c, #9a3412)",
+    "linear-gradient(135deg, #f9a8d4, #fb7185)",
+    "linear-gradient(135deg, #a5f3fc, #38bdf8)",
+    "linear-gradient(135deg, #bbf7d0, #34d399)",
+    "linear-gradient(135deg, #fde68a, #f59e0b)",
+    "linear-gradient(135deg, #c4b5fd, #8b5cf6)",
+    "linear-gradient(135deg, #fed7aa, #f97316)",
 ];
 
 const QUALITY_CONFIG = [

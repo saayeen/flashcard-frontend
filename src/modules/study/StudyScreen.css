@@ -144,14 +144,9 @@
     letter-spacing: 0.3px;
 }
 
-.study-card-text {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0;
-    line-height: 1.45;
+.study-tap-hint {
+  color: rgba(255, 255, 255, 0.85);
 }
-
 /* BOTONES DE CALIDAD */
 .study-actions {
     padding: 16px 20px 32px;
