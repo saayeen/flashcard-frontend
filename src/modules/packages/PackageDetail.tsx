@@ -397,54 +397,38 @@ export default function PackageDetail() {
 
                             {/* Caso 2: fork de otra persona */}
                         {!isOwner && pkg.forkedFromId && pkg.originalAuthorName && (
-                                <div className="detail-author-card">
-                                    <span className="detail-author-label">Original de</span>
-                                    <button
-                                        className="detail-author-chip"
-                                        onClick={() => navigate(`/profile/${pkg.originalAuthorId}`)}
-                                    >
-                                        <div className="detail-author-avatar detail-author-avatar-sm">
-                                            {pkg.originalAuthorPhotoUrl
-                                                ? <img src={pkg.originalAuthorPhotoUrl} alt={pkg.originalAuthorName}
-                                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-                                                : pkg.originalAuthorName.slice(0, 1).toUpperCase()
-                                            }
-                                        </div>
-                                        <span className="detail-author-name">{pkg.originalAuthorName}</span>
-                                    </button>
+                            <div className="detail-author-card">
+                                <button
+                                    className="detail-author-original-text"
+                                    onClick={() => navigate(`/profile/${pkg.originalAuthorId}`)}
+                                >
+                                    Original de <strong>{pkg.originalAuthorName}</strong>
+                                </button>
 
-                                    <button
-                                        className="detail-author-edited-pill"
-                                        onClick={() => navigate(`/profile/${pkg.userId}`)}
-                                    >
-                                        <div className="detail-author-avatar detail-author-avatar-xs">
-                                            {pkg.userPhotoUrl
-                                                ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
-                                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-                                                : pkg.userName.slice(0, 1).toUpperCase()
-                                            }
-                                        </div>
-                                        Editado por {pkg.userName}
-                                    </button>
-                                </div>
-                            )}
+                                <button
+                                    className="detail-author-edited-pill"
+                                    onClick={() => navigate(`/profile/${pkg.userId}`)}
+                                >
+                                    <div className="detail-author-avatar detail-author-avatar-xs">
+                                        {pkg.userPhotoUrl
+                                            ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
+                                                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                                            : pkg.userName.slice(0, 1).toUpperCase()
+                                        }
+                                    </div>
+                                    Editado por {pkg.userName}
+                                </button>
+                            </div>
+                        )}
 
                             {/* Caso 3: tu propia copia forkeada */}
                             {isOwner && pkg.forkedFromId && pkg.originalAuthorName && (
                                 <div className="detail-author-card">
-                                    <span className="detail-author-label">Original de</span>
                                     <button
-                                        className="detail-author-chip"
+                                        className="detail-author-original-text"
                                         onClick={() => navigate(`/profile/${pkg.originalAuthorId}`)}
                                     >
-                                        <div className="detail-author-avatar detail-author-avatar-sm">
-                                            {pkg.originalAuthorPhotoUrl
-                                                ? <img src={pkg.originalAuthorPhotoUrl} alt={pkg.originalAuthorName}
-                                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-                                                : pkg.originalAuthorName.slice(0, 1).toUpperCase()
-                                            }
-                                        </div>
-                                        <span className="detail-author-name">{pkg.originalAuthorName}</span>
+                                        Original de <strong>{pkg.originalAuthorName}</strong>
                                     </button>
 
                                     <span className="detail-author-edited-pill detail-author-edited-pill-static">
