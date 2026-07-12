@@ -372,13 +372,13 @@ export default function PackageDetail() {
                         <section className="detail-tags-section">
                             <h3 className="detail-tags-title">Tags</h3>
                             <div className="detail-tags-list">
-                                {pkg.tags.map(tag => (
+                                {pkg.tags.map((tag, i) => (
                                     <button
-                                    key={tag}
-                                    className="detail-tags-pill"
-                                    onClick={() => navigate(`/search?q=${encodeURIComponent(tag)}`)}
-                                    style={{ background:"none", border:"none", padding:0, cursor:"pointer", font:"inherit" }}
-                                >#{tag}</button>
+                                        key={tag}
+                                        className={`detail-tags-pill tag-color-${i % 4}`}
+                                        onClick={() => navigate(`/search?q=${encodeURIComponent(tag)}`)}
+                                        style={{ border:"none", cursor:"pointer", font:"inherit" }}
+                                    >#{tag}</button>
                                 ))}
                             </div>
                         </section>
@@ -742,8 +742,16 @@ export default function PackageDetail() {
             {showReviewModal && (
                 <div className="review-modal-overlay" onClick={() => setShowReviewModal(false)}>
                     <div className="review-modal-card" onClick={e => e.stopPropagation()}>
-                        <h3 className="review-modal-title">Evaluar paquete</h3>
-                        <p className="review-modal-subtitle">{pkg.name}</p>
+                        <div className="review-modal-header">
+                            <img src={elephantImg} alt="" className="review-modal-elephant" />
+                            <div className="review-modal-header-text">
+                                <h3 className="review-modal-title">Evaluar paquete</h3>
+                                <p className="review-modal-subtitle">
+                                    <span className="review-modal-subtitle-icon">💻</span> {pkg.name}
+                                </p>
+                            </div>
+                        </div>
+
                         <div className="review-modal-stars">
                             {[1,2,3,4,5].map(i => (
                                 <button key={i}
@@ -751,14 +759,17 @@ export default function PackageDetail() {
                                     onClick={() => setNewRating(i)}>★</button>
                             ))}
                         </div>
+
                         <textarea className="review-modal-input" placeholder="Comentario (opcional)"
                             value={newComment} onChange={e => setNewComment(e.target.value)} rows={3} />
+
                         {reviewError && <p className="detail-error">{reviewError}</p>}
+
                         <div className="review-modal-actions">
                             <button className="detail-study-btn" onClick={handleSubmitReview} disabled={savingReview}>
                                 {savingReview ? "Enviando..." : "Enviar evaluación"}
                             </button>
-                            <button className="detail-cancel-btn" onClick={() => setShowReviewModal(false)}>Cancelar</button>
+                            <button className="detail-cancel-btn review-modal-cancel" onClick={() => setShowReviewModal(false)}>Cancelar</button>
                         </div>
                     </div>
                 </div>
