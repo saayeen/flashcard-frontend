@@ -8,6 +8,7 @@ import ImgBien from "../../assets/Bien.png";
 import ImgCasi from "../../assets/Casi.png";
 import ImgDificil from "../../assets/Dificil.png";
 import ImgFacil from "../../assets/Facil.png";
+import AuthModal from "../auth/AuthModal";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 const DAYS = ["L", "M", "M", "J", "V", "S", "D"];
@@ -124,9 +125,24 @@ export default function Profile() {
     };
 
     const maxActivity = Math.max(...activity.map(a => a.cardsReviewed), 1);
+    if (!user) {
+        return (
+            <div className="profile-page">
+                <div className="profile-header">
+                    <button className="profile-back-btn" onClick={() => navigate(-1)}>
+                        <BackIcon />
+                    </button>
+                    <h1 className="profile-header-title">Mi perfil</h1>
+                    <div style={{ width: 22 }} />
+                </div>
+                <AuthModal onClose={() => navigate(-1)} />
+            </div>
+        );
+    }
 
     return (
         <div className="profile-page">
+
             {/* HEADER */}
             <div className="profile-header">
                 <button className="profile-back-btn" onClick={() => navigate(-1)}>
