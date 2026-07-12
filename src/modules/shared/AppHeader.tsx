@@ -4,10 +4,9 @@ import "./AppHeader.css";
 
 interface AppHeaderProps {
     user?: { photoURL?: string | null; displayName?: string | null } | null;
-    onSearchClick?: () => void;
 }
 
-export default function AppHeader({ user, onSearchClick }: AppHeaderProps) {
+export default function AppHeader({ user }: AppHeaderProps) {
     const navigate = useNavigate();
     const initials = user?.displayName?.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase();
 
@@ -18,7 +17,7 @@ export default function AppHeader({ user, onSearchClick }: AppHeaderProps) {
                 <span className="app-header-title">Jati</span>
             </div>
             <div className="app-header-actions">
-                <button className="app-header-search-btn" onClick={onSearchClick} aria-label="Buscar">
+                <button className="app-header-search-btn" onClick={() => navigate("/search")} aria-label="Buscar">
                     <SearchIcon />
                 </button>
                 <button className="app-header-avatar" onClick={() => navigate("/profile")} aria-label="Perfil">
