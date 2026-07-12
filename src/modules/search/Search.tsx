@@ -9,12 +9,11 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 type SearchTab = "paquetes" | "perfiles" | "tags";
 
 const CATEGORIES = [
-    { label: "Universidad", icon: <UniIcon /> },
-    { label: "PAES",        icon: <PaesIcon /> },
-    { label: "Idiomas",     icon: <LangIcon /> },
-    { label: "Licencias",   icon: <LicIcon /> },
-    { label: "Ciencias",    icon: <SciIcon /> },
-    { label: "Otros",       icon: <OtrosIcon /> },
+    { label: "Universidad",           icon: <UniIcon /> },
+    { label: "PAES",                  icon: <PaesIcon /> },
+    { label: "Idiomas",                icon: <LangIcon /> },
+    { label: "Licencia de conducir",   icon: <LicIcon /> },
+    { label: "Otros",                  icon: <OtrosIcon /> },
 ];
 
 export default function Search() {
@@ -352,9 +351,7 @@ function LangIcon() {
 function LicIcon() {
     return <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M8 10h8M8 14h5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="16" cy="14" r="2" stroke="currentColor" strokeWidth="1.6"/></svg>;
 }
-function SciIcon() {
-    return <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 3v8L4 19a1 1 0 0 0 .9 1.4h14.2A1 1 0 0 0 20 19l-5-8V3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M9 3h6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="10" cy="15" r="1" fill="currentColor"/><circle cx="14" cy="17" r="1" fill="currentColor"/></svg>;
-}
+
 function OtrosIcon() {
     return <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/><path d="M12 8v4M12 16h.01" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>;
 }
