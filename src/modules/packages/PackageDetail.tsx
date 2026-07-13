@@ -368,25 +368,30 @@ export default function PackageDetail() {
                     </h1>
 
                         <div className="detail-author-card">
+                            {/* Caso 0 (nuevo): tu propio paquete original */}
+                                {isOwner && !pkg.forkedFromId && (
+                                    <span className="detail-author-label detail-author-self-label">Creado por ti</span>
+                                )}
                             {/* Caso 1: paquete original (no fork) de otra persona */}
-                            {!isOwner && !pkg.forkedFromId && (
-                                <>
-                                    <span className="detail-author-label">Creado por</span>
-                                    <button
-                                        className="detail-author-chip"
-                                        onClick={() => navigate(`/profile/${pkg.userId}`)}
-                                    >
-                                        <div className="detail-author-avatar">
-                                            {pkg.userPhotoUrl
-                                                ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
-                                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
-                                                : pkg.userName.slice(0, 1).toUpperCase()
-                                            }
-                                        </div>
-                                        <span className="detail-author-name">{pkg.userName}</span>
-                                    </button>
-                                </>
-                            )}
+                                {!isOwner && !pkg.forkedFromId && (
+                                    <>
+                                        <span className="detail-author-label">Creado por</span>
+                                        <button
+                                            className="detail-author-chip"
+                                            onClick={() => navigate(`/profile/${pkg.userId}`)}
+                                        >
+                                            <div className="detail-author-avatar">
+                                                {pkg.userPhotoUrl
+                                                    ? <img src={pkg.userPhotoUrl} alt={pkg.userName}
+                                                        style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                                                    : pkg.userName.slice(0, 1).toUpperCase()
+                                                }
+                                            </div>
+                                            <span className="detail-author-name">{pkg.userName}</span>
+                                        </button>
+                                    </>
+                                )}
+
 
                             {/* Caso 2: fork de otra persona */}
                         {!isOwner && pkg.forkedFromId && pkg.originalAuthorName && (

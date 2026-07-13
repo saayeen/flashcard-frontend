@@ -401,6 +401,13 @@
   background: var(--bg-surface-2);
 }
 
+.detail-author-self-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-on-accent);
+  opacity: 0.9;
+}
+
 .detail-tags-title {
   font-size: 13px;
   font-weight: 700;
