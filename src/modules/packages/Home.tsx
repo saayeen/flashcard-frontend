@@ -6,6 +6,7 @@ import BottomNav from "../navigation/BottomNav";
 import { useAuth } from "../auth/AuthContext";
 import { getThemeGradient } from "./themes";
 import AuthModal from "../auth/AuthModal";
+import { getRecentPackageIds } from "../packages/recentPackages";
 import "./Home.css";
 import AppHeader from "../shared/AppHeader";
 import { useTheme } from "../theme/ThemeContext"; 
@@ -81,9 +82,7 @@ export default function Home() {
                             <div className="home-banner-content">
                                 <p className="home-greeting-hi">Bienvenido a Jati</p>
                                 <p className="home-greeting-sub">¿Quieres estudiar con cartas?</p>
-                                <button className="home-banner-cta" onClick={() => setShowAuthModal(true)}>
-                                    Iniciar sesión
-                                </button>
+                            
                             </div>
                         </div>
                     )}
@@ -153,30 +152,40 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* RECIENTES */}
-                {packages.length > 5 && (
-                    <div className="home-section">
-                        <div className="home-section-header">
-                            <h2 className="home-section-title">Recientes</h2>
-                        </div>
-                        <div className="home-package-grid">
-                            {packages.slice(5).map((pkg) => (
-                                <div
-                                    className="home-package-card"
-                                    key={pkg.id}
-                                    style={{ background: getThemeGradient(pkg.theme) }}
-                                    onClick={() => navigate(`/packages/${pkg.id}`)}
-                                >
-                                    <span className="home-package-category">{pkg.category}</span>
-                                    <h3 className="home-package-name">{pkg.name}</h3>
-                                    <div className="home-package-footer">
-                                        <span className="home-package-count">🗂 {pkg.cardCount}</span>
+                {/* RECIENTES (últimos paquetes vistos) */}
+                {(() => {
+                    const recentIds = getRecentPackageIds();
+                    const recentPackages = recentIds
+                        .map(id => packages.find(p => p.id === id))
+                        .filter((p): p is FlashcardPackage => !!p)
+                        .slice(0, 2);
+
+                    if (recentPackages.length === 0) return null;
+
+                    return (
+                        <div className="home-section">
+                            <div className="home-section-header">
+                                <h2 className="home-section-title">Recientes</h2>
+                            </div>
+                            <div className="home-package-grid">
+                                {recentPackages.map((pkg) => (
+                                    <div
+                                        className="home-package-card"
+                                        key={pkg.id}
+                                        style={{ background: getThemeGradient(pkg.theme) }}
+                                        onClick={() => navigate(`/packages/${pkg.id}`)}
+                                    >
+                                        <span className="home-package-category">{pkg.category}</span>
+                                        <h3 className="home-package-name">{pkg.name}</h3>
+                                        <div className="home-package-footer">
+                                            <span className="home-package-count">🗂 {pkg.cardCount}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    );
+                })()}
             </div>
 
             <BottomNav />

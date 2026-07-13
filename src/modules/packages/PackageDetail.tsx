@@ -7,6 +7,7 @@ import { getThemeGradient, THEMES } from "./themes";
 import TagInput from "../shared/Taginput";
 import AuthModal from "../auth/AuthModal";
 import elephantImg from "../../assets/reviews.png";
+import { addRecentPackage } from "./recentPackages";
 
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
@@ -73,22 +74,12 @@ export default function PackageDetail() {
     const hasReviewed = user
         ? reviews.some(r => r.userId === user.uid)
         : false;
-    useEffect(() => {
-        Promise.all([
-            fetch(`${API_URL}/packages/${id}`).then(r => r.json()),
-            fetch(`${API_URL}/packages/${id}/cards`).then(r => r.json()),
-            fetch(`${API_URL}/packages/${id}/reviews`).then(r => r.json()),
-        ]).then(([pkgData, cardsData, reviewsData]) => {
-            setPkg(pkgData);
-            setCards(Array.isArray(cardsData) ? cardsData : []);
-            setReviews(Array.isArray(reviewsData) ? reviewsData : []);
-        }).finally(() => setLoading(false));
-    }, [id]);
+
 
     useEffect(() => {
-        if (!id) return;
-        const alreadyLoaded = loadedIdsRef.current.has(id);
-        if (!alreadyLoaded) setLoading(true);
+    if (!id) return;
+    const alreadyLoaded = loadedIdsRef.current.has(id);
+    if (!alreadyLoaded) setLoading(true);
 
         Promise.all([
             fetch(`${API_URL}/packages/${id}`).then(r => r.json()),
@@ -99,6 +90,7 @@ export default function PackageDetail() {
             setCards(Array.isArray(cardsData) ? cardsData : []);
             setReviews(Array.isArray(reviewsData) ? reviewsData : []);
             loadedIdsRef.current.add(id);
+            if (pkgData?.id) addRecentPackage(pkgData.id);
         }).finally(() => setLoading(false));
     }, [id]);
 
