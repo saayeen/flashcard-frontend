@@ -74,7 +74,10 @@ export interface SearchResult {
     category: string;
     cardCount: number;
     authorName: string;
-    tags?: string[];
+    tags: string[];
+    theme: string;
+    avgRating: number | null;
+    reviewCount: number;
 }
 
 export interface UserResult {

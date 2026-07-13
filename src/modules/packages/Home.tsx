@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { FlashcardPackage } from "../../types/index";
+import type { FlashcardPackage, SearchResult } from "../../types/index";
 import { getPackages } from "./packageService";
 import BottomNav from "../navigation/BottomNav";
 import { useAuth } from "../auth/AuthContext";
@@ -11,6 +11,7 @@ import AppHeader from "../shared/AppHeader";
 import { useTheme } from "../theme/ThemeContext"; 
 import bannerClaro from "../../assets/BannerHomeClaro.png";
 import bannerOscuro from "../../assets/BannerHomeOscuro.png";
+
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -26,21 +27,21 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
     const { user, getToken } = useAuth();
     const navigate = useNavigate();
-    const [trending, setTrending] = useState<FlashcardPackage[]>([]);
+    const [trending, setTrending] = useState<SearchResult[]>([]);
     const firstName = user?.displayName?.split(" ")[0] ?? null;
 
     const { theme } = useTheme();
     const bannerImg = theme === "dark" ? bannerOscuro : bannerClaro;
     const [showAuthModal, setShowAuthModal] = useState(false);
-
+    
     useEffect(() => {
     getPackages()
         .then(setPackages)
         .finally(() => setLoading(false));
 
-    fetch(`${API_URL}/search/trending`)
+    fetch(`${API_URL}/search/trending?limit=5`)
         .then(r => r.json())
-        .then(data => setTrending(Array.isArray(data) ? data.slice(0, 5) : []))
+        .then(data => setTrending(Array.isArray(data) ? data : []))
         .catch(() => {});
 
     if (user) loadLastSession();
