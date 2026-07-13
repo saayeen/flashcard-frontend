@@ -462,7 +462,7 @@
 .detail-study-btn {
   flex: 1;
   padding: 14px;
-  background: radial-gradient(circle,rgba(99, 102, 241, 1) 45%, rgba(59, 111, 224, 1) 100%);
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
   color: var(--text-on-accent);
   border: none;
   border-radius: 12px;
@@ -470,9 +470,11 @@
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s, transform 0.1s;
+  box-shadow: 0 4px 14px rgba(59,111,224,0.35);
 }
+
 .detail-study-btn:hover {
-  background: linear-gradient(135deg, #5a9aeb, #16304d);
+  background: linear-gradient(135deg, var(--accent-hover), var(--accent));
 }
 .detail-study-btn:active {
   transform: scale(0.98);
