@@ -476,7 +476,6 @@ export default function PackageDetail() {
                                         key={tag}
                                         className="detail-tags-pill"
                                         onClick={() => navigate(`/search?q=${encodeURIComponent(tag)}`)}
-                                        style={{ border:"none", cursor:"pointer", font:"inherit" }}
                                     >#{tag}</button>
                                 ))}
                             </div>
