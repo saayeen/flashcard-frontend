@@ -241,7 +241,7 @@ export default function Folders() {
                 <div className="folder-detail-body">
                     {folderPackages.length === 0 ? (
                         <div className="folders-empty">
-                            <span className="folders-empty-icon">📦</span>
+                            <span className="folders-empty-icon"><BoxIcon /></span>
                             <p className="folders-empty-title">Sin paquetes aún</p>
                             <p className="folders-empty-sub">Agrega paquetes a esta carpeta</p>
                         </div>
@@ -461,7 +461,7 @@ export default function Folders() {
                             <>
                                 {myPackages.length === 0 && (
                                     <div className="folders-empty">
-                                        <span className="folders-empty-icon">📦</span>
+                                        <span className="folders-empty-icon"><BoxIcon /></span>
                                         <p className="folders-empty-title">Sin paquetes aún</p>
                                         <p className="folders-empty-sub">Crea tu primer paquete de flashcards</p>
                                         <button className="folder-save-btn" onClick={() => navigate("/packages/new")}>
@@ -498,7 +498,7 @@ export default function Folders() {
                             <>
                                 {forkedPackages.length === 0 && (
                                     <div className="folders-empty">
-                                        <span className="folders-empty-icon">🔖</span>
+                                        <span className="folders-empty-icon"><BookmarkIcon /></span>
                                         <p className="folders-empty-title">Sin paquetes copiados</p>
                                         <p className="folders-empty-sub">Guarda copias de paquetes que te gusten</p>
                                     </div>
@@ -536,7 +536,7 @@ export default function Folders() {
                         )}
                         {!loading && folders.length === 0 && !showForm && (
                             <div className="folders-empty">
-                                <span className="folders-empty-icon">📁</span>
+                                <span className="folders-empty-icon"><FolderPlusIcon /></span>
                                 <p className="folders-empty-title">Sin carpetas aún</p>
                                 <p className="folders-empty-sub">Organiza tus paquetes en carpetas</p>
                                 <button className="folder-save-btn" onClick={() => setShowForm(true)}>
@@ -679,6 +679,33 @@ function SearchIcon() {
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
             <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+    );
+}
+
+function BoxIcon() {
+    return (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M21 8L12 3 3 8l9 5 9-5z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+            <path d="M3 8v8l9 5 9-5V8" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+            <path d="M12 13v8" stroke="currentColor" strokeWidth="1.6" />
+        </svg>
+    );
+}
+
+function FolderPlusIcon() {
+    return (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+            <path d="M12 11v5M9.5 13.5h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+    );
+}
+
+function BookmarkIcon() {
+    return (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
         </svg>
     );
 }

@@ -267,17 +267,9 @@
 
 /* ── theme toggle button ── */
 .settings-theme-toggle {
-    padding: 6px 16px;
-    background: var(--accent-soft, var(--accent-soft));
-    border: 1.5px solid var(--accent, var(--accent));
-    border-radius: 20px;
-    color: var(--accent, var(--accent));
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-    white-space: nowrap;
-    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .settings-theme-toggle:hover {
