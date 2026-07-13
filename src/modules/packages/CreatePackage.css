@@ -213,6 +213,56 @@
     cursor: pointer;
 }
 
+/* ── MODAL CONFIRMAR SALIDA ── */
+.create-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.create-confirm-modal {
+    background: var(--bg-surface);
+    border-radius: 20px;
+    padding: 28px 24px;
+    margin: 24px;
+    width: calc(100% - 48px);
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.create-confirm-icon { display: flex; color: var(--danger); }
+.create-confirm-title { font-size: 17px; font-weight: 700; color: var(--text-primary); margin: 4px 0 0; text-align: center; }
+.create-confirm-sub { font-size: 14px; color: var(--text-secondary); text-align: center; margin: 0 0 8px; }
+
+.create-exit-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.create-exit-danger-btn {
+    flex: 1;
+    padding: 11px 18px;
+    background: var(--danger);
+    border: none;
+    border-radius: 8px;
+    color: var(--text-on-accent);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.create-exit-danger-btn:hover { opacity: 0.9; }
+
 /* TEMAS */
 .theme-grid {
     display: grid;

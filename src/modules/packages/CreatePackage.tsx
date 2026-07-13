@@ -17,6 +17,8 @@ export default function CreatePackage() {
     const { getToken } = useAuth();
     const navigate = useNavigate();
 
+    const [showExitConfirm, setShowExitConfirm] = useState(false);
+
     // Paso 1 — formulario
     const [form, setForm] = useState<CreatePackageRequest>({
         name: "",
@@ -112,7 +114,10 @@ export default function CreatePackage() {
         <div className="create-page">
             {/* HEADER con gradiente del tema */}
             <div className="create-header" style={{ background: gradient }}>
-                <button className="create-back-btn" onClick={() => step === 1 ? navigate(-1) : setStep(s => (s - 1) as Step)}>
+                <button
+                    className="create-back-btn"
+                    onClick={() => step === 1 ? setShowExitConfirm(true) : setStep(s => (s - 1) as Step)}
+                >
                     <BackIcon />
                 </button>
                 <h1 className="create-header-title">Crear nuevo paquete</h1>
@@ -230,6 +235,26 @@ export default function CreatePackage() {
                     </button>
                 </div>
             )}
+
+            {/* ── CONFIRMAR SALIDA ── */}
+            {showExitConfirm && (
+                <div className="create-modal-overlay" onClick={() => setShowExitConfirm(false)}>
+                    <div className="create-confirm-modal" onClick={e => e.stopPropagation()}>
+                        <span className="create-confirm-icon"><WarningIcon /></span>
+                        <h3 className="create-confirm-title">¿Salir sin guardar?</h3>
+                        <p className="create-confirm-sub">Vas a perder lo que llevas escrito en este paquete.</p>
+                        <div className="create-exit-actions">
+                            <button className="create-secondary-btn" onClick={() => setShowExitConfirm(false)}>
+                                Seguir editando
+                            </button>
+                            <button className="create-exit-danger-btn" onClick={() => navigate(-1)}>
+                                Salir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
 
             {/* ── PASO 2: AGREGAR TARJETAS ── */}
             {step === 2 && (
@@ -371,6 +396,17 @@ function TrashIcon() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
+}
+
+function WarningIcon() {
+    return (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3.5L2.5 20h19L12 3.5z"
+                stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round" />
+            <path d="M12 9.5v4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="12" cy="17" r="1" fill="currentColor" />
         </svg>
     );
 }
