@@ -5,7 +5,7 @@ import type { CreatePackageRequest, CreateCardRequest, Flashcard } from "../../t
 import { THEMES, getThemeGradient } from "./themes";
 import TagInput from "../shared/Taginput";
 import "./CreatePackage.css";
-import FinalImg from "../../assets/Facil.png";
+import FinalImg from "../../assets/PackageCreated.png";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 

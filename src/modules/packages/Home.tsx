@@ -64,7 +64,7 @@ export default function Home() {
 
     return (
         <div className="home-page">
-        <AppHeader user={user} />
+        <AppHeader user={user} onRequireAuth={() => setShowAuthModal(true)} />
             {/* HEADER */}
             <div className="home-body">
                     {/* SALUDO / BANNER */}
