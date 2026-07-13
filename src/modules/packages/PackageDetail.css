@@ -330,7 +330,7 @@
 }
 
 .detail-rating-stars {
-  color: #F5A623;
+  color: #fad52e;
   font-size: 12px;
 }
 
@@ -672,9 +672,9 @@
 }
 
 .detail-reviews-score {
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--text-primary);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 .detail-reviews-stars { display: flex; gap: 2px; }

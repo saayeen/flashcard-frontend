@@ -512,7 +512,11 @@ export default function Folders() {
                                             <div className="folder-pkg-row-info">
                                                 <p className="folder-pkg-row-name">{pkg.name}</p>
                                                 <p className="folder-pkg-row-sub">{pkg.cardCount} tarjetas · {pkg.category}</p>
-                                                <p className="folder-card-fork-label">Copia de otro usuario</p>
+                                                {pkg.forkedFromId && (
+                                                    <p className="folder-card-fork-label">
+                                                        Copiado de {pkg.originalAuthorName ?? "otro usuario"}
+                                                    </p>
+                                                )}
                                             </div>
                                             <ChevronIcon />
                                         </div>

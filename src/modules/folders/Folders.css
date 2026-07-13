@@ -858,13 +858,13 @@
 
 /* ── card fork ── */
 .folder-card-icon-fork {
-    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover)) !important;
     color: rgba(255,255,255,0.9);
 }
 
 .folder-card-fork-label {
     font-size: 11px;
-    color: #d97706;
+    color: var(--accent);
     font-weight: 500;
     margin: 2px 0 0;
 }
