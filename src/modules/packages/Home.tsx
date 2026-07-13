@@ -178,7 +178,9 @@ export default function Home() {
                                         <span className="home-package-category">{pkg.category}</span>
                                         <h3 className="home-package-name">{pkg.name}</h3>
                                         <div className="home-package-footer">
-                                            <span className="home-package-count">🗂 {pkg.cardCount}</span>
+                                            <span className="home-package-count">
+                                                <CardStackIconOutline /> {pkg.cardCount}
+                                            </span>
                                         </div>
                                     </div>
                                 ))}
@@ -216,6 +218,19 @@ function ChevronIcon() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
+}
+
+function CardStackIconOutline() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <rect x="8" y="3" width="12" height="15" rx="2.5"
+                fill="rgba(255,255,255,0.25)"
+                stroke="currentColor" strokeWidth="1.5" />
+            <rect x="4" y="6" width="12" height="15" rx="2.5"
+                fill="rgba(255,255,255,0.9)"
+                stroke="currentColor" strokeWidth="1.5" />
         </svg>
     );
 }

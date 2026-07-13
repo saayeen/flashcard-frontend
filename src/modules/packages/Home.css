@@ -338,10 +338,12 @@
 .home-package-footer { display: flex; align-items: center; }
 
 .home-package-count {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     font-size: 12px;
     color: rgba(255,255,255,0.75);
 }
-
 /* SKELETONS */
 .home-skeleton-list {
     display: flex;
