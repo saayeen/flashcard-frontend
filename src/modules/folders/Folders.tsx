@@ -67,6 +67,10 @@ export default function Folders() {
         loadMyPackages();
     }, []);
 
+    useEffect(() => {
+    setShowForm(false);
+}, [mainTab]);
+
     // si hay :id en la URL, abrir esa carpeta directamente
     useEffect(() => {
         if (id && folders.length > 0) {
@@ -383,10 +387,10 @@ export default function Folders() {
 
             {/* TABS */}
             <div className="folders-tabs">
-                <button className={`folders-tab ${mainTab === "paquetes" ? "active" : ""}`} onClick={() => setMainTab("paquetes")}>
-                    <CardStackIcon />
-                    Paquetes
-                </button>
+                <button className={`folders-tab ${mainTab === "paquetes" ? "active" : ""}`} onClick={() => { setMainTab("paquetes"); setShowForm(false); }}>
+                <CardStackIcon />
+                Paquetes
+            </button>
                 <button
                     className={`folders-tab ${mainTab === "carpetas" ? "active" : ""}`}
                     onClick={() => setMainTab("carpetas")}
