@@ -11,7 +11,7 @@ export default function BottomNav() {
 
     const handleHome = () => navigate("/");
     const handleCreate = () => requireAuth(() => navigate("/packages/new"));
-    const handleFolders = () => requireAuth(() => navigate("/folders"));
+    const handleFolders = () => requireAuth(() => navigate("/folders", { state: { tab: "paquetes" } }));
 
     return (
         <nav className="bottom-nav" aria-label="Navegación principal">
